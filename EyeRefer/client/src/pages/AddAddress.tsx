@@ -35,7 +35,14 @@ const AddAddress:React.FC = () => {
     mutationFn: addAddress,
     onSuccess: ()=>{
       toast.success("Address Saved");
-      navigate("/dashboard");
+      if (localStorage.getItem('token')) {
+        const doctype = localStorage.getItem("doctype");
+        if( doctype == "1" ) {
+            navigate('/md-dashboard');
+          } else {
+            navigate("/od-dashboard");
+          }
+    }
     }
   })
 

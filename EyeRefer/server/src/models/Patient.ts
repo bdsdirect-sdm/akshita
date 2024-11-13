@@ -3,17 +3,28 @@ import sequelize from "../config/db";
 import { v4 as UUIDV4 } from "uuid";
 import Address from "./Address";
 import User from "./User";
+import Appointment from "./Appointment";
 
 class Patient extends Model{
     public uuid!: number;
+    public dob!: Date;
+    public email!: string;
+    public phone!: string;
     public firstname!: string;
     public lastname!: string;
+    public gender!: ["Male", "Female", "Other"];
     public disease!: string;
-    public referedby!: string;
+    public laterality!: ["Left", "Right"];
+    public referback!: boolean;
+    public timing!: string;
     public referedto!: string;
-    public referalstatus!: boolean;
-    public referback!: boolean
     public address!: string;
+    public insurance!: string;
+    public insuranceplan!: string;
+    public medicaldocs!: string;
+    public note!: string;
+    public referedby!: string;
+    public referalstatus!: boolean;
 }
 
 Patient.init({

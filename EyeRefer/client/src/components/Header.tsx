@@ -5,6 +5,7 @@ import logo from '../Assets/title_logo.webp';
 const Header: React.FC = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
+    const name = localStorage.getItem("name");
     const [isDropdownOpen, setDropdownOpen] = useState(false); 
 
     const toggleDropdown = () => {
@@ -33,7 +34,7 @@ const Header: React.FC = () => {
                                         // className="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded inline-flex items-center"
                                         onClick={toggleDropdown} 
                                     >
-                                        <span className='text-xl'>Hi, Doctor!</span>
+                                        <span className='text-xl'>Hi, {name}!</span>
                                         <p className='text-gray-500 text-sm font-light'>Welcome back</p>
                                     </button>
                                     {isDropdownOpen && ( 

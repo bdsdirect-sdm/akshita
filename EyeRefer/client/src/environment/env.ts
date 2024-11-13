@@ -6,8 +6,10 @@ interface config{
     GET_USER: string;
     GET_DOC_LIST: string;
     GET_PATIENT_LIST: string;
-    ADD_PATIENT: string
-    ADD_ADDRESS: string
+    ADD_PATIENT: string;
+    ADD_ADDRESS: string;
+    ADD_APPOINTMENT: string
+    GET_REFERRED_PATIENT_LIST: string;
 }
 
 export const Local:config = {
@@ -19,5 +21,7 @@ export const Local:config = {
     GET_DOC_LIST: import.meta.env.VITE_GET_DOC_LIST,
     GET_PATIENT_LIST: import.meta.env.VITE_GET_PATIENT_LIST,
     ADD_PATIENT: import.meta.env.VITE_ADD_PATIENT,
-    ADD_ADDRESS: import.meta.env.VITE_ADD_ADDRESS
+    ADD_ADDRESS: import.meta.env.VITE_ADD_ADDRESS,
+    ADD_APPOINTMENT: import.meta.env.VITE_ADD_APPOINTMENT,
+    GET_REFERRED_PATIENT_LIST: import.meta.env.VITE_GET_REFERRED_PATIENT_LIST
 }

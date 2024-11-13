@@ -7,6 +7,7 @@ import { Response } from 'express';
 import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
 import bcrypt from 'bcrypt';
+import Appointment from "../models/Appointment";
 
 const Security_Key:any = Local.SECRET_KEY;
 
@@ -213,7 +214,7 @@ export const addPatient = async(req:any, res:Response) => {
 export const addAddress = async(req:any, res:Response) => {
     try{
         const {uuid} = req.user;
-        const user = await User.findOne({where:{uuid:uuid}});
+        const user = await User.findOne({where:{uuid:uuid}});  //find current doc
         if(user){
             const {street, district, city, state, pincode, phone} = req.body;
             const address = await Address.create({street, district, city, state, pincode, phone, user:uuid});
@@ -230,5 +231,41 @@ export const addAddress = async(req:any, res:Response) => {
     }
     catch(err){
         res.status(500).json({"message":`${err}`});
+    }
+}
+
+export const dashboardData = () => {
+    const referralCount = Patient.count();
+    const referralCompletedCount = Patient.findAll({ where: { status: "completed" }})
+    const docCount = User.count();
+} 
+
+export const getReferredPatients = async (req: any, res: any) => {
+    try {
+        const {uuid} = req.user;
+        const user = await User.findOne({where:{uuid:uuid}});  //finds current doc
+        const patients = await Patient.findAll({where: {referedto: uuid}});  //gets all patients referred to current doc
+        // console.log("USERRRRRRRRR", patients)
+        res.status(200).json({"patientList":patients, "message":"Patient List Found"});
+    } catch (err) {
+        res.status(500).json({message: "internal server error", err});
+    }
+}
+
+export const addAppointments = async (req: any, res: any) => {
+    try {
+        const {uuid} = req.user;
+        const user = await User.findOne({where:{uuid:uuid}});
+        const {name, date, type, notes} = req.body;
+        // console.log("REQ:::::::::::::::",req.body)
+        const appointment = await Appointment.create({name, date, type, notes});
+        if(appointment) {
+            res.status(200).json({message: "Appointment added successfully."})
+        }
+        else {
+            res.status(400).json({message: "Error in saving appointment."})
+        }
+    } catch (err) {
+        res.status(500).json({message: "internal server error", err});
     }
 }

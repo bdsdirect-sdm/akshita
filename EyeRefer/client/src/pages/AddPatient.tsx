@@ -20,7 +20,14 @@ const AddPatient: React.FC = () => {
         }
       });
       toast.success("Patient referred successfully");
-      navigate('/dashboard');
+      if (localStorage.getItem('token')) {
+        const doctype = localStorage.getItem("doctype");
+        if( doctype == "1" ) {
+            navigate('/md-dashboard');
+          } else {
+            navigate("/od-dashboard");
+          }
+    }
       return;
     } catch (err: any) {
       toast.error(`${err.response?.data?.message || 'Error occurred'}`);
@@ -30,7 +37,7 @@ const AddPatient: React.FC = () => {
 
   useEffect(() => {
     if (!token) navigate('/login');
-    if (localStorage.getItem("doctype") === '1') navigate('/dashboard');
+    if (localStorage.getItem("doctype") === '1') navigate('/md-dashboard');
   }, [navigate, token]);
 
   const fetchDocs = async () => {

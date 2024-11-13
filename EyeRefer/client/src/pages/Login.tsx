@@ -8,14 +8,21 @@ import api from '../api/axiosInstance';
 import * as Yup from 'yup';
 import Footer from '../components/Footer';
 import logo from "../Assets/title_logo.webp";
+import ODDashboard from './ODDashboard';
+import MDDashboard from './MDDashboard';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      navigate('/dashboard');
-    }
+      const doctype = localStorage.getItem("doctype");
+      if( doctype == "1" ) {
+          navigate('/md-dashboard');
+        } else {
+          navigate("/od-dashboard");
+        }
+  }
   }, []);
 
   const authUser = async (loginData: any) => {
@@ -24,11 +31,18 @@ const Login: React.FC = () => {
       console.log("Hello", response);
       if (response.status === 200) {
         if (response.data.user.is_verified) {
-          localStorage.setItem("doctype", response.data.user.doctype);
+          const doctype = response.data.user.doctype;
+          localStorage.setItem("doctype", doctype);
           localStorage.setItem("token", response.data.token);
+          localStorage.setItem("name", response.data.user.firstname + " " + response.data.user.lastname);
           
           toast.success("Login Successfully");
-          navigate('/dashboard');
+          if( doctype == 1 ) {
+            navigate('/md-dashboard');
+          } else {
+            navigate("/od-dashboard");
+          }
+          
         } else {
           localStorage.setItem("email", response?.data?.user?.email);
           localStorage.setItem("OTP", response.data.OTP);
