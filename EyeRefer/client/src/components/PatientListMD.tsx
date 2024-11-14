@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const PatientList:React.FC = () => {
+const PatientListMD: React.FC = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -61,12 +61,17 @@ const PatientList:React.FC = () => {
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Patient Name</th>
-      <th scope="col">Disease</th>
-      <th scope="col">Refer by</th>
-      <th scope="col">Refer to</th>
-      <th scope="col">Refer back</th>
+      <th scope="col">Patient name</th>
+      <th scope="col">DOB</th>
+      <th scope="col">Referred on</th>
+      <th scope="col">Referred by</th>
+      <th scope="col">Consultation date</th>
+      <th scope="col">Surgery date</th>
       <th scope="col">Status</th>
+      <th scope="col">Return to referrer</th>
+      <th scope="col">Consult note</th>
+      <th scope="col">Direct message</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -75,11 +80,16 @@ const PatientList:React.FC = () => {
       <tr>
         <td className='fw-bold' > {index+1} </td>
         <td>{patient.firstname} {patient.lastname}</td>
-        <td> {patient.disease} </td>
+        <td> {patient.dob} </td>
+        <td></td>
         <td> {patient.referedby.firstname} {patient.referedby.lastname} </td>
-        <td> {patient.referedto.firstname} {patient.referedto.lastname} </td>
-        <td> {patient.referback && ("yes")} {patient.referback==false && ("No")} </td>
+        <td></td>
+        <td></td>
         <td> {patient.referalstatus && ("Completed")} {patient.referalstatus==false && ("Pending")} </td>
+        <td> {patient.referback && ("yes")} {patient.referback==false && ("No")} </td>
+        <td></td>
+        <td></td>
+        <td></td>
       </tr>
       </>
     ))}
@@ -91,4 +101,6 @@ const PatientList:React.FC = () => {
   )
 }
 
-export default PatientList
+export default PatientListMD
+
+//for consultation date, search for current patient in appointment table

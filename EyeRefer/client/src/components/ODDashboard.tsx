@@ -3,10 +3,8 @@ import { Local } from '../environment/env';
 import api from '../api/axiosInstance';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import { Navbar } from '../components/Navbar';
-import PatientList from './PatientList';
 import ReferralComponents from '../components/ReferralComponents';
+import PatientListOD from './PatientListOD';
 
 const ODDashboard: React.FC = () => {
     const navigate = useNavigate();
@@ -66,7 +64,7 @@ const ODDashboard: React.FC = () => {
                     
                     <h1 className="text-2xl font-bold mb-4">Referral Patients</h1>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={() => {navigate("/add-patient")}}>Add Referral Patient</button>
-                    <PatientList />
+                    <PatientListOD />
                 </div>
         </>
     );

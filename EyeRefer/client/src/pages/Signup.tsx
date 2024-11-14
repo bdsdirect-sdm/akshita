@@ -16,11 +16,7 @@ const Signup: React.FC = () => {
     useEffect(() => {
         if (localStorage.getItem('token')) {
             const doctype = localStorage.getItem("doctype");
-            if( doctype == "1" ) {
-                navigate('/md-dashboard');
-              } else {
-                navigate("/od-dashboard");
-              }
+            navigate("/dashboard");
         }
     }, [navigate]);
     console.log("USERRRRRRRR============>", dt);

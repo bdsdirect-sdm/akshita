@@ -38,11 +38,7 @@ const AddAppointment:React.FC = () => {
       toast.success("Appointment Saved");
       if (localStorage.getItem('token')) {
         const doctype = localStorage.getItem("doctype");
-        if( doctype == "1" ) {
-            navigate('/md-dashboard');
-          } else {
-            navigate("/od-dashboard");
-          }
+        navigate("/dashboard");
     }
     }
   })
@@ -71,6 +67,7 @@ const AddAppointment:React.FC = () => {
   })
 
   const appointmentHandler = (values:any) =>{
+    console.log("USERRRRRRRR", values)
     appointmentMutation.mutate(values);
     console.log("Appointment Saved------->", appointmentMutation.data);
   }
@@ -95,25 +92,25 @@ const AddAppointment:React.FC = () => {
   return (
     <Formik
     initialValues={{
-      name: "",
+      patient: "",
       date: "",
       type: "",
       notes: "",
       }}
       validationSchema={validationSchema}
-      onSubmit={appointmentHandler}
+      onSubmit={(values) => {appointmentHandler(values)}}
     >
       {()=>(
               <Form>
                 <div className="form-group"> 
                   <label>Patient Name</label>
-                  <Field as='select' name='name' className='form-select'>
+                  <Field as='select' name='patient' className='form-select'>
                 <option value="" disabled>Select</option>
                 {ReferredPatients?.patientList.map((ref: any) => (
-                  <option key={ref.uuid} value={ref.firstname+" "+ref.lastname}>{ref.firstname} {ref.lastname}</option>
+                  <option key={ref.uuid} value={ref.uuid}>{ref.firstname} {ref.lastname}</option>
                 ))}
               </Field>
-                  <ErrorMessage name="name" component="div" className="text-danger"/>
+                  <ErrorMessage name="patient" component="div" className="text-danger"/>
                 </div>
                 <br />
 

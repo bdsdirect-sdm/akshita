@@ -1,15 +1,10 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-export const Navbar = () => {
+const Navbar = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const doctype: any = localStorage.getItem("doctype");
-    if( doctype == "1" ) {
-        const dt: string = "md";
-    } else {
-        const dt: string = "od";
-    }
 
     const handleLogout = () => {
         localStorage.clear();
@@ -21,17 +16,9 @@ export const Navbar = () => {
             <ul className="flex flex-col space-y-2"> 
                 {token && (
                     <>
-                        {doctype == 1 ? (
-                            <li>
-                                <Link to="/md-dashboard" className="nav-link hover:text-teal-400 rounded px-3 py-2">Dashboard</Link>
-                            </li>
-                        ):
-                        (
-                            <li>
-                                <Link to="/od-dashboard" className="nav-link hover:text-teal-400 rounded px-3 py-2">Dashboard</Link>
-                            </li> 
-                        )
-                        }
+                        <li>
+                            <Link to="/dashboard" className="nav-link hover:text-teal-400 rounded px-3 py-2">Dashboard</Link>
+                        </li>
                         <li>
                             <Link to="/patient" className="nav-link hover:text-teal-400 rounded px-3 py-2">Patient</Link>
                         </li>
@@ -62,3 +49,5 @@ export const Navbar = () => {
         </nav>
     );
 }
+
+export default Navbar;

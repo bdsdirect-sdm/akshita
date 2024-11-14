@@ -8,8 +8,6 @@ import api from '../api/axiosInstance';
 import * as Yup from 'yup';
 import Footer from '../components/Footer';
 import logo from "../Assets/title_logo.webp";
-import ODDashboard from './ODDashboard';
-import MDDashboard from './MDDashboard';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -17,11 +15,7 @@ const Login: React.FC = () => {
   useEffect(() => {
     if (localStorage.getItem('token')) {
       const doctype = localStorage.getItem("doctype");
-      if( doctype == "1" ) {
-          navigate('/md-dashboard');
-        } else {
-          navigate("/od-dashboard");
-        }
+      navigate("/dashboard");
   }
   }, []);
 
@@ -37,17 +31,13 @@ const Login: React.FC = () => {
           localStorage.setItem("name", response.data.user.firstname + " " + response.data.user.lastname);
           
           toast.success("Login Successfully");
-          if( doctype == 1 ) {
-            navigate('/md-dashboard');
-          } else {
-            navigate("/od-dashboard");
-          }
+          navigate("/dashboard");
           
         } else {
           localStorage.setItem("email", response?.data?.user?.email);
           localStorage.setItem("OTP", response.data.OTP);
           toast.warn("User not Verified");
-          navigate("/Verify");
+          navigate("/verify");
         }
         return response;
       }

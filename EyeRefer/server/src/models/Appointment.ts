@@ -19,10 +19,7 @@ Appointment.init({
         primaryKey: true,
         allowNull: false
     },
-    patientId: {
-        type: DataTypes.UUID,
-    },
-    name: {
+    patient: {
         type: DataTypes.STRING,
     },
     date: {

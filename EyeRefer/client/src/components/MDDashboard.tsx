@@ -3,10 +3,9 @@ import { Local } from '../environment/env';
 import api from '../api/axiosInstance';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import { Navbar } from '../components/Navbar';
 import PatientList from './PatientList';
 import ReferralComponents from '../components/ReferralComponents';
+import PatientListMD from './PatientListMD';
 
 const MDDashboard: React.FC = () => {
     const navigate = useNavigate();
@@ -54,10 +53,6 @@ const MDDashboard: React.FC = () => {
 
     return (
         <>
-            <Header />
-            <div className="flex h-screen">
-                <Navbar />
-
                 <div className="flex-grow p-4 bg-gray-100">
                     <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
                     <ReferralComponents 
@@ -69,9 +64,8 @@ const MDDashboard: React.FC = () => {
                     
                     <h1 className="text-2xl font-bold mb-4">Referral Patients</h1>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={() => {navigate("/add-appointment")}}>Add Appointment +</button> 
-                    <PatientList />
+                    <PatientListMD />
                 </div>
-            </div>
         </>
     );
 };

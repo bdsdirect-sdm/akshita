@@ -5,6 +5,9 @@ const Profile:React.FC = () => {
   const navigate = useNavigate();
   return (
     <>
+    <div>
+
+    </div>
       <button onClick={() => {navigate("/add-address")}}>Add address</button>
     </>
   )

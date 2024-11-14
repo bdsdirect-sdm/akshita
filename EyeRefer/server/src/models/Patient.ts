@@ -3,7 +3,6 @@ import sequelize from "../config/db";
 import { v4 as UUIDV4 } from "uuid";
 import Address from "./Address";
 import User from "./User";
-import Appointment from "./Appointment";
 
 class Patient extends Model{
     public uuid!: number;
@@ -19,8 +18,6 @@ class Patient extends Model{
     public timing!: string;
     public referedto!: string;
     public address!: string;
-    public insurance!: string;
-    public insuranceplan!: string;
     public medicaldocs!: string;
     public note!: string;
     public referedby!: string;
@@ -46,15 +43,32 @@ Patient.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    laterality:{
+        type: DataTypes.ENUM,
+        values: ["Left", "Right"],
+        allowNull: false
+    },
+    timing:{
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    referback:{
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    medicaldocs:{
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    notes:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     referalstatus:{
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue:false
     },
-    referback:{
-        type: DataTypes.BOOLEAN,
-        allowNull: false
-    }
 },{
     sequelize,
     modelName:'Patient'

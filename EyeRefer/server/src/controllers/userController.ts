@@ -117,7 +117,6 @@ export const getUser = async (req:any, res:Response) => {
 
 export const getDocList = async(req:any, res:Response) => {
     try{
-        console.log("11111111111111");
         const {uuid} = req.user;
         const user = await User.findOne({where:{uuid:uuid}})
         let docList;
@@ -128,7 +127,7 @@ export const getDocList = async(req:any, res:Response) => {
             docList = await User.findAll({ where: { doctype:1, uuid: {[Op.ne]: uuid} }, include:Address });
         }
         if(docList){
-            console.log("\n\nBoom", docList, "\n");
+            // console.log("\n\nBoom", docList, "\n");
             res.status(200).json({"docList":docList, "message":"Docs List Found"});
         }
         else{
@@ -174,7 +173,7 @@ export const getPatientList = async(req:any, res:Response) => {
                     plist.push(newPatientList);
                 }
                 
-                console.log("Data----->", plist);
+                // console.log("Data----->", plist);
                 res.status(200).json({"patientList":plist, "message":"Patient List Found"});
             }
             else{
@@ -195,9 +194,35 @@ export const addPatient = async(req:any, res:Response) => {
         const {uuid} = req.user;
         const user = await User.findOne({where:{uuid:uuid}});
         if(user){
-            const {firstname, lastname, disease, address, referedto, referback } = req.body;
-
-            const patient = await Patient.create({ firstname, lastname, disease, address, referedto, referback, referedby:uuid });
+            const {dob,
+                email,
+                phone,
+                firstname,
+                lastname,
+                gender,
+                disease,
+                laterality,
+                referback,
+                timing,
+                referedto,
+                address,
+                notes} = req.body;
+            const  medicaldocs  = req.file.path;
+            // console.log("USERRRRRR", req.body)
+            // console.log("USERRRRRR", req.file)
+            const patient = await Patient.create({ dob,
+                email,
+                phone,
+                firstname,
+                lastname,
+                gender,
+                disease,
+                laterality,
+                referback,
+                timing,
+                referedto,
+                address,
+                notes, referedby:uuid, medicaldocs });
             if(patient){
                 res.status(200).json({"message": "Patient added Successfully"});
             }
@@ -256,9 +281,9 @@ export const addAppointments = async (req: any, res: any) => {
     try {
         const {uuid} = req.user;
         const user = await User.findOne({where:{uuid:uuid}});
-        const {name, date, type, notes} = req.body;
-        // console.log("REQ:::::::::::::::",req.body)
-        const appointment = await Appointment.create({name, date, type, notes});
+        const {patient, date, type, notes} = req.body;
+        console.log("REQ:::::::::::::::",req.body)
+        const appointment = await Appointment.create({patient, date, type, notes, });
         if(appointment) {
             res.status(200).json({message: "Appointment added successfully."})
         }
@@ -268,4 +293,8 @@ export const addAppointments = async (req: any, res: any) => {
     } catch (err) {
         res.status(500).json({message: "internal server error", err});
     }
+}
+
+export const viewAppointments = async(req: any, res: any) => {
+
 }

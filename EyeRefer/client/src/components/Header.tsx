@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 import logo from '../Assets/title_logo.webp';
 
 const Header: React.FC = () => {
@@ -66,8 +66,6 @@ const Header: React.FC = () => {
                     </div>
                 </div>
             </header>
-            <br />
-            <Outlet />
         </>
     );
 }
