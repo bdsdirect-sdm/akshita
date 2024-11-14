@@ -45,7 +45,7 @@ Patient.init({
     },
     laterality:{
         type: DataTypes.ENUM,
-        values: ["Left", "Right"],
+        values: ["Left", "Right", "Both"],
         allowNull: false
     },
     timing:{
@@ -68,6 +68,15 @@ Patient.init({
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue:false
+    },
+    dob:{
+        type: DataTypes.DATEONLY,
+        allowNull: true
+    },
+    gender:{
+        type: DataTypes.ENUM,
+        values: ["Male", "Female", "Others"],
+        allowNull: false
     },
 },{
     sequelize,

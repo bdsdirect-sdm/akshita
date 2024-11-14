@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const PatientListOD: React.FC = () => {
+const ViewAppointments: React.FC = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -15,9 +15,23 @@ const PatientListOD: React.FC = () => {
     }
   },[])
 
-  const fetchPatient = async() => {
+  async function updateStatus(){
+    try {
+      const response = await api.post(`${Local.UPDATE_APPOINTMENT_STATUS}`, {status },
+        {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (err) {
+      toast.error(`${err}`);
+    }
+  }
+
+  const fetchAppointments = async() => {
     try{
-      const response = await api.get(`${Local.GET_PATIENT_LIST}`, {
+      const response = await api.get(`${Local.VIEW_APPOINTMENTS}`, {
         headers:{
           Authorization: `Bearer ${token}`
         }
@@ -29,9 +43,9 @@ const PatientListOD: React.FC = () => {
     }
   }
  
-  const { data: Patients, error, isLoading, isError } = useQuery({
-    queryKey: ['patient'],
-    queryFn: fetchPatient
+  const { data: Appointments, error, isLoading, isError } = useQuery({
+    queryKey: ['appointment'],
+    queryFn: fetchAppointments
   })
 
   if(isLoading){
@@ -51,7 +65,7 @@ const PatientListOD: React.FC = () => {
       </>
       )}
 
-  console.log("Patient-List------------>", Patients);
+  console.log("Appointment-List------------>", Appointments);
   return (
     <>
     <div>
@@ -60,35 +74,32 @@ const PatientListOD: React.FC = () => {
       <table className="table my-4">
   <thead>
     <tr>
-    <th scope="col">#</th>
+      <th scope="col">#</th>
       <th scope="col">Patient name</th>
-      <th scope="col">DOB</th>
-      <th scope="col">Referred on</th>
-      <th scope="col">Referred to</th>
-      <th scope="col">Consultation date</th>
-      <th scope="col">Surgery date</th>
+      <th scope="col">Date</th>
+      <th scope="col">Type</th>
       <th scope="col">Status</th>
-      <th scope="col">Return to referrer</th>
-      <th scope="col">Consult note</th>
-      <th scope="col">Direct message</th>
+      <th scope="col">Complete appointment</th>
+      <th scope="col">Cancel appointment</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
-    {Patients.patientList.map((patient: any, index: number) =>(
+    {Appointments.appointmentList.map((appointment: any, index: number) =>(
       <>
       <tr>
         <td className='fw-bold' > {index+1} </td>
-        <td>{patient.firstname} {patient.lastname}</td>
-        <td> {patient.dob} </td>
-        <td></td>
-        <td>{patient.referedto.firstname} {patient.referedto.lastname}</td>
-        <td></td>
-        <td></td>
-        <td> {patient.referalstatus && ("Completed")} {patient.referalstatus==false && ("Pending")} </td>
-        <td> {patient.referback && ("yes")} {patient.referback==false && ("No")} </td>
-        <td></td>
-        <td></td>
+        <td>{appointment.name}</td>
+        <td> {appointment.date} </td>
+        <td>{appointment.type}</td>
+        <td> {appointment.status}</td>
+        
+        <td>
+          <button className='text-green-700' onClick={updateStatus}> Complete </button>
+        </td>
+        <td>
+          <button className='text-red-700' onClick={updateStatus}> Cancel </button>
+        </td>
         <td></td>
       </tr>
       </>
@@ -101,4 +112,4 @@ const PatientListOD: React.FC = () => {
   )
 }
 
-export default PatientListOD
+export default ViewAppointments

@@ -2,9 +2,8 @@ import react from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import PatientList from './components/PatientList';
 import AddPatient from './pages/AddPatient';
-import DoctorList from './tempPages/DoctorList';
+import DoctorList from './pages/DoctorList';
 import StaffList from './tempPages/StaffList';
 import AddStaff from './tempPages/AddStaff';
 import Signup from './pages/Signup'
@@ -16,6 +15,9 @@ import AddAppointment from './pages/AddAppointment';
 import Dashboard from './pages/Dashboard';
 import Layout from './pages/Layout';
 import Chat from './tempPages/Chat';
+import PatientListOD from './components/PatientListOD';
+import PatientListMD from './components/PatientListMD';
+import ViewAppointments from './pages/ViewAppointments';
 
 const  App:react.FC = () => {
 
@@ -29,8 +31,12 @@ const  App:react.FC = () => {
           element: <Dashboard />
         },
         {
-          path: '/patient',
-          element: <PatientList />
+          path: '/patient-od',
+          element: <PatientListOD />
+        },
+        {
+          path: '/patient-md',
+          element: <PatientListMD />
         },
         {
           path: '/add-patient',
@@ -63,6 +69,14 @@ const  App:react.FC = () => {
         {
           path: '/chat',
           element: <Chat />
+        },
+        {
+          path: '/view-appointments',
+          element: <ViewAppointments />
+        },
+        {
+          path: '/view-doctors',
+          element: <DoctorList />
         },
       ]
     },

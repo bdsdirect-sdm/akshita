@@ -156,6 +156,9 @@ export const getPatientList = async(req:any, res:Response) => {
                         Address.findOne({ where: { uuid: patient.address } }),
                     ]);
 
+                    const appointment = await Appointment.findOne({ where: {patient: patient.uuid}});
+                    console.log("APPOINTMENT:::::::::", appointment)
+
                     const newPatientList: any = {
                         uuid: patient.uuid,
                         firstname: patient.firstname,
@@ -163,11 +166,15 @@ export const getPatientList = async(req:any, res:Response) => {
                         disease: patient.disease,
                         referalstatus: patient.referalstatus,
                         referback: patient.referback,
-                        createdAt: patient.createdAt,
+                        referedon: patient.createdAt,
                         updatedAt: patient.updatedAt,
                         referedto: referedtoUser,
                         referedby: referedbyUser,
                         address: address,
+                        dob: patient.dob,
+                        appointmentDate: appointment?.date,
+                        notes: appointment?.notes,
+                        appointmentType: appointment?.type
                     };
 
                     plist.push(newPatientList);
@@ -208,7 +215,7 @@ export const addPatient = async(req:any, res:Response) => {
                 address,
                 notes} = req.body;
             const  medicaldocs  = req.file.path;
-            // console.log("USERRRRRR", req.body)
+            console.log("USERRRRRR", req.body.dob)
             // console.log("USERRRRRR", req.file)
             const patient = await Patient.create({ dob,
                 email,
@@ -261,7 +268,7 @@ export const addAddress = async(req:any, res:Response) => {
 
 export const dashboardData = () => {
     const referralCount = Patient.count();
-    const referralCompletedCount = Patient.findAll({ where: { status: "completed" }})
+    const referralCompletedCount = Appointment.findAll({ where: { status: "completed" }})
     const docCount = User.count();
 } 
 
@@ -280,10 +287,10 @@ export const getReferredPatients = async (req: any, res: any) => {
 export const addAppointments = async (req: any, res: any) => {
     try {
         const {uuid} = req.user;
-        const user = await User.findOne({where:{uuid:uuid}});
+        const user = uuid;
         const {patient, date, type, notes} = req.body;
-        console.log("REQ:::::::::::::::",req.body)
-        const appointment = await Appointment.create({patient, date, type, notes, });
+        // console.log("REQ:::::::::::::::",req.body)
+        const appointment = await Appointment.create({patient, date, type, notes, user, status: "Scheduled"});
         if(appointment) {
             res.status(200).json({message: "Appointment added successfully."})
         }
@@ -296,5 +303,32 @@ export const addAppointments = async (req: any, res: any) => {
 }
 
 export const viewAppointments = async(req: any, res: any) => {
+    try {
+        const uuid = req.user.uuid;  //current doc id
+        const appointmentList = await Appointment.findAll({where: {user: uuid}});
+        const apList = [];
+        for(const appointment of appointmentList) {
+            const patient = await Patient.findOne({where: {uuid: appointment.patient}})
+            const newAppointmentList = {
+                name: patient?.firstname + " " + patient?.lastname,
+                date: appointment.date,
+                type: appointment.type,
+                status: appointment.status,
+            }
+            apList.push(newAppointmentList);
+        }
+        
+        res.status(200).json({"appointmentList": apList, "message":"Appointment List Found"});
+    } catch (err) {
+        res.status(500).json({message: "Internal server error", err});
+    }
+}
 
+export const updateAppointmentStatus = async (req: any, res: any) => {
+    try {
+        const { status, uuid } = req.body;
+        const appointment = await Appointment.findOne()
+    } catch (err) {
+        res.status(500).json({message: "Internal server error", err});
+    }
 }

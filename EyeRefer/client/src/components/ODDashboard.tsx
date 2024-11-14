@@ -53,7 +53,7 @@ const ODDashboard: React.FC = () => {
     return (
         <>
 
-                <div className="flex-grow p-4 bg-gray-100">
+                <div className="flex-grow p-4 bg-gray-300">
                     <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
                     <ReferralComponents 
                         // referralCount={data.referralCount}
@@ -64,7 +64,7 @@ const ODDashboard: React.FC = () => {
                     
                     <h1 className="text-2xl font-bold mb-4">Referral Patients</h1>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={() => {navigate("/add-patient")}}>Add Referral Patient</button>
-                    <PatientListOD />
+                    <PatientListOD/>
                 </div>
         </>
     );

@@ -57,7 +57,7 @@ const PatientListMD: React.FC = () => {
     <div>
       <div></div>
       <div>
-      <table className="table">
+      <table className="table my-4">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -75,19 +75,29 @@ const PatientListMD: React.FC = () => {
     </tr>
   </thead>
   <tbody>
-    {Patients.patientList.map((patient:any,index:number) =>(
+    {Patients.patientList.map((patient: any, index: number) =>(
       <>
       <tr>
         <td className='fw-bold' > {index+1} </td>
         <td>{patient.firstname} {patient.lastname}</td>
         <td> {patient.dob} </td>
-        <td></td>
+        <td>{patient.referedon}</td>
         <td> {patient.referedby.firstname} {patient.referedby.lastname} </td>
-        <td></td>
-        <td></td>
+        {patient.appointmentType === "consultation" ? (
+          <>
+            <td>{patient.appointmentDate}</td>
+            <td></td>
+          </>
+        ): (
+          <>
+            <td></td>
+            <td>{patient.appointmentDate}</td>
+          </>
+        )}
+        
         <td> {patient.referalstatus && ("Completed")} {patient.referalstatus==false && ("Pending")} </td>
         <td> {patient.referback && ("yes")} {patient.referback==false && ("No")} </td>
-        <td></td>
+        <td> {patient.notes}</td>
         <td></td>
         <td></td>
       </tr>

@@ -6,10 +6,12 @@ import Patient from "./Patient";
 
 class Appointment extends Model{
     public uuid!: number;
-    public name!: string;
+    public patient!: string;
+    public user!: string;
     public date!: Date;
     public type!: string;
     public notes!: string;
+    public status!: string
 }
 
 Appointment.init({
@@ -30,6 +32,9 @@ Appointment.init({
         values: ["consultation", "surgery"]
     },
     notes:{
+        type: DataTypes.STRING,
+    },
+    status:{
         type: DataTypes.STRING,
     }
 },{

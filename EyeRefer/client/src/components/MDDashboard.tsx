@@ -3,7 +3,6 @@ import { Local } from '../environment/env';
 import api from '../api/axiosInstance';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PatientList from './PatientList';
 import ReferralComponents from '../components/ReferralComponents';
 import PatientListMD from './PatientListMD';
 
@@ -53,7 +52,7 @@ const MDDashboard: React.FC = () => {
 
     return (
         <>
-                <div className="flex-grow p-4 bg-gray-100">
+                <div className="flex-grow p-4 bg-gray-300">
                     <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
                     <ReferralComponents 
                         // referralCount={data.referralCount}
@@ -61,7 +60,6 @@ const MDDashboard: React.FC = () => {
                         // doctorCount={data.doctorCount}
                         // time={data.lastUpdate} 
                     />
-                    
                     <h1 className="text-2xl font-bold mb-4">Referral Patients</h1>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={() => {navigate("/add-appointment")}}>Add Appointment +</button> 
                     <PatientListMD />

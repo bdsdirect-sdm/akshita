@@ -4,8 +4,8 @@ import logo from '../Assets/title_logo.webp';
 // const ReferralComponents = ({ "referralCount", referralCompleteCount, doctorCount, time }) => {
     const ReferralComponents = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
-      <div className="flex flex-col p-6 border border-gray-200 rounded-lg shadow-md">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8 bg">
+      <div className="flex flex-col p-6 border border-gray-200 rounded-lg shadow-md bg-white">
         <div className="flex justify-between">
           <img src={logo} alt="Logo" className="w-12 h-12" />
           <p className="text-2xl font-bold">212</p>
@@ -18,7 +18,7 @@ import logo from '../Assets/title_logo.webp';
         </div>
       </div>
 
-      <div className="flex flex-col p-4 border border-gray-200 rounded-lg shadow-md">
+      <div className="flex flex-col p-4 border border-gray-200 rounded-lg shadow-md bg-white">
         <div className="flex justify-between">
           <img src={logo} alt="Logo" className="w-12 h-12" />
           <p className="text-2xl font-bold">212</p>
@@ -31,7 +31,7 @@ import logo from '../Assets/title_logo.webp';
         </div>
       </div>
 
-      <div className="flex flex-col p-4 border border-gray-200 rounded-lg shadow-md">
+      <div className="flex flex-col p-4 border border-gray-200 rounded-lg shadow-md bg-white">
         <div className="flex justify-between">
           <img src={logo} alt="Logo" className="w-12 h-12" />
           <p className="text-2xl font-bold">212</p>

@@ -5,9 +5,10 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const PatientListOD: React.FC = () => {
+const DoctorList: React.FC = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const doctype = localStorage.getItem("doctype");
 
   useEffect(()=>{
     if(!token){
@@ -15,9 +16,9 @@ const PatientListOD: React.FC = () => {
     }
   },[])
 
-  const fetchPatient = async() => {
+  const fetchDoctors = async() => {
     try{
-      const response = await api.get(`${Local.GET_PATIENT_LIST}`, {
+      const response = await api.get(`${Local.VIEW_DOCTORS}`, {
         headers:{
           Authorization: `Bearer ${token}`
         }
@@ -29,9 +30,9 @@ const PatientListOD: React.FC = () => {
     }
   }
  
-  const { data: Patients, error, isLoading, isError } = useQuery({
-    queryKey: ['patient'],
-    queryFn: fetchPatient
+  const { data: Doctors, error, isLoading, isError } = useQuery({
+    queryKey: ['doctor'],
+    queryFn: fetchDoctors
   })
 
   if(isLoading){
@@ -51,7 +52,7 @@ const PatientListOD: React.FC = () => {
       </>
       )}
 
-  console.log("Patient-List------------>", Patients);
+  console.log("Doctor-List------------>", Doctors);
   return (
     <>
     <div>
@@ -60,36 +61,33 @@ const PatientListOD: React.FC = () => {
       <table className="table my-4">
   <thead>
     <tr>
-    <th scope="col">#</th>
-      <th scope="col">Patient name</th>
-      <th scope="col">DOB</th>
-      <th scope="col">Referred on</th>
-      <th scope="col">Referred to</th>
-      <th scope="col">Consultation date</th>
-      <th scope="col">Surgery date</th>
-      <th scope="col">Status</th>
-      <th scope="col">Return to referrer</th>
-      <th scope="col">Consult note</th>
-      <th scope="col">Direct message</th>
-      <th scope="col">Actions</th>
+      <th scope="col">#</th>
+      <th scope="col">Doctor name</th>
+      <th scope="col">Referral placed</th>
+      <th scope="col">Referral completed</th>
+      <th scope="col">Avg time of contact</th>
+      <th scope="col">Avg time of consult</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+      <th scope="col">Type</th>
     </tr>
   </thead>
   <tbody>
-    {Patients.patientList.map((patient: any, index: number) =>(
+    {Doctors.docList.map((doctor: any, index: number) =>(
       <>
       <tr>
         <td className='fw-bold' > {index+1} </td>
-        <td>{patient.firstname} {patient.lastname}</td>
-        <td> {patient.dob} </td>
-        <td></td>
-        <td>{patient.referedto.firstname} {patient.referedto.lastname}</td>
-        <td></td>
-        <td></td>
-        <td> {patient.referalstatus && ("Completed")} {patient.referalstatus==false && ("Pending")} </td>
-        <td> {patient.referback && ("yes")} {patient.referback==false && ("No")} </td>
+        <td>{doctor.firstname + " " + doctor.lastname}</td>
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+        <td> {doctor.phone} </td>
+        <td>{doctor.email}</td>
+        {/* {(doctype === "2") ? (): ()} */}
+        <td> {doctor.type}</td>
+        
+        <td>{doctor.phone}</td>
       </tr>
       </>
     ))}
@@ -101,4 +99,4 @@ const PatientListOD: React.FC = () => {
   )
 }
 
-export default PatientListOD
+export default DoctorList

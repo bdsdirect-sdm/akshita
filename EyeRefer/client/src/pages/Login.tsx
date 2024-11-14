@@ -99,7 +99,7 @@ const Login: React.FC = () => {
               </Form>
             )}
           </Formik>
-          <Link to={'/'} className="block text-center mt-4 text-sm text-teal-500 hover:underline">Don't have an Account?</Link>
+          <Link to={'/signup'} className="block text-center mt-4 text-sm text-teal-500 hover:underline">Don't have an Account?</Link>
         </div>
       </div>
     </div>

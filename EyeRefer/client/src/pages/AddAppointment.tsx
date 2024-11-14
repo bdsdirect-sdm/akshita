@@ -61,13 +61,13 @@ const AddAppointment:React.FC = () => {
   });
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Patient name is required"),
-    date: Yup.string().required("Appointment date is required"),
+    patient: Yup.string().required("Patient name is required"),
+    // date: Yup.string().required("Appointment date is required"),
     type: Yup.string().required("Appointment type is required"),
   })
 
   const appointmentHandler = (values:any) =>{
-    console.log("USERRRRRRRR", values)
+    // console.log("USERRRRRRRR", values)
     appointmentMutation.mutate(values);
     console.log("Appointment Saved------->", appointmentMutation.data);
   }
@@ -93,15 +93,17 @@ const AddAppointment:React.FC = () => {
     <Formik
     initialValues={{
       patient: "",
-      date: "",
+      date: null,
       type: "",
       notes: "",
       }}
       validationSchema={validationSchema}
       onSubmit={(values) => {appointmentHandler(values)}}
+      // onSubmit={(values) => {console.log("Valuess",values)}}
     >
-      {()=>(
+      {({values, errors})=>(
               <Form>
+                {console.log(errors)}
                 <div className="form-group"> 
                   <label>Patient Name</label>
                   <Field as='select' name='patient' className='form-select'>
@@ -139,7 +141,7 @@ const AddAppointment:React.FC = () => {
                 </div>
                 <br />
 
-                <button type="submit" className='btn btn-outline-dark'>Submit</button>
+                <button type="submit" className='btn btn-outline-dark' onClick={() => {console.log(values)}}>Submit</button>
               </Form>
       )}
     </Formik>

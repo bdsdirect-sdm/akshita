@@ -12,19 +12,28 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="h-screen bg-white w-1/6 p-4 border-r-2"> 
+        <nav className=" bg-white w-1/6 p-4 border-r-2"> 
             <ul className="flex flex-col space-y-2"> 
                 {token && (
                     <>
                         <li>
                             <Link to="/dashboard" className="nav-link hover:text-teal-400 rounded px-3 py-2">Dashboard</Link>
                         </li>
-                        <li>
-                            <Link to="/patient" className="nav-link hover:text-teal-400 rounded px-3 py-2">Patient</Link>
-                        </li>
+                        {doctype == 2 ? (
+                            <li>
+                                <Link to="/patient-od" className="nav-link hover:text-teal-400 rounded px-3 py-2">Patients</Link>
+                            </li>
+                        ) : 
+                        (
+                            <li>
+                                <Link to="/patient-md" className="nav-link hover:text-teal-400 rounded px-3 py-2">Patients</Link>
+                            </li>
+                        )
+                        }
+                        
                         {doctype == 1 && (
                             <li>
-                                <Link to="/appointment" className="nav-link hover:text-teal-400 rounded px-3 py-2">Appointments</Link>
+                                <Link to="/view-appointments" className="nav-link hover:text-teal-400 rounded px-3 py-2">Appointments</Link>
                             </li>
                         )}
                         <li>
