@@ -14,7 +14,7 @@ import AddAddress from './pages/AddAddress'
 import AddAppointment from './pages/AddAppointment';
 import Dashboard from './pages/Dashboard';
 import Layout from './pages/Layout';
-import Chat from './tempPages/Chat';
+import Chat from './pages/Chat';
 import PatientListOD from './components/PatientListOD';
 import PatientListMD from './components/PatientListMD';
 import ViewAppointments from './pages/ViewAppointments';
@@ -67,7 +67,7 @@ const  App:react.FC = () => {
           element: <AddAppointment />
         },
         {
-          path: '/chat',
+          path: '/chat/:id',
           element: <Chat />
         },
         {

@@ -2,8 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { Local } from '../environment/env';
 import api from '../api/axiosInstance';
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Chat from '../pages/Chat';
+import { socket } from '../utils/socket';
 
 const PatientListMD: React.FC = () => {
   const navigate = useNavigate();
@@ -52,6 +54,13 @@ const PatientListMD: React.FC = () => {
       )}
 
   console.log("Patient-List------------>", Patients);
+
+  function joinRoom(roomId: string) {
+    if(roomId !== "") {
+      socket.emit("joinRoom", roomId);
+    }
+  }
+  
   return (
     <>
     <div>
@@ -98,7 +107,12 @@ const PatientListMD: React.FC = () => {
         <td> {patient.referalstatus && ("Completed")} {patient.referalstatus==false && ("Pending")} </td>
         <td> {patient.referback && ("yes")} {patient.referback==false && ("No")} </td>
         <td> {patient.notes}</td>
-        <td></td>
+        <td>
+          <a className="underline text-blue-700" onClick={() => {
+            localStorage.setItem("room", `${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`)
+            }} 
+            href={`${Local.BASE_URL}chat/${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`}>Link</a>
+        </td>
         <td></td>
       </tr>
       </>

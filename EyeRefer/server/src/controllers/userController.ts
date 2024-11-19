@@ -157,7 +157,7 @@ export const getPatientList = async(req:any, res:Response) => {
                     ]);
 
                     const appointment = await Appointment.findOne({ where: {patient: patient.uuid}});
-                    console.log("APPOINTMENT:::::::::", appointment)
+                    // console.log("APPOINTMENT:::::::::", appointment)
 
                     const newPatientList: any = {
                         uuid: patient.uuid,
@@ -215,7 +215,7 @@ export const addPatient = async(req:any, res:Response) => {
                 address,
                 notes} = req.body;
             const  medicaldocs  = req.file.path;
-            console.log("USERRRRRR", req.body.dob)
+            // console.log("USERRRRRR", req.body.dob)
             // console.log("USERRRRRR", req.file)
             const patient = await Patient.create({ dob,
                 email,

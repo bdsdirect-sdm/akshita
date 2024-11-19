@@ -84,10 +84,12 @@ const DoctorList: React.FC = () => {
         <td></td>
         <td> {doctor.phone} </td>
         <td>{doctor.email}</td>
-        {/* {(doctype === "2") ? (): ()} */}
-        <td> {doctor.type}</td>
+        {(doctype === "2") ? (
+          <td>OD</td>
+        ): (
+          <td>MD</td>
+        )}
         
-        <td>{doctor.phone}</td>
       </tr>
       </>
     ))}
