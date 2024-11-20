@@ -13,6 +13,7 @@ interface config{
     VIEW_APPOINTMENTS: string;
     UPDATE_APPOINTMENT_STATUS: string;
     VIEW_DOCTORS: string;
+    VIEW_PATIENT: string;
 }
 
 export const Local:config = {
@@ -30,4 +31,5 @@ export const Local:config = {
     VIEW_APPOINTMENTS: import.meta.env.VITE_VIEW_APPOINTMENTS,
     UPDATE_APPOINTMENT_STATUS: import.meta.env.VITE_UPDATE_APPOINTMENT_STATUS, 
     VIEW_DOCTORS: import.meta.env.VITE_VIEW_DOCTORS,
+    VIEW_PATIENT: import.meta.env.VITE_VIEW_PATIENT,
 }

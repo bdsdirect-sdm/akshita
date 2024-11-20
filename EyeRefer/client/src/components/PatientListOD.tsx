@@ -107,7 +107,11 @@ const PatientListOD: React.FC = () => {
             }} 
             >Link</a>
         </td>
-        <td></td>
+        <td>
+          <button onClick={() => {navigate(`/edit-patient/${patient.uuid}`)}}>Edit</button>
+          <button>Delete</button>
+          <button onClick={() => {navigate(`/view-patient/${patient.uuid}`)}}>View</button>
+        </td>
       </tr>
       </>
     ))}

@@ -18,10 +18,28 @@ import Chat from './pages/Chat';
 import PatientListOD from './components/PatientListOD';
 import PatientListMD from './components/PatientListMD';
 import ViewAppointments from './pages/ViewAppointments';
+import ViewPatient from './pages/ViewPatient';
+import EditPatient from './tempPages/EditPatient';
 
 const  App:react.FC = () => {
 
   const router = createBrowserRouter([
+    {
+      path:'/',
+      element: <Signup />
+    },
+    {
+      path:'/signup',
+      element: <Signup />
+    },
+    {
+      path: '/login',
+      element: <Login />
+    },
+    {
+      path: '/verify',
+      element: <Verify />
+    },
     {
       path:'/',
       element: <Layout/>,
@@ -78,27 +96,18 @@ const  App:react.FC = () => {
           path: '/view-doctors',
           element: <DoctorList />
         },
+        {
+          path: '/view-patient/:id',
+          element: <ViewPatient />
+        },
+        {
+          path: '/edit-patient/:id',
+          element: <EditPatient />
+        },
       ]
-    },
-    {
-      path:'/',
-      element: <Signup />
-    },
-    {
-      path:'/signup',
-      element: <Signup />
-    },
-    {
-      path: '/login',
-      element: <Login />
-    },
-    {
-      path: '/verify',
-      element: <Verify />
-    },
+    }
   ]
 )
-
   return (
 <>
 <RouterProvider router={router} />

@@ -82,7 +82,7 @@ const PatientListMD: React.FC = () => {
       <th scope="col">Consult note</th>
       <th scope="col">Direct message</th>
       <th scope="col">Actions</th>
-      <th scope="col">Actions</th>
+      {/* <th scope="col">Actions</th>
       <th scope="col">Actions</th>
       <th scope="col">Actions</th>
       <th scope="col">Surgery date</th>
@@ -93,7 +93,7 @@ const PatientListMD: React.FC = () => {
       <th scope="col">Actions</th>
       <th scope="col">Actions</th>
       <th scope="col">Actions</th>
-      <th scope="col">Actions</th>
+      <th scope="col">Actions</th> */}
     </tr>
   </thead>
   <tbody>
@@ -127,9 +127,9 @@ const PatientListMD: React.FC = () => {
             href={`${Local.BASE_URL}chat/${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`}>Link</a>
         </td>
         <td>
-          <button>Edit</button>
+          <button onClick={() => {navigate(`/edit-patient/${patient.uuid}`)}}>Edit</button>
           <button>Delete</button>
-          <button>View</button>
+          <button onClick={() => {navigate(`/view-patient/${patient.uuid}`)}}>View</button>
         </td>
       </tr>
       </>

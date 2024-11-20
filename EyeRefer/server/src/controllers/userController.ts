@@ -5,7 +5,7 @@ import sendOTP from "../utils/mailer";
 import User from "../models/User";
 import { Response } from 'express';
 import jwt from "jsonwebtoken";
-import { Op } from "sequelize";
+import { Op, where } from "sequelize";
 import bcrypt from 'bcrypt';
 import Appointment from "../models/Appointment";
 
@@ -325,7 +325,6 @@ export const viewAppointments = async(req: any, res: any) => {
     }
 }
 
-
 //tbc
 export const updateAppointmentStatus = async (req: any, res: any) => {
     try {
@@ -336,6 +335,56 @@ export const updateAppointmentStatus = async (req: any, res: any) => {
     }
 }
 
-export const deletePatient = async (req: any, res: any) => {}
-export const viewPatient = async (req: any, res: any) => {}
-export const editPatient = async (req: any, res: any) => {}
+export const deletePatient = async (req: any, res: any) => {
+    try {
+
+    } catch (err) {
+        res.status(500).json({message: "Internal server error", err})
+    }
+}
+
+export const viewPatient = async (req: any, res: any) => {
+    try {
+        const id = req.params.id;
+        const patient = await Patient.findOne({where: {uuid: id}, include: [{model: User}, {model: Address}, {model: Appointment}]});
+        res.status(200).json({"patientData":patient, "message": "Patient data received"});
+    } catch (err) {
+        res.status(500).json({message: "Internal server error", err})
+    }
+}
+
+export const editPatient = async (req: any, res: any) => {
+    try {
+        const id = req.params.id;
+        const patient = await Patient.findOne({where: {uuid: id}, include: [{model: User}, {model: Address}, {model: Appointment}]});
+
+        const {dob,
+            phone,
+            firstname,
+            lastname,
+            gender,
+            disease,
+            laterality,
+            referback,
+            timing,
+            referedto,
+            address,
+            notes} = req.body;
+        const  medicaldocs  = req.file.path;
+        const newPatient = await Patient.update({ dob,
+            phone,
+            firstname,
+            lastname,
+            gender,
+            disease,
+            laterality,
+            referback,
+            timing,
+            referedto,
+            address,
+            notes, medicaldocs }, {where: {uuid: id}});
+        res.status(200).json({"patientData":patient, "message": "Patient data received"});
+    } catch (err) {
+        res.status(500).json({message: "Internal server error", err})
+    }
+}
