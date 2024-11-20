@@ -60,8 +60,11 @@ const MDDashboard: React.FC = () => {
                         // doctorCount={data.doctorCount}
                         // time={data.lastUpdate} 
                     />
+                    <div>
                     <h1 className="text-2xl font-bold mb-4">Referral Patients</h1>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={() => {navigate("/add-appointment")}}>Add Appointment +</button> 
+                    </div>
+                    
                     <PatientListMD />
                 </div>
         </>

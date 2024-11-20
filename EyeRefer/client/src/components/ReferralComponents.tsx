@@ -1,5 +1,7 @@
 import React from 'react';
-import logo from '../Assets/title_logo.webp';
+import img1 from "../Assets/diversity_2.png"
+import img2 from "../Assets/diversity_2(1).png"
+import img3 from "../Assets/diversity_2(2).png"
 
 // const ReferralComponents = ({ "referralCount", referralCompleteCount, doctorCount, time }) => {
     const ReferralComponents = () => {
@@ -7,7 +9,7 @@ import logo from '../Assets/title_logo.webp';
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8 bg">
       <div className="flex flex-col p-6 border border-gray-200 rounded-lg shadow-md bg-white">
         <div className="flex justify-between">
-          <img src={logo} alt="Logo" className="w-12 h-12" />
+          <img src={img1} alt="Logo" className="w-12 h-12" />
           <p className="text-2xl font-bold">212</p>
         </div>
         {/* <p className="text-2xl font-bold">{referralCount}</p>
@@ -20,7 +22,7 @@ import logo from '../Assets/title_logo.webp';
 
       <div className="flex flex-col p-4 border border-gray-200 rounded-lg shadow-md bg-white">
         <div className="flex justify-between">
-          <img src={logo} alt="Logo" className="w-12 h-12" />
+          <img src={img2} alt="Logo" className="w-12 h-12" />
           <p className="text-2xl font-bold">212</p>
         </div>
         {/* <p className="text-2xl font-bold">{referralCompleteCount}</p>
@@ -33,7 +35,7 @@ import logo from '../Assets/title_logo.webp';
 
       <div className="flex flex-col p-4 border border-gray-200 rounded-lg shadow-md bg-white">
         <div className="flex justify-between">
-          <img src={logo} alt="Logo" className="w-12 h-12" />
+          <img src={img3} alt="Logo" className="w-12 h-12" />
           <p className="text-2xl font-bold">212</p>
         </div>
         {/* <p className="text-2xl font-bold">{doctorCount}</p>

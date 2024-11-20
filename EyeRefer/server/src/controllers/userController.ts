@@ -127,11 +127,10 @@ export const getDocList = async(req:any, res:Response) => {
             docList = await User.findAll({ where: { doctype:1, uuid: {[Op.ne]: uuid} }, include:Address });
         }
         if(docList){
-            // console.log("\n\nBoom", docList, "\n");
-            res.status(200).json({"docList":docList, "message":"Docs List Found"});
+            res.status(200).json({"docList":docList, "message": "Docs List Found"});
         }
         else{
-            res.status(404).json({"message":"MD List Not Found"});
+            res.status(404).json({"message": "MD List Not Found"});
         }
     }
     catch(err){
@@ -243,6 +242,7 @@ export const addPatient = async(req:any, res:Response) => {
     }
 }
 
+//tbc
 export const addAddress = async(req:any, res:Response) => {
     try{
         const {uuid} = req.user;
@@ -266,6 +266,7 @@ export const addAddress = async(req:any, res:Response) => {
     }
 }
 
+//tbc
 export const dashboardData = () => {
     const referralCount = Patient.count();
     const referralCompletedCount = Appointment.findAll({ where: { status: "completed" }})
@@ -324,6 +325,8 @@ export const viewAppointments = async(req: any, res: any) => {
     }
 }
 
+
+//tbc
 export const updateAppointmentStatus = async (req: any, res: any) => {
     try {
         const { status, uuid } = req.body;
@@ -332,3 +335,7 @@ export const updateAppointmentStatus = async (req: any, res: any) => {
         res.status(500).json({message: "Internal server error", err});
     }
 }
+
+export const deletePatient = async (req: any, res: any) => {}
+export const viewPatient = async (req: any, res: any) => {}
+export const editPatient = async (req: any, res: any) => {}

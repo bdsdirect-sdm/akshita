@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {Link, useNavigate } from 'react-router-dom';
-import logo from '../Assets/title_logo.webp';
+import logo from '../Assets/logo.svg';
+import dropDown from "../Assets/chevron-down.png"
+import ig1 from "../Assets/diversity_2.png"
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
@@ -22,8 +24,8 @@ const Header: React.FC = () => {
             <header className="p-4 bg-white shadow">
                 <div className="container mx-auto flex justify-between items-center">
                     <Link to="#" className="flex items-center text-gray-800">
-                        <img src={logo} alt="EyeRefer" className="h-10" />
-                        <p className='font-bold text-xl'>EYE REFER</p>
+                        <img src={logo} alt="EyeRefer" className="h-15" />
+                        {/* <p className='font-bold text-xl'>EYE REFER</p> */}
                     </Link>
 
                     <div className="flex items-center space-x-4">
@@ -33,9 +35,19 @@ const Header: React.FC = () => {
                                     <button
                                         // className="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded inline-flex items-center"
                                         onClick={toggleDropdown} 
+                                       
                                     >
-                                        <span className='text-xl'>Hi, {name}!</span>
-                                        <p className='text-gray-500 text-sm font-light'>Welcome back</p>
+                                        {/* <img src={user} alt='profile photo'/> */}
+                                        <div className='flex justify-evenly'>
+                                            <div>
+                                            <span className='text-l'>Hi, {name}!</span>
+                                            <p className='text-gray-500 font-light'>Welcome back</p>
+                                            </div>
+                                        <img src={dropDown} className='h-8 p-2'/>
+                                        </div>
+                                        
+                                        
+                                        
                                     </button>
                                     {isDropdownOpen && ( 
                                         <ul className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">

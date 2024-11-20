@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Chat from '../pages/Chat';
 import { socket } from '../utils/socket';
+import moment from 'moment';
 
 const PatientListMD: React.FC = () => {
   const navigate = useNavigate();
@@ -64,9 +65,9 @@ const PatientListMD: React.FC = () => {
   return (
     <>
     <div>
-      <div></div>
-      <div>
-      <table className="table my-4">
+      {/* <div></div> */}
+      <div className='overflow-x-auto bg-white'>
+      <table className="table my-4 ">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -81,6 +82,18 @@ const PatientListMD: React.FC = () => {
       <th scope="col">Consult note</th>
       <th scope="col">Direct message</th>
       <th scope="col">Actions</th>
+      <th scope="col">Actions</th>
+      <th scope="col">Actions</th>
+      <th scope="col">Actions</th>
+      <th scope="col">Surgery date</th>
+      <th scope="col">Status</th>
+      <th scope="col">Return to referrer</th>
+      <th scope="col">Consult note</th>
+      <th scope="col">Direct message</th>
+      <th scope="col">Actions</th>
+      <th scope="col">Actions</th>
+      <th scope="col">Actions</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -89,18 +102,18 @@ const PatientListMD: React.FC = () => {
       <tr>
         <td className='fw-bold' > {index+1} </td>
         <td>{patient.firstname} {patient.lastname}</td>
-        <td> {patient.dob} </td>
-        <td>{patient.referedon}</td>
+        <td> {moment(new Date(patient.dob)).format('MMM-D-YYYY')} </td>
+        <td>{moment(new Date(patient.referedon)).format('MMM-D-YYYY')}</td>
         <td> {patient.referedby.firstname} {patient.referedby.lastname} </td>
         {patient.appointmentType === "consultation" ? (
           <>
-            <td>{patient.appointmentDate}</td>
+            <td>{moment(new Date(patient.appointmentDate)).format('MMM-D-YYYY')}</td>
             <td></td>
           </>
         ): (
           <>
             <td></td>
-            <td>{patient.appointmentDate}</td>
+            <td>{moment(new Date(patient.appointmentDate)).format('MMM-D-YYYY')}</td>
           </>
         )}
         
@@ -113,7 +126,11 @@ const PatientListMD: React.FC = () => {
             }} 
             href={`${Local.BASE_URL}chat/${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`}>Link</a>
         </td>
-        <td></td>
+        <td>
+          <button>Edit</button>
+          <button>Delete</button>
+          <button>View</button>
+        </td>
       </tr>
       </>
     ))}
