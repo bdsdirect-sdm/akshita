@@ -64,7 +64,7 @@ const PatientListOD: React.FC = () => {
 
   return (
     <>
-    <div>
+    <div className='overflow-x-auto'>
       <div></div>
       <div>
       <table className="table my-4">
@@ -108,9 +108,9 @@ const PatientListOD: React.FC = () => {
             >Link</a>
         </td>
         <td>
-          <button onClick={() => {navigate(`/edit-patient/${patient.uuid}`)}}>Edit</button>
-          <button>Delete</button>
-          <button onClick={() => {navigate(`/view-patient/${patient.uuid}`)}}>View</button>
+          <button className="btn btn-primary" onClick={() => {navigate(`/edit-patient/${patient.uuid}`)}}>Edit</button>
+          <button className="btn btn-danger">Delete</button>
+          <button className="btn btn-secondar" onClick={() => {navigate(`/view-patient/${patient.uuid}`)}}>View</button>
         </td>
       </tr>
       </>

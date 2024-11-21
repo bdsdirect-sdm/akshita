@@ -64,9 +64,9 @@ const PatientListMD: React.FC = () => {
   
   return (
     <>
-    <div>
+    <div className='overflow-x-auto'>
       {/* <div></div> */}
-      <div className='overflow-x-auto bg-white'>
+      <div className=' bg-white'>
       <table className="table my-4 ">
   <thead>
     <tr>
@@ -127,9 +127,9 @@ const PatientListMD: React.FC = () => {
             href={`${Local.BASE_URL}chat/${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`}>Link</a>
         </td>
         <td>
-          <button onClick={() => {navigate(`/edit-patient/${patient.uuid}`)}}>Edit</button>
-          <button>Delete</button>
-          <button onClick={() => {navigate(`/view-patient/${patient.uuid}`)}}>View</button>
+          <button className="btn btn-primary" onClick={() => {navigate(`/edit-patient/${patient.uuid}`)}}>Edit</button>
+          <button className="btn btn-danger">Delete</button>
+          <button className="btn btn-secondar" onClick={() => {navigate(`/view-patient/${patient.uuid}`)}}>View</button>
         </td>
       </tr>
       </>

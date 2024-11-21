@@ -353,6 +353,7 @@ export const viewPatient = async (req: any, res: any) => {
     }
 }
 
+//tbc
 export const editPatient = async (req: any, res: any) => {
     try {
         const id = req.params.id;
