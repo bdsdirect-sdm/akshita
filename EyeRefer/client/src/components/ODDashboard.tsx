@@ -61,9 +61,9 @@ const ODDashboard: React.FC = () => {
                         // doctorCount={data.doctorCount}
                         // time={data.lastUpdate} 
                     />
-                    <div className='flex'>
-                        <h1 className="text-2xl font-bold mb-4">Referral Patients</h1>
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={() => {navigate("/add-patient")}}>Add Referral Patient</button>
+                    <div className='flex justify-between align-items-center'>
+                        <h1 className="text-2xl font-bold">Referral Patients</h1>
+                        <button className="bg-blue-500 text-white p-4 rounded right text-lg" onClick={() => {navigate("/add-patient")}}>+ Add Referral Patient</button>
                     </div>
                     
                     <PatientListOD/>

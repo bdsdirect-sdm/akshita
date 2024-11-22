@@ -137,144 +137,162 @@ const AddPatient: React.FC = () => {
       >
         {({ values, setFieldValue }) => (
           <Form>
-            <h2>Basic Information</h2>
+          <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
+        
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div className="form-group">
-              <label>DOB:</label>
-              <Field type="date" name="dob" placeholder="Enter DOB" className='form-control' />
-              <ErrorMessage name="dob" component="div" className="text-danger" />
+              <label className="block mb-1">DOB:</label>
+              <Field type="date" name="dob" placeholder="Enter DOB" className="form-control" />
+              <ErrorMessage name="dob" component="div" className="text-red-500 mt-1" />
             </div>
-
+        
             <div className="form-group">
-              <label>Email:</label>
-              <Field type="text" name="email" placeholder="Enter Email Address" className='form-control' />
-              <ErrorMessage name="email" component="div" className="text-danger" />
+              <label className="block mb-1">Email:</label>
+              <Field type="text" name="email" placeholder="Enter Email Address" className="form-control" />
+              <ErrorMessage name="email" component="div" className="text-red-500 mt-1" />
             </div>
-
+        
             <div className="form-group">
-              <label>Phone:</label>
-              <Field type="text" name="phone" placeholder="Enter Phone" className='form-control' />
-              <ErrorMessage name="phone" component="div" className="text-danger" />
+              <label className="block mb-1">Phone:</label>
+              <Field type="text" name="phone" placeholder="Enter Phone" className="form-control" />
+              <ErrorMessage name="phone" component="div" className="text-red-500 mt-1" />
             </div>
-            <br />
-
+          </div>
+        
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div className="form-group">
-              <label>First Name:</label>
-              <Field type="text" name="firstname" placeholder="Enter First Name" className='form-control' />
-              <ErrorMessage name="firstname" component="div" className="text-danger" />
+              <label className="block mb-1">First Name:</label>
+              <Field type="text" name="firstname" placeholder="Enter First Name" className="form-control" />
+              <ErrorMessage name="firstname" component="div" className="text-red-500 mt-1" />
             </div>
-
+        
             <div className="form-group">
-              <label>Last Name:</label>
-              <Field type="text" name="lastname" placeholder="Enter Last Name" className='form-control' />
-              <ErrorMessage name="lastname" component="div" className="text-danger" />
+              <label className="block mb-1">Last Name:</label>
+              <Field type="text" name="lastname" placeholder="Enter Last Name" className="form-control" />
+              <ErrorMessage name="lastname" component="div" className="text-red-500 mt-1" />
             </div>
-
+        
             <div className="form-group">
-              <label>Gender:</label>
-              <Field as='select' name='gender' className='form-select'>
+              <label className="block mb-1">Gender:</label>
+              <Field as="select" name="gender" className="form-select">
                 <option value="" disabled>Select</option>
                 {['Male', 'Female', 'Others'].map(gender => (
                   <option key={gender} value={gender}>{gender}</option>
                 ))}
               </Field>
-              <ErrorMessage name="gender" component="div" className="text-danger" />
+              <ErrorMessage name="gender" component="div" className="text-red-500 mt-1" />
             </div>
-            <br />
-
-            <h2>Reason of Consult</h2>
-
+          </div>
+        
+          <h2 className="text-xl font-semibold mb-4">Reason of Consult</h2>
+        
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div className="form-group">
-              <label>Disease:</label>
-              <Field as='select' name='disease' className='form-select'>
+              <label className="block mb-1">Disease:</label>
+              <Field as="select" name="disease" className="form-select">
                 <option value="" disabled>Select</option>
                 {['Cataract', 'Medical', 'Keratoconus', 'Corneal, non-keratoconus', 'Other'].map(disease => (
                   <option key={disease} value={disease}>{disease}</option>
                 ))}
               </Field>
-              <ErrorMessage name="disease" component="div" className="text-danger" />
+              <ErrorMessage name="disease" component="div" className="text-red-500 mt-1" />
             </div>
-
+        
             <div className="form-group">
-              <label>Laterality:</label>
-              <Field as='select' name='laterality' className='form-select'>
+              <label className="block mb-1">Laterality:</label>
+              <Field as="select" name="laterality" className="form-select">
                 <option value="" disabled>Select</option>
                 {['Left', 'Right', 'Both'].map(laterality => (
                   <option key={laterality} value={laterality}>{laterality}</option>
                 ))}
               </Field>
-              <ErrorMessage name="laterality" component="div" className="text-danger" />
+              <ErrorMessage name="laterality" component="div" className="text-red-500 mt-1" />
             </div>
-
-            <div className="mb-3">
-              <label className="form-label">Return back to referer</label>
+        
+            <div className="form-group mb-3">
+              <label className="block mb-1">Return back to referer:</label>
               <div>
-                <label className="me-3">
+                <label className="mr-4">
                   <Field name="referback" type="radio" value="1" /> Yes
                 </label>
                 <label>
                   <Field name="referback" type="radio" value="0" /> No
                 </label>
-                <ErrorMessage name="referback" component="div" className="text-danger" />
+                <ErrorMessage name="referback" component="div" className="text-red-500 mt-1" />
               </div>
             </div>
-            <br />
-
+          </div>
+        
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div className="form-group">
-              <label>Timing:</label>
-              <Field as='select' name='timing' className='form-select'>
+              <label className="block mb-1">Timing:</label>
+              <Field as="select" name="timing" className="form-select">
                 <option value="" disabled>Select</option>
                 {['Routine (Within 1 month)', 'Urgent (Within 1 week)', 'Emergent (Within 24 hours or less)'].map(timing => (
                   <option key={timing} value={timing}>{timing}</option>
                 ))}
               </Field>
-              <ErrorMessage name="timing" component="div" className="text-danger" />
+              <ErrorMessage name="timing" component="div" className="text-red-500 mt-1" />
             </div>
-            <br />
-
-            <h2>Refer to</h2>
+          </div>
+        
+          <h2 className="text-xl font-semibold mb-4">Refer to</h2>
+        
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div className="form-group">
-              <label>MD Name:</label>
-              <Field as='select' name='referedto' className='form-select'>
+              <label className="block mb-1">MD Name:</label>
+              <Field as="select" name="referedto" className="form-select">
                 <option value="" disabled>Select</option>
-                {MDList?.docList?.map((md: any) => (
+                {MDList?.docList?.map((md) => (
                   <option key={md.uuid} value={md.uuid}>{md.firstname} {md.lastname}</option>
                 ))}
               </Field>
-              <ErrorMessage name="referedto" component="div" className="text-danger" />
+              <ErrorMessage name="referedto" component="div" className="text-red-500 mt-1" />
             </div>
-
-            <div className='form-group'>
-              <label>Location:</label>
-              <Field as='select' name='address' className='form-select'>
+        
+            <div className="form-group">
+              <label className="block mb-1">Location:</label>
+              <Field as="select" name="address" className="form-select">
                 <option value="" disabled>Select</option>
-                {values.referedto && MDList.docList.find((md: any) => md.uuid === values.referedto)?.Addresses.map((address: any) => (
+                {values.referedto && MDList.docList.find((md) => md.uuid === values.referedto)?.Addresses.map((address) => (
                   <option key={address.uuid} value={address.uuid}>{address.street} {address.district} {address.city} {address.state}</option>
                 ))}
               </Field>
-              <ErrorMessage name="address" component="div" className="text-danger" />
+              <ErrorMessage name="address" component="div" className="text-red-500 mt-1" />
             </div>
-            <br />
-
-            <div className="form-group">
-              <label>Medical documents:</label>
-              <input
-                type="file"
-                name="medicaldocs"
-                className="mt-1 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
-                onChange={(e) => handleFileChange(e, setFieldValue)}
-              />
-              <ErrorMessage name="medicaldocs" component="div" className="text-danger" />
-            </div>
-
-            <div className="form-group">
-              <label>Notes:</label>
-              <Field type="textarea" name="notes" placeholder="" className='form-control' />
-              <ErrorMessage name="notes" component="div" className="text-danger" />
-            </div>
-
-            <button type='submit' className='btn btn-outline-primary'>Save as Draft</button>
-            <button type='button' className='btn btn-outline-secondary' onClick={() => {navigate("/dashboard")}}>Cancel</button>
-          </Form>
+          </div>
+        
+          <div className="form-group mb-4">
+            <label className="block mb-1">Medical documents:</label>
+            <input
+              type="file"
+              name="medicaldocs"
+              className="mt-1 block w-full border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+              onChange={(e) => handleFileChange(e, setFieldValue)}
+            />
+            <ErrorMessage name="medicaldocs" component="div" className="text-red-500 mt-1" />
+          </div>
+        
+          <div className="form-group mb-4">
+            <label className="block mb-1">Notes:</label>
+            <Field as="textarea" name="notes" placeholder="" className="form-control" />
+            <ErrorMessage name="notes" component="div" className="text-red-500 mt-1" />
+          </div>
+        
+          <div className="flex justify-between">
+            <button type="submit" className="btn btn-outline-primary bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">
+              Save as Draft
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300"
+              onClick={() => { navigate("/dashboard"); }}
+            >
+              Cancel
+            </button>
+          </div>
+        </Form>
+        
         )}
       </Formik>
     </div>

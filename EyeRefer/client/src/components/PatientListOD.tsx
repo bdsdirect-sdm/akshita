@@ -5,6 +5,10 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { socket } from '../utils/socket';
+import moment from 'moment';
+import { MdOutlineEdit } from "react-icons/md";
+import { AiOutlineDelete } from "react-icons/ai";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 
 const PatientListOD: React.FC = () => {
@@ -64,62 +68,73 @@ const PatientListOD: React.FC = () => {
 
   return (
     <>
-    <div className='overflow-x-auto'>
-      <div></div>
-      <div>
-      <table className="table my-4">
-  <thead>
-    <tr>
-    <th scope="col">#</th>
-      <th scope="col">Patient name</th>
-      <th scope="col">DOB</th>
-      <th scope="col">Referred on</th>
-      <th scope="col">Referred to</th>
-      <th scope="col">Consultation date</th>
-      <th scope="col">Surgery date</th>
-      <th scope="col">Status</th>
-      <th scope="col">Return to referrer</th>
-      <th scope="col">Consult note</th>
-      <th scope="col">Direct message</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {Patients.patientList.map((patient: any, index: number) =>(
-      <>
-      <tr>
-        <td className='fw-bold' > {index+1} </td>
-        <td>{patient.firstname} {patient.lastname}</td>
-        <td> {patient.dob} </td>
-        <td></td>
-        <td>{patient.referedto.firstname} {patient.referedto.lastname}</td>
-        <td></td>
-        <td></td>
-        <td> {patient.referalstatus && ("Completed")} {patient.referalstatus==false && ("Pending")} </td>
-        <td> {patient.referback && ("yes")} {patient.referback==false && ("No")} </td>
-        <td></td>
-        <td>
-          <a className="underline text-blue-700" onClick={() => {
-            const roomId = patient.referedby.uuid + patient.referedto.uuid + patient.uuid
-            localStorage.setItem("room", `roomId`)
-            joinRoom(roomId)
-            navigate(`/chat/${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`)
-            }} 
-            >Link</a>
-        </td>
-        <td>
-          <button className="btn btn-primary" onClick={() => {navigate(`/edit-patient/${patient.uuid}`)}}>Edit</button>
-          <button className="btn btn-danger">Delete</button>
-          <button className="btn btn-secondar" onClick={() => {navigate(`/view-patient/${patient.uuid}`)}}>View</button>
-        </td>
-      </tr>
-      </>
-    ))}
-  </tbody>
-</table>
-      </div>
-    </div>
-    </>
+  <>
+  <div className="overflow-x-auto max-w-full m-8">
+    <table className="table-auto w-full my-4 border border-gray-300">
+      <thead>
+        <tr className="">
+          <th scope="col" className="border px-4 py-2">#</th>
+          <th scope="col" className="border px-4 py-2">Patient Name</th>
+          <th scope="col" className="border px-4 py-2">DOB</th>
+          <th scope="col" className="border px-4 py-2">Referred On</th>
+          <th scope="col" className="border px-4 py-2">Referred To</th>
+          <th scope="col" className="border px-4 py-2">Consultation Date</th>
+          <th scope="col" className="border px-4 py-2">Surgery Date</th>
+          <th scope="col" className="border px-4 py-2">Status</th>
+          <th scope="col" className="border px-4 py-2">Return to Referrer</th>
+          <th scope="col" className="border px-4 py-2">Consult Note</th>
+          <th scope="col" className="border px-4 py-2">Direct Message</th>
+          <th scope="col" className="border px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody className='bg-white'>
+        {Patients.patientList.map((patient: any, index: number) => (
+          <tr key={patient.uuid} className="hover:bg-gray-100">
+            <td className='fw-bold border px-4 py-2'>{index + 1}</td>
+            <td className="border px-4 py-2">{patient.firstname} {patient.lastname}</td>
+            <td className="border px-4 py-2">{moment(new Date(patient.dob)).format('MMM-D-YYYY')}</td>
+            <td className="border px-4 py-2">{moment(new Date(patient.referedon)).format('MMM-D-YYYY')}</td>
+            <td className="border px-4 py-2">{patient.referedto.firstname} {patient.referedto.lastname}</td>
+            {patient.appointmentType === "consultation" ? (
+                <>
+                  <td className="border px-4 py-2">{moment(new Date(patient.appointmentDate)).format('MMM-D-YYYY')}</td>
+                  <td className="border px-4 py-2"></td>
+                </>
+              ) : (
+                <>
+                  <td className="border px-4 py-2"></td>
+                  <td className="border px-4 py-2">{moment(new Date(patient.appointmentDate)).format('MMM-D-YYYY')}</td>
+                </>
+              )}
+            <td className="border px-4 py-2">{patient.referalstatus ? "Completed" : "Pending"}</td>
+            <td className="border px-4 py-2">{patient.referback ? "Yes" : "No"}</td>
+            <td className="border px-4 py-2"><a className='text-blue-500 underline'>Note</a></td>
+            <td className="border px-4 py-2">
+              <a className="underline text-blue-700" onClick={() => {
+                const roomId = patient.referedby.uuid + patient.referedto.uuid + patient.uuid;
+                localStorage.setItem("room", roomId);
+                joinRoom(roomId);
+                navigate(`/chat/${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`);
+              }}>
+                Link
+              </a>
+            </td>
+            <td className="border px-4 py-2">
+                <div className='flex-col'>
+                <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-patient/${patient.uuid}`); }}><MdOutlineEdit /></button>
+                <button className="btn btn-danger mr-2"><AiOutlineDelete /></button>
+                <button className="btn btn-secondary" onClick={() => { navigate(`/view-patient/${patient.uuid}`); }}><MdOutlineRemoveRedEye /></button>
+                </div>
+              </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</>
+
+</>
+
   )
 }
 

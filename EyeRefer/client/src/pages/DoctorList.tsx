@@ -4,6 +4,7 @@ import api from '../api/axiosInstance';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Searchbar from "../components/Searchbar"
 
 const DoctorList: React.FC = () => {
   const navigate = useNavigate();
@@ -55,48 +56,42 @@ const DoctorList: React.FC = () => {
   console.log("Doctor-List------------>", Doctors);
   return (
     <>
-    <div>
-      <div></div>
-      <div>
-      <table className="table my-4">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Doctor name</th>
-      <th scope="col">Referral placed</th>
-      <th scope="col">Referral completed</th>
-      <th scope="col">Avg time of contact</th>
-      <th scope="col">Avg time of consult</th>
-      <th scope="col">Phone</th>
-      <th scope="col">Email</th>
-      <th scope="col">Type</th>
-    </tr>
-  </thead>
-  <tbody>
-    {Doctors.docList.map((doctor: any, index: number) =>(
-      <>
-      <tr>
-        <td className='fw-bold' > {index+1} </td>
-        <td>{doctor.firstname + " " + doctor.lastname}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td> {doctor.phone} </td>
-        <td>{doctor.email}</td>
-        {(doctype === "2") ? (
-          <td>OD</td>
-        ): (
-          <td>MD</td>
-        )}
-        
-      </tr>
-      </>
-    ))}
-  </tbody>
-</table>
-      </div>
-    </div>
+    <Searchbar/>
+    <div className='m-8' >
+  <div className='overflow-x-auto'>
+    <table className="table-auto w-full my-4 border border-gray-300">
+      <thead className="bg-gray-400">
+        <tr>
+          <th scope="col" className="border px-4 py-2">#</th>
+          <th scope="col" className="border px-4 py-2">Doctor Name</th>
+          <th scope="col" className="border px-4 py-2">Referral Placed</th>
+          <th scope="col" className="border px-4 py-2">Referral Completed</th>
+          <th scope="col" className="border px-4 py-2">Avg Time of Contact</th>
+          <th scope="col" className="border px-4 py-2">Avg Time of Consult</th>
+          <th scope="col" className="border px-4 py-2">Phone</th>
+          <th scope="col" className="border px-4 py-2">Email</th>
+          <th scope="col" className="border px-4 py-2">Type</th>
+        </tr>
+      </thead>
+      <tbody className='bg-white'>
+        {Doctors.docList.map((doctor: any, index: number) => (
+          <tr key={doctor.uuid} className="hover:bg-gray-100">
+            <td className='fw-bold border px-4 py-2'>{index + 1}</td>
+            <td className="border px-4 py-2">{doctor.firstname} {doctor.lastname}</td>
+            <td className="border px-4 py-2"></td>
+            <td className="border px-4 py-2"></td>
+            <td className="border px-4 py-2"></td>
+            <td className="border px-4 py-2"></td>
+            <td className="border px-4 py-2">{doctor.phone}</td>
+            <td className="border px-4 py-2">{doctor.email}</td>
+            <td className="border px-4 py-2">{doctype === "2" ? "OD" : "MD"}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
     </>
   )
 }
