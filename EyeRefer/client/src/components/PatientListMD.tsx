@@ -10,6 +10,7 @@ import moment from 'moment';
 import { MdOutlineEdit } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import Searchbar from "../components/Searchbar"
 
 const PatientListMD: React.FC = () => {
   const navigate = useNavigate();
@@ -116,7 +117,7 @@ const PatientListMD: React.FC = () => {
                 href={`${Local.BASE_URL}chat/${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`}>Link</a>
               </td>
               <td className="border px-4 py-2">
-                <div className='flex-col'>
+                <div className='flex flex-row'>
                 <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-patient/${patient.uuid}`); }}><MdOutlineEdit /></button>
                 <button className="btn btn-danger mr-2"><AiOutlineDelete /></button>
                 <button className="btn btn-secondary" onClick={() => { navigate(`/view-patient/${patient.uuid}`); }}><MdOutlineRemoveRedEye /></button>

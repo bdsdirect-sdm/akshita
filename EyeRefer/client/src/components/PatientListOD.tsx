@@ -9,6 +9,7 @@ import moment from 'moment';
 import { MdOutlineEdit } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import Searchbar from "../components/Searchbar"
 
 
 const PatientListOD: React.FC = () => {
@@ -69,8 +70,9 @@ const PatientListOD: React.FC = () => {
   return (
     <>
   <>
-  <div className="overflow-x-auto max-w-full m-8">
-    <table className="table-auto w-full my-4 border border-gray-300">
+  <Searchbar/>
+  <div className=" max-w-full m-8">
+    <table className="table-auto w-full my-4 border border-gray-300 overflow-x-auto">
       <thead>
         <tr className="">
           <th scope="col" className="border px-4 py-2">#</th>
@@ -120,7 +122,7 @@ const PatientListOD: React.FC = () => {
               </a>
             </td>
             <td className="border px-4 py-2">
-                <div className='flex-col'>
+                <div className='flex flex-row'>
                 <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-patient/${patient.uuid}`); }}><MdOutlineEdit /></button>
                 <button className="btn btn-danger mr-2"><AiOutlineDelete /></button>
                 <button className="btn btn-secondary" onClick={() => { navigate(`/view-patient/${patient.uuid}`); }}><MdOutlineRemoveRedEye /></button>

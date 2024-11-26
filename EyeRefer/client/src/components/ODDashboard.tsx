@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReferralComponents from '../components/ReferralComponents';
 import PatientListOD from './PatientListOD';
+import Button from "./Button"
 
 const ODDashboard: React.FC = () => {
     const navigate = useNavigate();
@@ -53,7 +54,7 @@ const ODDashboard: React.FC = () => {
     return (
         <>
 
-                <div className="flex-grow p-4 bg-gray-300">
+                <div className="flex-grow p-4 bg-gray-300 w-full">
                     <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
                     <ReferralComponents 
                         // referralCount={data.referralCount}
@@ -63,7 +64,7 @@ const ODDashboard: React.FC = () => {
                     />
                     <div className='flex justify-between align-items-center'>
                         <h1 className="text-2xl font-bold">Referral Patients</h1>
-                        <button className="bg-blue-500 text-white p-4 rounded right text-lg" onClick={() => {navigate("/add-patient")}}>+ Add Referral Patient</button>
+                        <Button onClick={() => {navigate("/add-patient")}}>+ Add Referral Patient</Button>
                     </div>
                     
                     <PatientListOD/>

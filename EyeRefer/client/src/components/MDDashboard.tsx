@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReferralComponents from '../components/ReferralComponents';
 import PatientListMD from './PatientListMD';
+import Button from "./Button"
 
 const MDDashboard: React.FC = () => {
     const navigate = useNavigate();
@@ -62,7 +63,7 @@ const MDDashboard: React.FC = () => {
                     />
                     <div>
                     <h1 className="text-2xl font-bold mb-4">+Referral Patients</h1>
-                    <button className="bg-blue-500 text-white px-4 py-4 rounded" onClick={() => {navigate("/add-appointment")}}>Add Appointment +</button> 
+                    <Button onClick={() => {navigate("/add-appointment")}}>Add Appointment +</Button> 
                     </div>
                     
                     <PatientListMD />
