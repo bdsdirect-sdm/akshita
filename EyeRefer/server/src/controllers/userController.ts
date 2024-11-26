@@ -389,3 +389,14 @@ export const editPatient = async (req: any, res: any) => {
         res.status(500).json({message: "Internal server error", err})
     }
 }
+
+export const chatRooms = async(req: any, res: any) => {
+    //show patient as room where doc in referedto or referedby
+    try {
+        const { uuid } = req.user;
+        //check patient appointment is pending or not
+        const patientsList = await Patient.findAll({where:{[Op.or]:[{referedby:uuid},{referedto:uuid}]}});
+        console.log(patientsList);
+        res.status(200).json("patients", patientsList, {message: "patients found"});
+    } catch (err) {}
+}

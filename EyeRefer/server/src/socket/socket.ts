@@ -1,7 +1,8 @@
 import {Server} from 'socket.io'
+import { joinRoom, sendMessage } from './events';
 
-export function setSocket(server:any) {
-    const io = new Server(server ,{
+function setSocket(server:any) {
+    var io = new Server(server ,{
         cors: {
             origin: "*",
             }
@@ -9,14 +10,12 @@ export function setSocket(server:any) {
     
     io.on("connection", (socket) => {
         console.log("Connection established!", socket.id);
-    
-        socket.on("joinRoom", (data: string) => {
-            socket.join(data);
-            console.log(`User ${socket.id} has joined room`, data);
-            
-            io.to(data).emit("message",{message:`New User Just joined the  room ${data}`, socketId:socket.id})
-        })
+        joinRoom(socket);
+
+        sendMessage(socket);
 
         // socket.on("sendMessage", (messageData))
     })
 }
+
+export default setSocket;

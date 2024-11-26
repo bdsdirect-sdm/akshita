@@ -7,6 +7,15 @@ import api from '../api/axiosInstance';
 import * as Yup from 'yup';
 import React, { useEffect } from 'react';
 
+const validationSchema = Yup.object().shape({
+  street: Yup.string().required('Street is required'),
+  district: Yup.string().required('District is required'),
+  state: Yup.string().required('State is required'),
+  city: Yup.string().required('City is required'),
+  phone: Yup.string().required('Phone number is required'),
+  pincode: Yup.number().required('Pincode is required'),
+});
+
 const token = localStorage.getItem('token');
 
 const AddAddress: React.FC = () => {
@@ -37,15 +46,6 @@ const AddAddress: React.FC = () => {
       toast.success('Address Saved');
       navigate('/dashboard');
     },
-  });
-
-  const validationSchema = Yup.object().shape({
-    street: Yup.string().required('Street is required'),
-    district: Yup.string().required('District is required'),
-    state: Yup.string().required('State is required'),
-    city: Yup.string().required('City is required'),
-    phone: Yup.string().required('Phone number is required'),
-    pincode: Yup.number().required('Pincode is required'),
   });
 
   const addressHandler = (values: any) => {

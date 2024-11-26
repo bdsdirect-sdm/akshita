@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
+import socket from "../utils/socket"
+import ChatBar from "../components/ChatBar"
 
 const Chat = () => {
 
   const [message, setMessage] = useState("");  
   const [messageList, setMessageList] = useState<Array<any>>([]);
   const name = localStorage.getItem("name");
+  const roomId = localStorage.getItem("room");
 
     const sendMessage = () => {
+      console.log("Hellooo");
         if(message !== "") {
             const messageData = {
                 room: roomId,
@@ -14,23 +18,29 @@ const Chat = () => {
                 message: message,
                 time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
             }
-            socket.emit("sendMessage", messageData);
+            
+        // console.log("message data", name, " ", roomId, " ", messageData);
+            socket.emit("sendMessage", messageData);  //send to backend
+            // setMessageList((prevMessageList) => [...prevMessageList, message]);
+            // console.log("MESSAGE", messageList);
         }
         setMessage("")
     }
 
-    const roomId = localStorage.getItem("room");
+    socket.on("message", (data) => {
+      // console.log("Message receievd from server", data)
+      setMessageList((prevMessageList) => [...prevMessageList, data.message]);
+            console.log("MESSAGE", messageList);
+    })
+
 
   return (
     <div className="flex h-screen">
-      <div className="flex flex-col p-4 border-r-2 border-gray-300 w-1/4">
-        <p className="text-lg font-semibold">Patient</p>
-        <p className="mt-2">John Doe</p>
-      </div>
-
+      
+      <ChatBar/>
       <div className="flex flex-col flex-1 p-4">
     
-        <div className="bg-green-900 p-4 rounded-t-md">
+        <div className="bg-teal-700 p-4 rounded-t-md">
           <h2 className="text-white text-xl">Patient Name</h2>
         </div>
 
@@ -46,12 +56,14 @@ const Chat = () => {
             <input
               type="text"
               placeholder="Enter message"
-              className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              value={message}
+              onChange={(event) => {setMessage(event.target.value)}}
+              className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
             <button
               onClick={sendMessage}
-              type="submit"
-              className="bg-green-900 text-white px-4 py-2 rounded-r-md hover:bg-green-700"
+              type="button"
+              className="bg-teal-900 text-white px-4 py-2 rounded-r-md hover:bg-teal-700"
             >
               Send
             </button>

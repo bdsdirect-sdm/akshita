@@ -89,6 +89,10 @@ const  App:react.FC = () => {
           element: <Chat />
         },
         {
+          path: '/chat',
+          element: <Chat />
+        },
+        {
           path: '/view-appointments',
           element: <ViewAppointments />
         },

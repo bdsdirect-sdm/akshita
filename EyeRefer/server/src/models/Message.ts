@@ -22,9 +22,12 @@ const Message = sequelize.define("message", {
         allowNull: true
     },
     time: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         allowNull: true
     },
 })
 
 export default Message;
+
+
+//room should reference the id in ChatRooms

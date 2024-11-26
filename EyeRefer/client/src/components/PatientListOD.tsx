@@ -4,7 +4,7 @@ import api from '../api/axiosInstance';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { socket } from '../utils/socket';
+import socket from '../utils/socket';
 import moment from 'moment';
 import { MdOutlineEdit } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -61,10 +61,11 @@ const PatientListOD: React.FC = () => {
   console.log("Patient-List------------>", Patients);
 
   function joinRoom(roomId: string) {
+    console.log("ROOOOOOOOOOOOOOOm")
     if(roomId !== "") {
       socket.emit("joinRoom", roomId);
+      
     }
-    // navigate(`/chat/${roomId}`)
   }
 
   return (
@@ -112,9 +113,10 @@ const PatientListOD: React.FC = () => {
             <td className="border px-4 py-2">{patient.referback ? "Yes" : "No"}</td>
             <td className="border px-4 py-2"><a className='text-blue-500 underline'>Note</a></td>
             <td className="border px-4 py-2">
-              <a className="underline text-blue-700" onClick={() => {
+              <a className="underline text-blue-600 hover:cursor-pointer" onClick={() => {
                 const roomId = patient.referedby.uuid + patient.referedto.uuid + patient.uuid;
                 localStorage.setItem("room", roomId);
+                console.log("ROOOOOOOOOOOOOOOm")
                 joinRoom(roomId);
                 navigate(`/chat/${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`);
               }}>

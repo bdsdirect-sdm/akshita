@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Chat from '../pages/Chat';
-import { socket } from '../utils/socket';
+import socket from '../utils/socket';
 import moment from 'moment';
 import { MdOutlineEdit } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -62,7 +62,7 @@ const PatientListMD: React.FC = () => {
 
   function joinRoom(roomId: string) {
     if(roomId !== "") {
-      socket.emit("joinRoom", roomId);
+      socket.emit("joinRoom", {room: "roomId"});
     }
   }
   
@@ -111,11 +111,15 @@ const PatientListMD: React.FC = () => {
               <td className="border px-4 py-2">{patient.referback ? "Yes" : "No"}</td>
               <td className="border px-4 py-2">{patient.notes}</td>
               <td className="border px-4 py-2">
-                <a className="underline text-blue-700" onClick={() => {
-                  localStorage.setItem("room", `${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`);
-                }} 
-                href={`${Local.BASE_URL}chat/${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`}>Link</a>
-              </td>
+              <a className="underline text-blue-600 hover:cursor-pointer" onClick={() => {
+                const roomId = patient.referedby.uuid + patient.referedto.uuid + patient.uuid;
+                localStorage.setItem("room", roomId);
+                joinRoom(roomId);
+                navigate(`/chat/${roomId}`);
+              }}>
+                Link
+              </a>
+            </td>
               <td className="border px-4 py-2">
                 <div className='flex flex-row'>
                 <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-patient/${patient.uuid}`); }}><MdOutlineEdit /></button>
