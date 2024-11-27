@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 import { Op, where } from "sequelize";
 import bcrypt from 'bcrypt';
 import Appointment from "../models/Appointment";
+import Message from "../models/Message";
 
 const Security_Key:any = Local.SECRET_KEY;
 
@@ -142,9 +143,23 @@ export const getDocList = async(req:any, res:Response) => {
 export const getPatientList = async(req:any, res:Response) => {
     try{
         const {uuid} = req.user;
+        const { search } = req.query
         const user = await User.findOne({where:{uuid:uuid}});
-        if(user){
-            let patientList:any = await Patient.findAll({where:{[Op.or]:[{referedby:uuid},{referedto:uuid}]}});
+        console.log("SEARCHHHHHHHH", search, "helojnd")
+        console.log("HELEOEOOE::::::::::::::")
+        if (user) {
+
+            const whereCondition: any = {
+              [Op.or]: [{ referedby: uuid }, { referedto: uuid }],
+            };
+      
+            if (search) {
+              whereCondition.firstname = {
+                [Op.like]: `%${search}%`,
+              };
+            }
+
+            const patientList: any = await Patient.findAll({ where: whereCondition });
             if(patientList){
                 const plist: any[] = [];
                 
@@ -397,6 +412,21 @@ export const chatRooms = async(req: any, res: any) => {
         //check patient appointment is pending or not
         const patientsList = await Patient.findAll({where:{[Op.or]:[{referedby:uuid},{referedto:uuid}]}});
         console.log(patientsList);
-        res.status(200).json("patients", patientsList, {message: "patients found"});
+        res.status(200).json("ChatRoom", patientsList, {message: "patients found"});
     } catch (err) {}
 }
+
+export const chatData = async (req: any, res: any) => {
+    try {
+        const roomId = req.user.room; 
+        const chatList = await Message.findByPk(roomId);
+
+        if (!chatList) {
+            return res.status(404).json({ message: "No chats found for this room" });
+        }
+        res.status(200).json({ chats: chatList, message: "Chats found" });
+    } catch (err) {
+        console.error("Error fetching chat data:", err);
+        res.status(500).json({ message: "An error occurred while fetching chat data" });
+    }
+};

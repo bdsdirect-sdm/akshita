@@ -15,6 +15,7 @@ interface config{
     VIEW_DOCTORS: string;
     VIEW_PATIENT: string;
     GET_CHATBAR: string;
+    GET_CHATDATA: string;
 }
 
 export const Local:config = {
@@ -33,5 +34,6 @@ export const Local:config = {
     UPDATE_APPOINTMENT_STATUS: import.meta.env.VITE_UPDATE_APPOINTMENT_STATUS, 
     VIEW_DOCTORS: import.meta.env.VITE_VIEW_DOCTORS,
     VIEW_PATIENT: import.meta.env.VITE_VIEW_PATIENT,
-    GET_CHATBAR: import.meta.env.VITE_GET_CHATBAR
+    GET_CHATBAR: import.meta.env.VITE_GET_CHATBAR,
+    GET_CHATDATA: import.meta.env.VITE_GET_CHATDATA,
 }
