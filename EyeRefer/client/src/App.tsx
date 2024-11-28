@@ -9,7 +9,7 @@ import AddStaff from './tempPages/AddStaff';
 import Signup from './pages/Signup'
 import Verify from './pages/Verify'
 import Login from './pages/Login'
-import Profile from './tempPages/Profile'
+import Profile from './pages/Profile'
 import AddAddress from './pages/AddAddress'
 import AddAppointment from './pages/AddAppointment';
 import Dashboard from './pages/Dashboard';
@@ -19,7 +19,7 @@ import PatientListOD from './components/PatientListOD';
 import PatientListMD from './components/PatientListMD';
 import ViewAppointments from './pages/ViewAppointments';
 import ViewPatient from './pages/ViewPatient';
-import EditPatient from './tempPages/EditPatient';
+import EditPatient from './pages/EditPatient';
 
 const  App:react.FC = () => {
 

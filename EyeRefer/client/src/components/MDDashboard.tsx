@@ -62,7 +62,7 @@ const MDDashboard: React.FC = () => {
                         // time={data.lastUpdate} 
                     />
                     <div>
-                    <h1 className="text-2xl font-bold mb-4">+Referral Patients</h1>
+                    <h1 className="text-2xl font-bold mb-4">Referral Patients</h1>
                     <Button onClick={() => {navigate("/add-appointment")}}>Add Appointment +</Button> 
                     </div>
                     

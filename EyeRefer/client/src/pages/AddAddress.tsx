@@ -16,10 +16,11 @@ const validationSchema = Yup.object().shape({
   pincode: Yup.number().required('Pincode is required'),
 });
 
-const token = localStorage.getItem('token');
+
 
 const AddAddress: React.FC = () => {
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     if (!token) {

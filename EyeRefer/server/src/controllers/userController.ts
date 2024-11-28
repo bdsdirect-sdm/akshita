@@ -145,8 +145,8 @@ export const getPatientList = async(req:any, res:Response) => {
         const {uuid} = req.user;
         const { search } = req.query
         const user = await User.findOne({where:{uuid:uuid}});
-        console.log("SEARCHHHHHHHH", search, "helojnd")
-        console.log("HELEOEOOE::::::::::::::")
+        // console.log("SEARCHHHHHHHH", search, "helojnd")
+        // console.log("HELEOEOOE::::::::::::::")
         if (user) {
 
             const whereCondition: any = {
@@ -261,6 +261,7 @@ export const addPatient = async(req:any, res:Response) => {
 export const addAddress = async(req:any, res:Response) => {
     try{
         const {uuid} = req.user;
+        console.log("USER:::::::::::::::::", uuid);
         const user = await User.findOne({where:{uuid:uuid}});  //find current doc
         if(user){
             const {street, district, city, state, pincode, phone} = req.body;

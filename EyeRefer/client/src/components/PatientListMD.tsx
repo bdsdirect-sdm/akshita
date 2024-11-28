@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Local } from '../environment/env';
 import api from '../api/axiosInstance';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Chat from '../pages/Chat';
@@ -11,8 +11,10 @@ import { MdOutlineEdit } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Searchbar from "../components/Searchbar"
+import Pagination from "../components/Pagination"
 
 const PatientListMD: React.FC = () => {
+  const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -24,7 +26,7 @@ const PatientListMD: React.FC = () => {
 
   const fetchPatient = async() => {
     try{
-      const response = await api.get(`${Local.GET_PATIENT_LIST}`, {
+      const response = await api.get(`${Local.GET_PATIENT_LIST}?search=${query}`, {
         headers:{
           Authorization: `Bearer ${token}`
         }
@@ -36,7 +38,7 @@ const PatientListMD: React.FC = () => {
     }
   }
  
-  const { data: Patients, error, isLoading, isError } = useQuery({
+  const { data: Patients, error, isLoading, isError, refetch } = useQuery({
     queryKey: ['patient'],
     queryFn: fetchPatient
   })
@@ -68,7 +70,7 @@ const PatientListMD: React.FC = () => {
   
   return (
     <>
-    <Searchbar/>
+    <Searchbar refetch={refetch} query={query} setQuery={setQuery}/>
   <div className='overflow-x-auto max-w-full m-8'>
     <div className='bg-white'>
       <table className="table-auto w-full my-4 border border-gray-300">
@@ -133,6 +135,7 @@ const PatientListMD: React.FC = () => {
       </table>
     </div>
   </div>
+  <Pagination listing={Patients?.patientList} />
 </>
 
   )

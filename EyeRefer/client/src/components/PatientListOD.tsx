@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Local } from '../environment/env';
 import api from '../api/axiosInstance';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import socket from '../utils/socket';
@@ -10,9 +10,11 @@ import { MdOutlineEdit } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Searchbar from "../components/Searchbar"
+import Pagination from "../components/Pagination"
 
 
 const PatientListOD: React.FC = () => {
+  const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("token")
 
@@ -24,7 +26,7 @@ const PatientListOD: React.FC = () => {
 
   const fetchPatient = async() => {
     try{
-      const response = await api.get(`${Local.GET_PATIENT_LIST}`, {
+      const response = await api.get(`${Local.GET_PATIENT_LIST}?search=${query}`, {
         headers:{
           Authorization: `Bearer ${token}`
         }
@@ -36,7 +38,7 @@ const PatientListOD: React.FC = () => {
     }
   }
  
-  const { data: Patients, error, isLoading, isError } = useQuery({
+  const { data: Patients, error, isLoading, isError, refetch } = useQuery({
     queryKey: ['patient'],
     queryFn: fetchPatient
   })
@@ -61,7 +63,7 @@ const PatientListOD: React.FC = () => {
   console.log("Patient-List------------>", Patients);
 
   function joinRoom(roomId: string) {
-    console.log("ROOOOOOOOOOOOOOOm")
+    // console.log("ROOOOOOOOOOOOOOOm")
     if(roomId !== "") {
       socket.emit("joinRoom", roomId);
       
@@ -71,7 +73,7 @@ const PatientListOD: React.FC = () => {
   return (
     <>
   <>
-  <Searchbar/>
+  <Searchbar refetch={refetch} query={query} setQuery={setQuery} />
   <div className=" max-w-full m-8">
     <table className="table-auto w-full my-4 border border-gray-300 overflow-x-auto">
       <thead>
@@ -135,6 +137,7 @@ const PatientListOD: React.FC = () => {
       </tbody>
     </table>
   </div>
+   <Pagination listing={Patients?.patientList} />
 </>
 
 </>
