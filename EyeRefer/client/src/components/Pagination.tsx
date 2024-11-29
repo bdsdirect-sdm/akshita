@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react'
 
-const Pagination = ({listing} : any) => {
+const Pagination = ({totalPages, page, onChange} : any) => {
     const [currentPage, setCurrentPage] = useState(1); 
   const [listingPerPage] = useState(2); 
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [listing]);
+  // useEffect(() => {
+  //   setCurrentPage(1);
+  // }, [listing]);
 
-  const totalPages = Math.ceil(listing.length / listingPerPage);
   const indexOfLastListing = currentPage * listingPerPage;
   const indexOfFirstListing = indexOfLastListing - listingPerPage;
-  const currentListing = listing.slice(indexOfFirstListing, indexOfLastListing);
+  // const currentListing = listing.slice(indexOfFirstListing, indexOfLastListing);
   
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -28,6 +27,8 @@ const Pagination = ({listing} : any) => {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  // console.log("LISTING:::::" ,currentListing)
 
   return (
     <>

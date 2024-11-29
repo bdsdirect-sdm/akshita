@@ -46,7 +46,7 @@ const ChatBar = () => {
       <div className="flex flex-col p-4 border-r-2 border-gray-300 w-1/4">
         <p className="text-lg font-semibold">Patient</p>
         {Patients.patientList.map((patient: any, index: number) => (
-            <div className='bg-teal-700 p-6 m-2 hover:bg-teal-600 cursor-pointer' onClick={() => {
+            <div className='bg-[#35c0e4] p-6 m-2 hover:bg-[#3498db] rounded cursor-pointer' onClick={() => {
               const roomId = patient.referedby.uuid + patient.referedto.uuid + patient.uuid;
               localStorage.setItem("room", roomId);
               joinRoom(roomId);

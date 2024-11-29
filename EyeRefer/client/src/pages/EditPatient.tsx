@@ -136,7 +136,7 @@ const EditPatient: React.FC = () => {
       <div>Error: {error?.message || 'Error loading data'}</div>
     );
   }
-  console.log()
+  console.log( "PATINT::::::::::::::;;", Patient?.patientData?.firstname)
 
   return (
     <div>
@@ -205,8 +205,10 @@ const EditPatient: React.FC = () => {
               <Field
                 type="text"
                 name="firstname"
+                value={Patient?.patientData?.firstname}
                 placeholder="Enter First Name"
                 className="w-full border border-gray-300 rounded-md p-2"
+              
               />
               <ErrorMessage name="firstname" component="div" className="text-red-500 mt-1" />
             </div>

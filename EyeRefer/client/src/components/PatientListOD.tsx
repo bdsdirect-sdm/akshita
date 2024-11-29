@@ -43,6 +43,20 @@ const PatientListOD: React.FC = () => {
     queryFn: fetchPatient
   })
 
+  // async function deletePatient() {
+  //   try{
+  //     const response = await api.get(`${Local.DELETE_PATIENT}`, {
+  //       headers:{
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     })
+  //     return response.data;
+  //   }
+  //   catch(err){
+  //     toast.error(`${err}`);
+  //   }
+  // }
+
   if(isLoading){
     return(
       <>
@@ -120,7 +134,8 @@ const PatientListOD: React.FC = () => {
                 localStorage.setItem("room", roomId);
                 console.log("ROOOOOOOOOOOOOOOm")
                 joinRoom(roomId);
-                navigate(`/chat/${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`);
+                // navigate(`/chat/${patient.referedby.uuid}${patient.referedto.uuid}${patient.uuid}`);
+                navigate("/chat",{state:{rooj}})
               }}>
                 Link
               </a>
@@ -128,7 +143,7 @@ const PatientListOD: React.FC = () => {
             <td className="border px-4 py-2">
                 <div className='flex flex-row'>
                 <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-patient/${patient.uuid}`); }}><MdOutlineEdit /></button>
-                <button className="btn btn-danger mr-2"><AiOutlineDelete /></button>
+                <button className="btn btn-danger mr-2" onClick={deletePatient}><AiOutlineDelete /></button>
                 <button className="btn btn-secondary" onClick={() => { navigate(`/view-patient/${patient.uuid}`); }}><MdOutlineRemoveRedEye /></button>
                 </div>
               </td>

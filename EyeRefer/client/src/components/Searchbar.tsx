@@ -56,17 +56,17 @@ const Searchbar = ({ refetch, query, setQuery }) => {
   // console.log("PATIENT", Patients)
 
   return (
-    <div className="flex mt-4">
+    <div className="flex mt-4 gap-x-2">
       <input
         type="text"
-        className="border-gray-400 py-3 px-3 w-1/4 rounded focus:ring-teal-600 m-4"
+        className="border-gray-400 p-2 w-1/4 rounded focus:ring-gray-950 "
         placeholder="Search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown} 
       />
-      <Button onClick={handleSearch}>
-        <IoIosSearch /> Search
+      <Button onClick={handleSearch} className={" items-center gap-x-2"}>
+        <IoIosSearch /> <span>Search</span>
       </Button>
     </div>
   );

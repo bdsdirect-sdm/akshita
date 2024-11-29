@@ -39,6 +39,14 @@ Patient.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    email:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    phone:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     disease:{
         type: DataTypes.STRING,
         allowNull: false

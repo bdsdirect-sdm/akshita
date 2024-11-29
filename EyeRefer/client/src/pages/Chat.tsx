@@ -50,7 +50,7 @@ const Chat = () => {
     <div className="flex h-screen">
       <ChatBar />
       <div className="flex flex-col flex-1 p-4">
-        <div className="bg-teal-700 p-4 rounded-t-md">
+        <div className="bg-[#35c0e4] p-4 rounded-t-md">
           <h2 className="text-white text-xl">Patient Name</h2>
         </div>
 
