@@ -9,6 +9,7 @@ import { Op, where } from "sequelize";
 import bcrypt from 'bcrypt';
 import Appointment from "../models/Appointment";
 import Message from "../models/Message";
+import Staff from "../models/Staff";
 
 const Security_Key:any = Local.SECRET_KEY;
 
@@ -367,6 +368,32 @@ export const viewAppointment = async(req: any, res: any) => {
     }
 }
 
+export const editAppointment = async (req: any, res: any) => {
+    try {
+      const id = req.params.id;
+      const { date, type, notes } = req.body;
+      console.log("PATIENT DATA:", req.body);
+  
+      const appointment = await Appointment.findOne({
+        where: { uuid: id },
+        include: [{ model: Patient }]
+      });
+  
+      if (appointment) {
+        appointment.date = date
+        appointment.type = type
+        appointment.notes = notes
+        await appointment.save();
+        res.status(200).json({ message: "Patient updated successfully" });
+      } else {
+        res.status(404).json({ message: "Patient not found" });
+      }
+    } catch (err) {
+      res.status(500).json({ message: "Internal server error", err });
+    }
+}
+
+//tbc
 export const deletePatient = async (req: any, res: any) => {
     try {
         // const patient 
@@ -388,42 +415,43 @@ export const viewPatient = async (req: any, res: any) => {
 //tbc
 export const editPatient = async (req: any, res: any) => {
     try {
-        const id = req.params.id;
-        const {dob,
-            phone,
-            firstname,
-            lastname,
-            gender,
-            disease,
-            laterality,
-            referback,
-            timing,
-            referedto,
-            address,
-            note, uuid} = req.body;
-        const  medicaldocs  = req.file.path;
-
-        const patient = await Patient.findOne({where: {uuid: id}, include: [{model: User}, {model: Address}, {model: Appointment}]});
-        if(patient) {
-            patient.dob = dob;
-            patient.phone = phone,
-            patient.firstname = firstname,
-            patient.lastname = lastname,
-            patient.gender = gender,
-            patient.disease = disease,
-            patient.laterality = laterality,
-            patient.referback = referback,
-            patient.timing = timing,
-            patient.referedto = referedto,
-            patient.address = address,
-            patient.note = note
-        }
-        await patient?.save();
+      const id = req.params.id;
+      const {
+        dob, phone, firstname, lastname, gender, disease, laterality,
+        referback, timing, referedto, address, note, uuid
+      } = req.body;
+      console.log("PATIENT DATA:", req.body);
+  
+      const patient = await Patient.findOne({
+        where: { uuid: id },
+        include: [{ model: User }, { model: Address }, { model: Appointment }]
+      });
+  
+      if (patient) {
+        patient.dob = dob;
+        patient.phone = phone;
+        patient.firstname = firstname;
+        patient.lastname = lastname;
+        patient.gender = gender;
+        patient.disease = disease;
+        patient.laterality = laterality;
+        patient.referback = referback;
+        patient.timing = timing;
+        patient.referedto = referedto;
+        patient.address = address;
+        patient.note = note;
+  
+        await patient.save();
+        res.status(200).json({ message: "Patient updated successfully" });
+      } else {
+        res.status(404).json({ message: "Patient not found" });
+      }
     } catch (err) {
-        res.status(500).json({message: "Internal server error", err})
+      res.status(500).json({ message: "Internal server error", err });
     }
-}
+  };
 
+//tbc
 export const chatRooms = async(req: any, res: any) => {
     //show patient as room where doc in referedto or referedby
     try {
@@ -435,6 +463,7 @@ export const chatRooms = async(req: any, res: any) => {
     } catch (err) {}
 }
 
+//tbc
 export const chatData = async (req: any, res: any) => {
     try {
         const roomId = req.user.room; 
@@ -447,5 +476,71 @@ export const chatData = async (req: any, res: any) => {
     } catch (err) {
         console.error("Error fetching chat data:", err);
         res.status(500).json({ message: "An error occurred while fetching chat data" });
+    }
+};
+
+export const addStaff = async (req: any, res: Response) => {
+    try {
+        // console.log("BODY:::::::::", req.body)
+        const {uuid} = req.user;
+      const { name, email, phone, gender } = req.body;
+  
+      const newStaff = await Staff.create({
+        name,
+        email,
+        phone,
+        gender,
+        user: uuid
+      });
+      res.status(201).json({
+        message: 'Staff added successfully',
+        staff: newStaff,
+      });
+    } catch (err) {
+      res.status(500).json({ message: 'Failed to add staff', err });
+    }
+};
+
+export const viewStaff = async (req: any, res: Response) => {
+    try {
+        console.log("BODY:::::::::", req.body)
+        const {uuid} = req.user;
+        const staffList = await Staff.findAll({where: {user: uuid}})
+        if(staffList) {
+            res.status(200).json({"StaffList": staffList})
+        }
+    } catch (err) {
+    res.status(500).json({ message: 'Failed to add staff', err });
+    }
+};
+
+export const getStaff = async(req: any, res: any) => {
+    try {
+        const { id } = req.params;
+        // console.log("ID:::::::::::", id)
+        const staff = await Staff.findOne({where: {uuid: id}} );
+        res.status(200).json({"staffData": staff, "message": "Staff data received"});
+    } catch (err) {
+        res.status(500).json({message: "Internal server error", err});
+    }
+}
+
+export const editStaff = async (req: any, res: Response) => {
+    try {
+        const id = req.params.id;
+        // console.log("BODYYYYYYYY:::::::", req.body)
+        const { name, email, phone, gender } = req.body;
+        const staff = await Staff.findOne({where: {uuid: id}})
+        if ( staff ) {
+            staff.name = name;
+            staff.email = email;
+            staff.phone = phone;
+            staff.gender = gender
+        }
+
+        await staff?.save();
+        res.status(200).json({ message: "Staff updated successfully" });
+    } catch (err) {
+        res.status(500).json({ message: 'Failed to add staff', err });
     }
 };

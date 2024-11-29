@@ -2,7 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Local } from '../environment/env';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import api from '../api/axiosInstance';
 import * as Yup from 'yup';
@@ -11,11 +11,9 @@ import * as Yup from 'yup';
 const validationSchema = Yup.object().shape({
   firstname: Yup.string().required('First Name is required'),
   lastname: Yup.string().required('Last Name is required'),
-  disease: Yup.string().required("Disease is required"),
-  referedto: Yup.string().required("Select Doctor"),
-  phone: Yup.string()
-    .required("Phone is required")
-    .matches(/^\d{10}$/, "Phone number must be exactly 10 digits"),
+  date: Yup.string().required('Date is required'),
+  type: Yup.string().required('Type is required'),
+  notes: Yup.string().required('Notes are required'),
 });
 
 const EditAppointment: React.FC = () => {
@@ -23,25 +21,23 @@ const EditAppointment: React.FC = () => {
   const token = localStorage.getItem('token');
   const { id } = useParams();
 
-  const [appointmentData, setAppointmentData] = useState<any>(null);
-
   useEffect(() => {
     if (!token) navigate('/login');
   }, [navigate, token]);
 
-  // Fetch the appointment details
   const fetchAppointment = async () => {
     try {
       const response = await api.get(`${Local.VIEW_APPOINTMENT}/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log("OG APPOINTMENT DATA", response.data)
       return response.data;
     } catch (err) {
       toast.error('Error fetching appointment data');
     }
   };
 
-  const { data: appointment, error, isLoading, isError } = useQuery({
+  const { data: Appointment, error, isLoading, isError } = useQuery({
     queryKey: ['appointment', id],
     queryFn: fetchAppointment,
   });
@@ -52,13 +48,15 @@ const EditAppointment: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success('Appointment updated successfully');
-      navigate('/appointments');  // Redirect to the appointments list
+      navigate('/view-appointments'); 
     } catch (err) {
       toast.error('Error updating appointment');
     }
   };
 
-  const mutation = useMutation(updateAppointment);
+  const mutation = useMutation({
+    mutationFn: updateAppointment
+  });
 
   const handleSubmit = (values: any) => {
     mutation.mutate(values);
@@ -83,11 +81,11 @@ const EditAppointment: React.FC = () => {
     <div>
       <Formik
         initialValues={{
-        //   firstname: appointment?.patient.firstname || '',
-        //   lastname: appointment?.patient.lastname || '',
-        //   disease: appointment?.disease || '',
-        //   referedto: appointment?.doctor?.id || '',
-        //   phone: appointment?.patient.phone || '',
+          firstname: Appointment?.appointmentData?.Patient?.firstname || '',
+          lastname: Appointment?.appointmentData?.Patient?.lastname || '',
+          date: Appointment?.appointmentData?.date || '',
+          type: Appointment?.appointmentData?.type || '',
+          notes: Appointment?.appointmentData?.notes || '',
         }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
@@ -99,6 +97,7 @@ const EditAppointment: React.FC = () => {
             <div className="form-group">
               <label className="block mb-1">First Name:</label>
               <Field
+              disabled
                 type="text"
                 name="firstname"
                 className="w-full border border-gray-300 rounded-md p-2"
@@ -109,35 +108,50 @@ const EditAppointment: React.FC = () => {
             <div className="form-group">
               <label className="block mb-1">Last Name:</label>
               <Field
+              disabled
                 type="text"
                 name="lastname"
                 className="w-full border border-gray-300 rounded-md p-2"
               />
               <ErrorMessage name="lastname" component="div" className="text-red-500 mt-1" />
             </div>
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div className="form-group">
-              <label className="block mb-1">Disease:</label>
+              <label className="block mb-1">Date:</label>
               <Field
-                type="text"
-                name="disease"
+                type="date"
+                name="date"
                 className="w-full border border-gray-300 rounded-md p-2"
               />
-              <ErrorMessage name="disease" component="div" className="text-red-500 mt-1" />
+              <ErrorMessage name="date" component="div" className="text-red-500 mt-1" />
+            </div>
+
+            <div className="form-group">
+              <label className="block mb-1">Type:</label>
+
+              <Field as="select" name="type" className="w-full border border-gray-300 rounded-md p-2">
+                <option value="" disabled>
+                 Select
+                </option>
+                <option value="consultation">Consultation</option>
+                <option value="surgery">Surgery</option>
+              </Field>
+              <ErrorMessage name="type" component="div" className="text-red-500 mt-1" />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div className="form-group">
-              <label className="block mb-1">Phone:</label>
+              <label className="block mb-1">Notes:</label>
               <Field
-                type="text"
-                name="phone"
+                as="textarea"
+                name="notes"
                 className="w-full border border-gray-300 rounded-md p-2"
               />
-              <ErrorMessage name="phone" component="div" className="text-red-500 mt-1" />
+              <ErrorMessage name="notes" component="div" className="text-red-500 mt-1" />
             </div>
-
           </div>
 
           <div className="flex justify-between">

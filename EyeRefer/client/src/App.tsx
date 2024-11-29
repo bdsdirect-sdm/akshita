@@ -4,8 +4,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddPatient from './pages/AddPatient';
 import DoctorList from './pages/DoctorList';
-import StaffList from './tempPages/StaffList';
-import AddStaff from './tempPages/AddStaff';
+import StaffList from './pages/StaffList';
+import AddStaff from './pages/AddStaff';
+import EditStaff from './pages/EditStaff';
 import Signup from './pages/Signup'
 import Verify from './pages/Verify'
 import Login from './pages/Login'
@@ -67,14 +68,6 @@ const  App:react.FC = () => {
           element: <DoctorList />
         },
         {
-          path: '/staff',
-          element: <StaffList />
-        },
-        {
-          path: '/add-staff',
-          element: <AddStaff />
-        },
-        {
           path: '/add-address',
           element: <AddAddress />
         },
@@ -117,6 +110,18 @@ const  App:react.FC = () => {
         {
           path: '/edit-appointment/:id',
           element: <EditAppointment />
+        },
+        {
+          path: '/staff-list',
+          element: <StaffList />
+        },
+        {
+          path: '/add-staff',
+          element: <AddStaff />
+        },
+        {
+          path: '/edit-staff/:id',
+          element: <EditStaff />
         },
       ]
     }

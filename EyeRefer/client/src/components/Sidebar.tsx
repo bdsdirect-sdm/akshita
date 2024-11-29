@@ -87,6 +87,13 @@ const Navbar = () => {
                                 <Link to="/add-patient" className="nav-link rounded px-2 text-[#232A2E] border-l-4">Add Referral Patient</Link>
                             </li>
                         )}
+
+                            <li className='flex justify-start hover:bg-teal-100  cursor-pointer '>
+                                <Link to="/staff-list" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
+                                    <CiChat1 className='text-xl'/>
+                                    <span className="nav-link rounded px-2 ">Staff</span>
+                                </Link>
+                            </li>
                     </>
                 )}
             </ul>

@@ -14,10 +14,15 @@ interface config{
     UPDATE_APPOINTMENT_STATUS: string;
     VIEW_DOCTORS: string;
     VIEW_PATIENT: string;
+    EDIT_PATIENT: string;
     GET_CHATBAR: string;
     GET_CHATDATA: string;
     VIEW_APPOINTMENT: string;
     EDIT_APPOINTMENT: string;
+    ADD_STAFF: string;
+    GET_STAFF_LIST: string;
+    EDIT_STAFF: string;
+    GET_STAFF: string;
 }
 
 export const Local:config = {
@@ -36,8 +41,13 @@ export const Local:config = {
     UPDATE_APPOINTMENT_STATUS: import.meta.env.VITE_UPDATE_APPOINTMENT_STATUS, 
     VIEW_DOCTORS: import.meta.env.VITE_VIEW_DOCTORS,
     VIEW_PATIENT: import.meta.env.VITE_VIEW_PATIENT,
+    EDIT_PATIENT: import.meta.env.VITE_EDIT_PATIENT,
     GET_CHATBAR: import.meta.env.VITE_GET_CHATBAR,
     GET_CHATDATA: import.meta.env.VITE_GET_CHATDATA,
     VIEW_APPOINTMENT: import.meta.env.VITE_VIEW_APPOINTMENT,
-    EDIT_APPOINTMENT: import.meta.VITE_EDIT_APPOINTMENT,
+    EDIT_APPOINTMENT: import.meta.env.VITE_EDIT_APPOINTMENT,
+    ADD_STAFF: import.meta.env.VITE_ADD_STAFF,
+    GET_STAFF_LIST: import.meta.env.VITE_GET_STAFF_LIST,
+    EDIT_STAFF: import.meta.env.VITE_EDIT_STAFF,
+    GET_STAFF: import.meta.env.VITE_GET_STAFF
 }

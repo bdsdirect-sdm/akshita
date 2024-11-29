@@ -5,6 +5,7 @@ import sequelize from './config/db';
 import userRouter from './routers/userRouter';
 import {createServer} from 'http';
 import setSocket from './socket/socket';
+import Staff from './models/Staff';
 
 const app = express();
 

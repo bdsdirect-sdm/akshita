@@ -43,19 +43,19 @@ const PatientListOD: React.FC = () => {
     queryFn: fetchPatient
   })
 
-  // async function deletePatient() {
-  //   try{
-  //     const response = await api.get(`${Local.DELETE_PATIENT}`, {
-  //       headers:{
-  //         Authorization: `Bearer ${token}`
-  //       }
-  //     })
-  //     return response.data;
-  //   }
-  //   catch(err){
-  //     toast.error(`${err}`);
-  //   }
-  // }
+  async function deletePatient() {
+    try{
+      // const response = await api.get(`${Local.DELETE_PATIENT}`, {
+      //   headers:{
+      //     Authorization: `Bearer ${token}`
+      //   }
+      // })
+      // return response.data;
+    }
+    catch(err){
+      toast.error(`${err}`);
+    }
+  }
 
   if(isLoading){
     return(

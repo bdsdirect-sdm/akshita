@@ -13,13 +13,7 @@ const validationSchema = Yup.object().shape({
   disease: Yup.string().required("Disease is required"),
   referedto: Yup.string().required("Select Doctor"),
   // address: Yup.string().required("Address is required"),
-  referback: Yup.string().required("Please select an option"),
-  medicaldocs: Yup.mixed()
-  .required("Medical documents are required")
-  // .test("fileType", "Only pdf, .png and .jpeg files are allowed"
-  //   ,(value: any) => {
-  //   return value && ["image/png", "image/jpeg", "application/pdf"].includes(value.type);
-  // })
+  referback: Yup.string().required("Please select an option")
 ,
   phone: Yup.string()
     .required("Phone is required")
@@ -30,10 +24,6 @@ const EditPatient: React.FC = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const { id } = useParams();
-
-  const [initialData, setInitialData] = useState({
-
-  });
 
   useEffect(() => {
     if (!token) navigate('/login');
@@ -61,47 +51,38 @@ const EditPatient: React.FC = () => {
     queryFn: fetchPatient
   })
 
-  const addPatient = async (data: any) => {
+  const editPatient = async (data: any) => {
     console.log("Data for API", data);
     try {
-      const response = await api.post(`${Local.ADD_PATIENT}`, data, {
+      const response = await api.put(`${Local.EDIT_PATIENT}/${id}`, data, {
         headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data"
+          Authorization: `Bearer ${token}`
         }
       });
-      toast.success("Patient referred successfully");
+      toast.success("Patient edited successfully");
       if (localStorage.getItem('token')) {
         navigate("/dashboard");
-    }
-      return;
+      }
     } catch (err: any) {
+      console.error("API Error:", err);
+      console.error("Response:", err.response);
       toast.error(`${err.response?.data?.message || 'Error occurred'}`);
       return;
     }
   };
-
+  
   const patientMutate = useMutation({
-    mutationFn: addPatient
+    mutationFn: editPatient
   });
 
   const referPatientHandler = (values: any) => {
-    console.log("TEST::::::", values)
-    const formData = new FormData();
-    Object.keys(values).forEach((key) => {
-      formData.append(key, values[key]);
-    });
     // console.log("TEST::::::", values)
-    // console.log("Userrrrrrr", formData)
+    // const formData = new FormData();
+    // Object.keys(values).forEach((key) => {
+    //   formData.append(key, values[key]);
+    // });
     patientMutate.mutate(values);
   };
-
-  function handleFileChange(e: any, setFieldValue: any)  {
-    setFieldValue(
-      "medicaldocs",
-      e.currentTarget.files ? e.currentTarget.files[0] : null
-    );
-  }
 
   const fetchDocs = async () => {
     try {
@@ -154,13 +135,13 @@ const EditPatient: React.FC = () => {
           timing: Patient?.patientData?.timing,
           referedto: Patient?.patientData?.referedto,
           address: Patient?.patientData?.address,
-          medicaldocs: File || null,
+          // medicaldocs: File || null,
           notes: Patient?.patientData?.notes
         }}
         validationSchema={validationSchema}
         onSubmit={referPatientHandler}
       >
-        {({ values, setFieldValue }) => (
+        {({ values }) => (
           <Form>
           <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
         
@@ -302,7 +283,7 @@ const EditPatient: React.FC = () => {
               <label className="block mb-1">Location:</label>
               <Field as="select" name="address" className="w-full border border-gray-300 rounded-md p-2">
                 <option value="" disabled>Select</option>
-                {values.referedto && MDList.docList.find((md: any) => md.uuid === values.referedto)?.Addresses.map((address: any) => (
+                {values.referedto && MDList?.docList?.find((md: any) => md.uuid === values.referedto)?.Addresses?.map((address: any) => (
                   <option key={address.uuid} value={address.uuid}>{address.street} {address.district} {address.city} {address.state}</option>
                 ))}
               </Field>
@@ -310,7 +291,7 @@ const EditPatient: React.FC = () => {
             </div>
           </div>
         
-          <div className="form-group mb-4">
+          {/* <div className="form-group mb-4">
             <label className="block mb-1">Medical documents:</label>
             <input
               type="file"
@@ -319,7 +300,7 @@ const EditPatient: React.FC = () => {
               onChange={(e) => handleFileChange(e, setFieldValue)}
             />
             <ErrorMessage name="medicaldocs" component="div" className="text-red-500 mt-1" />
-          </div>
+          </div> */}
         
           <div className="form-group mb-4">
             <label className="block mb-1">Notes:</label>
@@ -334,7 +315,7 @@ const EditPatient: React.FC = () => {
         
           <div className="flex justify-between">
             <button type="submit" className="btn btn-outline-primary bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">
-              Save as Draft
+              Save
             </button>
             <button
               type="button"
