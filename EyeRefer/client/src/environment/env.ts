@@ -24,6 +24,7 @@ interface config{
     EDIT_STAFF: string;
     GET_STAFF: string;
     DELETE_PATIENT: string;
+    DELETE_STAFF: string;
 }
 
 export const Local:config = {
@@ -51,5 +52,6 @@ export const Local:config = {
     GET_STAFF_LIST: import.meta.env.VITE_GET_STAFF_LIST,
     EDIT_STAFF: import.meta.env.VITE_EDIT_STAFF,
     GET_STAFF: import.meta.env.VITE_GET_STAFF,
-    DELETE_PATIENT: import.meta.env.VITE_DELETE_PATIENT
+    DELETE_PATIENT: import.meta.env.VITE_DELETE_PATIENT,
+    DELETE_STAFF: import.meta.env.VITE_DELETE_STAFF
 }

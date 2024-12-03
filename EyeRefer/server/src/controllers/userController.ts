@@ -539,10 +539,19 @@ export const editStaff = async (req: any, res: Response) => {
             staff.phone = phone;
             staff.gender = gender
         }
-
         await staff?.save();
         res.status(200).json({ message: "Staff updated successfully" });
     } catch (err) {
         res.status(500).json({ message: 'Failed to add staff', err });
     }
 };
+
+export const deleteStaff = async (req: any, res: any) => {
+    try {
+        const id = req.params.id;
+        await Staff.destroy({where: {uuid: id}});
+        res.status(200).json({message: "Staff deleted."});
+    } catch (err) {
+        res.status(500).json({message: "Internal server error", err})
+    }
+}

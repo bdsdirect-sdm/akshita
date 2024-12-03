@@ -35,7 +35,7 @@ const AddStaff: React.FC = () => {
     mutationFn: addStaff,
     onSuccess: () => {
       toast.success('Staff added successfully');
-      navigate('/dashboard');
+      navigate('/staff-list');
     },
   });
 

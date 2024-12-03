@@ -7,6 +7,7 @@ import { Local } from '../environment/env';
 import { MdOutlineEdit } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import Button from "../components/Button"
+import {queryClient} from "../main"
 
 const StaffList: React.FC = () => {
   const navigate = useNavigate();
@@ -38,19 +39,25 @@ const StaffList: React.FC = () => {
     queryFn: fetchStaff,
   });
 
-  async function deleteStaff(uuid) {
-    try {
-      const response = await api.get(`${Local.GET_STAFF_LIST}`, {
+  const deleteStaff = async (id: string) => {
+    // 
+      try {
+        if (window.confirm("Are you sure you want to delete this patient?")) 
+      {await api.delete(`${Local.DELETE_STAFF}/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
-      return response.data;
-    } catch (err) {
-      toast.error('Error fetching staff data');
-      throw new Error(err.message);
-    }
-  }
+      console.log("HELLOOOOO")
+      queryClient.invalidateQueries({ queryKey: ['staff'] })
+
+      toast.success("Patient deleted successfully!");}
+        // refetch(); // Refetch the data after deletion
+      } catch (err) {
+        toast.error("Failed to delete patient.");
+      }
+    
+  };
 
   if (isLoading) {
     return (
