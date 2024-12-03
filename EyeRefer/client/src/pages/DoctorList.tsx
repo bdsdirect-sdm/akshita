@@ -56,7 +56,7 @@ const DoctorList: React.FC = () => {
   console.log("Doctor-List------------>", Doctors);
   return (
     <>
-    <Searchbar/>
+    {/* <Searchbar/> */}
     <div className='m-8' >
   <div className='overflow-x-auto'>
     <table className="table-auto w-full my-4 border border-gray-300">

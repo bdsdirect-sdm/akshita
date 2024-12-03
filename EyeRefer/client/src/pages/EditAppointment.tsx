@@ -78,7 +78,7 @@ const EditAppointment: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className='m-5 p-8'>
       <Formik
         initialValues={{
           firstname: Appointment?.appointmentData?.Patient?.firstname || '',
@@ -164,9 +164,9 @@ const EditAppointment: React.FC = () => {
             <button
               type="button"
               className="btn btn-outline-secondary bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300"
-              onClick={() => navigate('/appointments')}
+              onClick={() => navigate('/view-appointments')}
             >
-              Cancel
+              Cancel Changes
             </button>
           </div>
         </Form>

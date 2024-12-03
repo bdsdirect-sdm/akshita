@@ -6,6 +6,7 @@ import userRouter from './routers/userRouter';
 import {createServer} from 'http';
 import setSocket from './socket/socket';
 import Staff from './models/Staff';
+import Message from './models/Message';
 
 const app = express();
 
@@ -15,7 +16,7 @@ setSocket(httpServer);
 app.use(cors());
 app.use(express.json());
 app.use("/", userRouter);
-sequelize.sync({alter: true}).then(()=>{
+Message.sync({alter: true}).then(()=>{
     httpServer.listen(Local.SERVER_PORT,  () => {
         console.log(`Server is running on port ${Local.SERVER_PORT}`);
         });

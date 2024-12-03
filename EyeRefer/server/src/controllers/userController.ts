@@ -360,7 +360,7 @@ export const updateAppointmentStatus = async (req: any, res: any) => {
 export const viewAppointment = async(req: any, res: any) => {
     try {
         const { id } = req.params;
-        console.log("ID:::::::::::", id)
+        // console.log("ID:::::::::::", id)
         const appointment = await Appointment.findOne({where: {uuid: id}, include: Patient} );
         res.status(200).json({"appointmentData": appointment, "message": "Appointment data received"});
     } catch (err) {
@@ -372,8 +372,7 @@ export const editAppointment = async (req: any, res: any) => {
     try {
       const id = req.params.id;
       const { date, type, notes } = req.body;
-      console.log("PATIENT DATA:", req.body);
-  
+    //   console.log("PATIENT DATA:", req.body);
       const appointment = await Appointment.findOne({
         where: { uuid: id },
         include: [{ model: Patient }]
@@ -393,10 +392,11 @@ export const editAppointment = async (req: any, res: any) => {
     }
 }
 
-//tbc
 export const deletePatient = async (req: any, res: any) => {
     try {
-        // const patient 
+        const id = req.params.id;
+        await Patient.destroy({where: {uuid: id}});
+        res.status(200).json({message: "Patient deleted."});
     } catch (err) {
         res.status(500).json({message: "Internal server error", err})
     }
@@ -459,15 +459,17 @@ export const chatRooms = async(req: any, res: any) => {
         //check patient appointment is pending or not
         const patientsList = await Patient.findAll({where:{[Op.or]:[{referedby:uuid},{referedto:uuid}]}});
         console.log(patientsList);
-        res.status(200).json("ChatRoom", patientsList, {message: "patients found"});
+        res.status(200).json({success:true,message: "patients found", patientsList});
     } catch (err) {}
 }
 
 //tbc
 export const chatData = async (req: any, res: any) => {
     try {
-        const roomId = req.user.room; 
-        const chatList = await Message.findByPk(roomId);
+        const {roomId} = req.params;
+        console.log("dsdfsdfsdfsdf",roomId)
+        const chatList = await Message.findAll({where:{room:roomId}});
+        console.log("chatList",chatList)
 
         if (!chatList) {
             return res.status(404).json({ message: "No chats found for this room" });

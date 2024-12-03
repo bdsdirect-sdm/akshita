@@ -105,7 +105,7 @@ const AddAppointment: React.FC = () => {
               <option value="" disabled>
                 Select
               </option>
-              {ReferredPatients?.patientList.map((ref: any) => (
+              {ReferredPatients?.patientList?.map((ref: any) => (
                 <option key={ref.uuid} value={ref.uuid}>
                   {ref.firstname} {ref.lastname}
                 </option>

@@ -114,7 +114,7 @@ const AddPatient: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className='p-8 m-8'>
       <Formik
         initialValues={{
           dob: '',
@@ -281,7 +281,7 @@ const AddPatient: React.FC = () => {
         
           <div className="flex justify-between">
             <button type="submit" className="btn btn-outline-primary bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">
-              Save as Draft
+              Save
             </button>
             <button
               type="button"

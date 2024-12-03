@@ -1,64 +1,110 @@
-import React, { useState, useEffect } from 'react';
-import socket from "../utils/socket";
+import  { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import ChatBar from "../components/ChatBar";
 import ChatBody from "../components/ChatBody";
+import socket from "../utils/socket";
+import { Local } from "../environment/env";
+import api from "../api/axiosInstance";
 
 const Chat = () => {
-  const [message, setMessage] = useState("");  
-  const [messageList, setMessageList] = useState<Array<any>>([]);
-  const name = localStorage.getItem("name");
   const roomId = localStorage.getItem("room");
+const doctor = JSON.parse(localStorage.getItem("doctor") as string);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const sendMessage = () => {
-    if (message !== "") {
-      const messageData = {
-        room: roomId,
-        author: name, 
-        message: message,
-        time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes()
-      };
+  const [message, setMessage] = useState("");
+  const [messageList, setMessageList] = useState<Array<any>>([]);
+  
+  const { patientName, user } = location.state || {};
+  console.log("useruseruser",user);
+  
+  const name = localStorage.getItem("name");
+  const token = localStorage.getItem("token");
 
-      socket.emit("sendMessage", messageData);  
+  // Redirect to login if token is missing
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
+  const fetchMessage = async () => {
+    try {
+      const response = await api.get(`${Local.GET_CHATDATA}/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setMessageList(response.data.chats || []);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMessage();
+    socket.emit("join_room",roomId)
+  }, [roomId]); 
+
+  const sendMessage = async () => {
+    if (message.trim() === "") return;
+
+    const messageData = {
+      room: roomId,
+      author: name,
+      message: message,
+      sender: doctor.uuid,
+      receiver: user?.referedto == doctor?.uuid ? user.referedby : doctor.uuid,
+      time: new Date().toLocaleTimeString(),
+    };
+
+    try {
+      socket.emit("sendMessage", messageData);
+
+      console.log("messageDatamessageData",messageData)
 
       setMessageList((prevMessageList) => [
         ...prevMessageList,
-        { ...messageData, isUserMessage: true } //isUserMessage' is to mark sent messages
+        messageData,
       ]);
+
+    } catch (error) {
+      console.error("Error sending message:", error);
     }
 
     setMessage(""); 
   };
 
   useEffect(() => {
-    //incoming messages
     const messageListener = (data: any) => {
       setMessageList((prevMessageList) => [
         ...prevMessageList,
-        { ...data.message, isUserMessage: false } 
+         data ,
       ]);
     };
 
     socket.on("message", messageListener);
-    console.log("MESAAGEGGE", messageList)
 
     return () => {
-      socket.off("message", messageListener);
+      socket.off("message", messageListener); 
+      localStorage.setItem("room","")
     };
-  }, [messageList]); 
+  }, []);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex">
       <ChatBar />
-      <div className="flex flex-col flex-1 p-4">
-        <div className="bg-[#35c0e4] p-4 rounded-t-md">
-          <h2 className="text-white text-xl">Patient Name</h2>
+      <div className="flex flex-col w-full h-screen">
+        <div className="bg-[#e8edec] p-4 rounded-t-md">
+          <h2 className=" text-lg font-semibold">
+            {patientName ? patientName : "Patient Name"}
+          </h2>
         </div>
 
-        <div className="flex-1 overflow-y-auto mt-4 p-4 bg-gray-50 rounded-md border border-gray-300">
+        <div className="flex-1 overflow-y-auto mt-4 p-4 bg-gray-50 grow rounded-md border border-gray-300">
           <div className="space-y-4">
-
-            {/* rendering chat messages in ChatBody */}
-            <ChatBody messageList={messageList} />
+            {/* Rendering chat messages in ChatBody */}
+            <ChatBody messageList={messageList} doctorId={doctor?.uuid} />
           </div>
         </div>
 
@@ -74,7 +120,7 @@ const Chat = () => {
             <button
               onClick={sendMessage}
               type="button"
-              className="bg-teal-900 text-white px-4 py-2 rounded-r-md hover:bg-teal-700"
+              className="bg-[#e8edec] px-4 py-2 rounded-r-md hover:bg-[#c0fae7]"
             >
               Send
             </button>

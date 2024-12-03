@@ -37,6 +37,10 @@ const Searchbar = ({ refetch, query, setQuery }) => {
   //   queryFn: fetchPatient
   // })
 
+  const handleClearSearch = () => {
+    refetch();
+  }
+
   const handleSearch = () => {
     if (query.trim() === "") {
       toast.error("Please enter a search term");
@@ -65,9 +69,13 @@ const Searchbar = ({ refetch, query, setQuery }) => {
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown} 
       />
-      <Button onClick={handleSearch} className={" items-center gap-x-2"}>
+      <Button onClick={handleSearch} className={"items-center gap-x-2"}>
         <IoIosSearch /> <span>Search</span>
       </Button>
+
+
+       <Button onClick={handleClearSearch} className={"items-center gap-x-2"}>Clear</Button>
+      
     </div>
   );
 };

@@ -17,7 +17,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-white p-8 border-r-2"> 
+        <nav className="bg-white p-8 w-1/5 border-r-2"> 
             <div className=' flex-row justify-around text-base'>
             <ul className="flex flex-col space-y-2 text-left"> 
                 {token && (
@@ -83,15 +83,29 @@ const Navbar = () => {
                             <Link to="/staff" className="nav-link rounded px-2 hover:text-teal-400 text-[#232A2E] border-l-4">Staff</Link>
                         </li> */}
                         {doctype == 2 && (
-                            <li className='flex justify-start hover:bg-teal-100 p-4 rounded hover:text-teal-400 cursor-pointer'>
-                                <Link to="/add-patient" className="nav-link rounded px-2 text-[#232A2E] border-l-4">Add Referral Patient</Link>
+                            <>
+
+                            <li className='flex justify-start hover:bg-teal-100  cursor-pointer '>
+                                <Link to="/add-patient" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
+                                    <LiaUserInjuredSolid className='text-xl'/>
+                                    <span className="nav-link rounded px-2 ">Add Referral Patient</span>
+                                </Link>
                             </li>
+                            </>
+                            
+                            
                         )}
 
                             <li className='flex justify-start hover:bg-teal-100  cursor-pointer '>
                                 <Link to="/staff-list" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
                                     <CiChat1 className='text-xl'/>
                                     <span className="nav-link rounded px-2 ">Staff</span>
+                                </Link>
+                            </li>
+
+                            <li className='flex justify-start hover:bg-teal-100  cursor-pointer '>
+                                <Link to="/charts" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
+                                    <span className="nav-link rounded px-2 ">Charts</span>
                                 </Link>
                             </li>
                     </>

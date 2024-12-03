@@ -12,6 +12,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Searchbar from "../components/Searchbar"
 import Pagination from "../components/Pagination"
+import  {queryClient} from "../main"
 
 const PatientListMD: React.FC = () => {
   const [query, setQuery] = useState("");
@@ -23,6 +24,26 @@ const PatientListMD: React.FC = () => {
       navigate('/login')
     }
   },[])
+
+  const deletePatient = async (id: string) => {
+    // 
+      try {
+        if (window.confirm("Are you sure you want to delete this patient?")) 
+      {await api.delete(`${Local.DELETE_PATIENT}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log("HELLOOOOO")
+      queryClient.invalidateQueries({ queryKey: ['patient'] })
+
+      toast.success("Patient deleted successfully!");}
+        // refetch(); // Refetch the data after deletion
+      } catch (err) {
+        toast.error("Failed to delete patient.");
+      }
+    
+  };
 
   const fetchPatient = async() => {
     try{
@@ -74,7 +95,7 @@ const PatientListMD: React.FC = () => {
   <div className='overflow-x-auto max-w-full m-8'>
     <div className='bg-white'>
       <table className="table-auto w-full my-4 border border-gray-300">
-        <thead className="bg-gray-200 text-gray-600">
+      <thead className="bg-gray-400">
           <tr>
             <th scope="col" className="border px-4 py-2">#</th>
             <th scope="col" className="border px-4 py-2">Patient Name</th>
@@ -91,7 +112,7 @@ const PatientListMD: React.FC = () => {
           </tr>
         </thead>
         <tbody className='bg-white'>
-          {Patients.patientList.map((patient: any, index: number) => (
+          {Patients?.patientList?.length > 0 ? Patients?.patientList?.map((patient: any, index: number) => (
             <tr key={patient?.uuid} className="hover:bg-gray-100">
               <td className='fw-bold border px-4 py-2'>{index + 1}</td>
               <td className="border px-4 py-2">{patient?.firstname} {patient?.lastname}</td>
@@ -125,12 +146,12 @@ const PatientListMD: React.FC = () => {
               <td className="border px-4 py-2">
                 <div className='flex flex-row'>
                 <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-patient/${patient?.uuid}`); }}><MdOutlineEdit /></button>
-                <button className="btn btn-danger mr-2"><AiOutlineDelete /></button>
+                <button className="btn btn-danger mr-2" onClick={() => deletePatient(patient.uuid)}><AiOutlineDelete /></button>
                 <button className="btn btn-secondary" onClick={() => { navigate(`/view-patient/${patient?.uuid}`); }}><MdOutlineRemoveRedEye /></button>
                 </div>
               </td>
             </tr>
-          ))}
+          )): <tr><td colSpan={12} className="text-center py-4">No data found.</td></tr>}
         </tbody>
       </table>
     </div>
