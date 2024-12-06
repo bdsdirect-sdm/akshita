@@ -1,4 +1,5 @@
 import { Local } from "../environment/env";
+import PDFDocument from 'pdfkit';
 import Address from "../models/Address";
 import Patient from "../models/Patient";
 import sendOTP from "../utils/mailer";
@@ -146,10 +147,7 @@ export const getPatientList = async(req:any, res:Response) => {
         const {uuid} = req.user;
         const { search } = req.query
         const user = await User.findOne({where:{uuid:uuid}});
-        // console.log("SEARCHHHHHHHH", search, "helojnd")
-        // console.log("HELEOEOOE::::::::::::::")
         if (user) {
-
             const whereCondition: any = {
               [Op.or]: [{ referedby: uuid }, { referedto: uuid }],
             };
@@ -173,6 +171,7 @@ export const getPatientList = async(req:any, res:Response) => {
 
                     const appointment = await Appointment.findOne({ where: {patient: patient.uuid}});
                     // console.log("APPOINTMENT:::::::::", appointment)
+                    // console.log("JJJJJJJJJJJJJJJJJJJJJJJJJJJJ", patient)
 
                     const newPatientList: any = {
                         uuid: patient.uuid,
@@ -189,7 +188,8 @@ export const getPatientList = async(req:any, res:Response) => {
                         dob: patient.dob,
                         appointmentDate: appointment?.date,
                         notes: appointment?.notes,
-                        appointmentType: appointment?.type
+                        appointmentType: appointment?.type,
+                        appointmentStatus: appointment?.status
                     };
 
                     plist.push(newPatientList);
@@ -281,13 +281,6 @@ export const addAddress = async(req:any, res:Response) => {
         res.status(500).json({"message":`${err}`});
     }
 }
-
-//tbc
-export const dashboardData = () => {
-    const referralCount = Patient.count();
-    const referralCompletedCount = Appointment.findAll({ where: { status: "completed" }})
-    const docCount = User.count();
-} 
 
 export const getReferredPatients = async (req: any, res: any) => {
     try {
@@ -555,3 +548,72 @@ export const deleteStaff = async (req: any, res: any) => {
         res.status(500).json({message: "Internal server error", err})
     }
 }
+
+//tbc
+export const dashboardData = async(req:any, res:Response) => {
+    try {
+        const { uuid } = req.user;
+        console.log("ID:::::::::::::::::::::::::::::::::::::::::", uuid)
+        const referralCount = await Patient.count({where: {referedto: uuid}});
+        const referralTime = await Patient.findOne({where: {referedto: uuid}});
+        const referralCompletedCount = await Appointment.count({ where: [{user: uuid}, { status: "completed" }]});
+        const docCount = await User.count({where: {docType: 2}});
+        // console.log("DATA:::::::", referralCount, " ", referralCompletedCount, " ", docCount)
+        res.status(200).json({referralCount, referralCompletedCount, docCount});
+    } catch (err) {
+        res.status(500).json({"message":`${err}`});
+    }
+} 
+
+export const downloadPatientPDF = async (req: any, res: any) => {
+    try {
+        const { id } = req.params;
+        const patient = await Patient.findOne({ where: { uuid: id } });
+        
+        if (!patient) {
+            return res.status(404).json({ message: 'Patient not found' });
+        }
+
+        const patientData = patient.toJSON();
+        const doc = new PDFDocument();
+        res.header('Content-Type', 'application/pdf');
+        res.attachment('patient_data.pdf');
+        doc.pipe(res);
+
+        doc.font('Helvetica-Bold').fontSize(16).text('Patient Information', { align: 'center' });
+        doc.moveDown();
+        
+        doc.font('Helvetica-Bold').fontSize(14).text('Basic Information', { align: 'left' });
+        doc.font('Helvetica').fontSize(11)
+        doc.text(`Name: ${patientData.firstname} ${patientData.lastname}`);
+        doc.text(`Phone: ${patientData.phone}`);
+        doc.text(`Email: ${patientData.email}`);
+        doc.text(`Gender: ${patientData.gender}`, { paragraphGap: 20 });
+
+        doc.font('Helvetica-Bold').fontSize(14).text('Reason of Consult', { align: 'left' });
+        doc.font('Helvetica').fontSize(11)
+        doc.text(`Reason: ${patientData.reason || 'Not provided'}`);
+        doc.text(`Laterality: ${patientData.laterality || 'Not provided'}`);
+        doc.text(`Timing: ${patientData.timing || 'Not provided'}`, { paragraphGap: 20 });
+
+        doc.font('Helvetica-Bold').fontSize(14).text('Referral MD', { align: 'left' });
+        doc.font('Helvetica').fontSize(11)
+        doc.text(`Referral MD: ${patientData.referralMD || 'Not provided'}`);
+        doc.text(`Location: ${patientData.location || 'Not provided'}`);
+        doc.text(`Notes: ${patientData.notes || 'Not provided'}`, { paragraphGap: 20 });
+
+        doc.font('Helvetica-Bold').fontSize(14).text('Appointment Details', { align: 'left' });
+        doc.font('Helvetica').fontSize(11)
+        doc.text(`Appointment date/time: ${patientData.referralMD || 'Not provided'}`);
+        doc.text(`Surgical: ${patientData.location || 'Not provided'}`, { paragraphGap: 20 });
+
+        doc.font('Helvetica-Bold').fontSize(14).text('Notes', { align: 'left' });
+        doc.font('Helvetica').fontSize(11)
+        doc.text(`Notes: ${patientData.notes || 'Not provided'}`, { paragraphGap: 20 });
+
+        doc.end();
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error generating PDF' });
+    }
+};

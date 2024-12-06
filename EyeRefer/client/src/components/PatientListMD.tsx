@@ -121,16 +121,16 @@ const PatientListMD: React.FC = () => {
               <td className="border px-4 py-2">{patient?.referedby.firstname} {patient?.referedby.lastname}</td>
               {patient?.appointmentType === "consultation" ? (
                 <>
-                  <td className="border px-4 py-2">{moment(new Date(patient?.appointmentDate)).format('MMM-D-YYYY')}</td>
+                  <td className="border px-4 py-2">{patient?.appointmentDate? moment(new Date(patient?.appointmentDate)).format('MMM-D-YYYY'): "-"}</td>
                   <td className="border px-4 py-2"></td>
                 </>
               ) : (
                 <>
                   <td className="border px-4 py-2"></td>
-                  <td className="border px-4 py-2">{moment(new Date(patient?.appointmentDate)).format('MMM-D-YYYY')}</td>
+                  <td className="border px-4 py-2">{patient?.appointmentDate? moment(new Date(patient?.appointmentDate)).format('MMM-D-YYYY'): "-"}</td>
                 </>
               )}
-              <td className="border px-4 py-2">{patient?.referalstatus ? "Completed" : "Pending"}</td>
+              <td className="border px-4 py-2">{patient?.appointmentStatus ? patient?.appointmentStatus: "Pending"}</td>
               <td className="border px-4 py-2">{patient?.referback ? "Yes" : "No"}</td>
               <td className="border px-4 py-2">{patient?.notes}</td>
               <td className="border px-4 py-2">

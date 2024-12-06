@@ -102,19 +102,13 @@ const Navbar = () => {
                                     <span className="nav-link rounded px-2 ">Staff</span>
                                 </Link>
                             </li>
-
-                            <li className='flex justify-start hover:bg-teal-100  cursor-pointer '>
-                                <Link to="/charts" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
-                                    <span className="nav-link rounded px-2 ">Charts</span>
-                                </Link>
-                            </li>
                     </>
                 )}
             </ul>
             {/* <button className='px-3 py-2' onClick={handleLogout}>Logout</button> */}
             </div>
 
-        </nav>
+        </nav> 
     );
 }
 

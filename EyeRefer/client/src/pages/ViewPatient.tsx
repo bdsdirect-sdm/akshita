@@ -4,6 +4,7 @@ import api from '../api/axiosInstance';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Button from "../components/Button"
 // import { socket } from '../utils/socket';
 
 const ViewPatient = () => {
@@ -19,6 +20,29 @@ const ViewPatient = () => {
     }
     
   },[])
+
+  const downloadPatientPDF = async () => {
+    try {
+      console.log("HELLOOOO")
+        const response = await api.get(`${Local.VIEW_PATIENT}/${id}/downloadpdf`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            responseType: 'blob',  
+        });
+        console.log("Hellooooooo")
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = 'patient_data.pdf';  
+        link.click();
+        URL.revokeObjectURL(url);
+    } catch (err) {
+        toast.error('Error downloading PDF');
+        throw new Error(err.message);
+    }
+};
 
   const fetchPatient = async() => {
     
@@ -43,13 +67,12 @@ const ViewPatient = () => {
     initialData: {}
   })
 
-//   console.log(Patient.Patient.gender)
 console.log(Patient)
-
   return (
     <>
   <div>
     <div>
+      <Button onClick={downloadPatientPDF}>Download</Button>
       <h2 className='text-2xl font-bold'>Basic Information</h2>
       <div className='bg-gray-300 p-4 m-4 w-full rounded-md'>
         <div className='flex flex-wrap'>

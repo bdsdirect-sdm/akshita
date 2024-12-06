@@ -1,16 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Local } from '../environment/env';
+import { useNavigate } from 'react-router-dom';
+import api from '../api/axiosInstance';
 import img1 from "../Assets/diversity_2.png"
 import img2 from "../Assets/diversity_2(1).png"
 import img3 from "../Assets/diversity_2(2).png"
 
 // const ReferralComponents = ({ "referralCount", referralCompleteCount, doctorCount, time }) => {
     const ReferralComponents = () => {
+      const navigate = useNavigate();
+      const token = localStorage.getItem("token");
+      const [data, setData] = useState({});
+
+    useEffect(() => {
+      if (!token) {
+          navigate("/login");
+      }
+      getDashboardData();
+      console.log("STARTTTTTT")
+  }, [token, navigate]);
+
+    const getDashboardData = async () => {
+      const response = await api.get(`${Local.GET_DASHBOARD_DATA}`, {
+          headers: {
+              Authorization: `Bearer ${token}`
+          }
+      });
+      console.log("RESPONSEE:::::", response.data)
+      setData(response.data);
+      
+      return response.data;
+  }
   return (
     <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-6 py-3 ">
       <div className="flex flex-col p-3 border border-gray-200 justify-evenly rounded-lg shadow-md bg-white">
         <div className="flex justify-between">
           <img src={img1} alt="Logo" className="w-11 h-11" />
-          <p className="text-2xl font-bold">2</p>
+          <p className="text-2xl font-bold">{data.referralCount}</p>
         </div>
         {/* <p className="text-2xl font-bold">{referralCount}</p>
         <p className="text-sm text-gray-600">Last update: {time}</p> */}
@@ -23,7 +49,7 @@ import img3 from "../Assets/diversity_2(2).png"
       <div className="fflex flex-col p-3 border border-gray-200 justify-evenly rounded-lg shadow-md bg-white">
         <div className="flex justify-between">
           <img src={img2} alt="Logo" className="w-11 h-11" />
-          <p className="text-2xl font-bold">0</p>
+          <p className="text-2xl font-bold">{data.referralCompletedCount}</p>
         </div>
         {/* <p className="text-2xl font-bold">{referralCompleteCount}</p> 
         <p className="text-sm text-gray-600">Last update: {time}</p> */}
@@ -36,7 +62,7 @@ import img3 from "../Assets/diversity_2(2).png"
       <div className="flex flex-col justify-between p-3 border border-gray-200  rounded-lg shadow-md bg-white">
         <div className="flex justify-between">
           <img src={img3} alt="Logo" className="w-12 h-12" />
-          <p className="text-2xl font-bold">4</p>
+          <p className="text-2xl font-bold">{data.docCount}</p>
         </div>
         {/* <p className="text-2xl font-bold">{doctorCount}</p>
         <p className="text-sm text-gray-600">Last update: {time}</p> */}

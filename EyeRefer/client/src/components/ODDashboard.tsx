@@ -18,6 +18,7 @@ const ODDashboard: React.FC = () => {
         }
     }, [token, navigate]);
 
+
     const getUser = async () => {
         const response = await api.get(`${Local.GET_USER}`, {
             headers: {

@@ -56,13 +56,10 @@ const Searchbar = ({ refetch, query, setQuery }) => {
       handleSearch();
     }
   };
-
-  // console.log("PATIENT", Patients)
-
   return (
     <div className="flex mt-4 gap-x-2">
       <input
-        type="text"
+        type="search"
         className="border-gray-400 p-2 w-1/4 rounded focus:ring-gray-950 "
         placeholder="Search"
         value={query}
@@ -72,9 +69,7 @@ const Searchbar = ({ refetch, query, setQuery }) => {
       <Button onClick={handleSearch} className={"items-center gap-x-2"}>
         <IoIosSearch /> <span>Search</span>
       </Button>
-
-
-       <Button onClick={handleClearSearch} className={"items-center gap-x-2"}>Clear</Button>
+      <Button onClick={handleClearSearch} className={"items-center gap-x-2"}>Clear</Button>
       
     </div>
   );

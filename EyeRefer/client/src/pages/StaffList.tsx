@@ -42,19 +42,19 @@ const StaffList: React.FC = () => {
   const deleteStaff = async (id: string) => {
     // 
       try {
-        if (window.confirm("Are you sure you want to delete this patient?")) 
+        if (window.confirm("Are you sure you want to delete this staff?")) 
       {await api.delete(`${Local.DELETE_STAFF}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      console.log("HELLOOOOO")
+      // console.log("HELLOOOOO")
       queryClient.invalidateQueries({ queryKey: ['staff'] })
 
-      toast.success("Patient deleted successfully!");}
+      toast.success("Staff deleted successfully!");}
         // refetch(); // Refetch the data after deletion
       } catch (err) {
-        toast.error("Failed to delete patient.");
+        toast.error("Failed to delete staff.");
       }
     
   };
