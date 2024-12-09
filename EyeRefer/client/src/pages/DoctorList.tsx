@@ -56,44 +56,39 @@ const DoctorList: React.FC = () => {
   console.log("Doctor-List------------>", Doctors);
   return (
     <>
-    {/* <Searchbar/> */}
-    <div className='m-8' >
-  <div className='overflow-x-auto'>
-    <table className="table-auto w-full my-4 border border-gray-300">
-      <thead className="bg-gray-400">
-        <tr>
-          <th scope="col" className="border px-4 py-2">#</th>
-          <th scope="col" className="border px-4 py-2">Doctor Name</th>
-          <th scope="col" className="border px-4 py-2">Referral Placed</th>
-          <th scope="col" className="border px-4 py-2">Referral Completed</th>
-          <th scope="col" className="border px-4 py-2">Avg Time of Contact</th>
-          <th scope="col" className="border px-4 py-2">Avg Time of Consult</th>
-          <th scope="col" className="border px-4 py-2">Phone</th>
-          <th scope="col" className="border px-4 py-2">Email</th>
-          <th scope="col" className="border px-4 py-2">Type</th>
-        </tr>
-      </thead>
-      <tbody className='bg-white'>
-        {Doctors.docList.map((doctor: any, index: number) => (
-          <tr key={doctor.uuid} className="hover:bg-gray-100">
-            <td className='fw-bold border px-4 py-2'>{index + 1}</td>
-            <td className="border px-4 py-2">{doctor.firstname} {doctor.lastname}</td>
-            <td className="border px-4 py-2"></td>
-            <td className="border px-4 py-2"></td>
-            <td className="border px-4 py-2"></td>
-            <td className="border px-4 py-2"></td>
-            <td className="border px-4 py-2">{doctor.phone}</td>
-            <td className="border px-4 py-2">{doctor.email}</td>
-            <td className="border px-4 py-2">{doctype === "2" ? "OD" : "MD"}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
-
+      {/* <Searchbar /> */}
+      <div className='m-8'>
+        <div className='overflow-x-auto'>
+          <table className="table-auto w-full my-4 border-[2px] border-gray-200">
+              <tr className="bg-white border-y-[1px]">
+                <td scope="col" className="border-y-[1px] px-4 py-2 text-sm">Doctor Name</td>
+                <td scope="col" className="border-y-[1px] px-4 py-2 text-sm">Referral Placed</td>
+                <td scope="col" className="border-y-[1px] px-4 py-2 text-sm">Referral Completed</td>
+                <td scope="col" className="border-y-[1px] px-4 py-2 text-sm">Avg Time of Contact</td>
+                <td scope="col" className="border-y-[1px] px-4 py-2 text-sm">Avg Time of Consult</td>
+                <td scope="col" className="border-y-[1px] px-4 py-2 text-sm">Phone</td>
+                <td scope="col" className="border-y-[1px] px-4 py-2 text-sm">Email</td>
+                <td scope="col" className="border-y-[1px] px-4 py-2 text-sm">Type</td>
+              </tr>
+            <tbody className="bg-white">
+              {Doctors?.docList?.map((doctor: any, index: number) => (
+                <tr key={doctor.uuid} className="hover:bg-gray-100">
+                  <td className="border-y-[1px] px-4 py-2 text-sm">{doctor.firstname} {doctor.lastname}</td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm"></td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm"></td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm"></td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm"></td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm">{doctor.phone}</td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm">{doctor.email}</td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm">{doctype === "2" ? "OD" : "MD"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
 export default DoctorList

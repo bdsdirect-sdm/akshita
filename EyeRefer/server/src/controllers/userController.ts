@@ -413,7 +413,7 @@ export const editPatient = async (req: any, res: any) => {
         dob, phone, firstname, lastname, gender, disease, laterality,
         referback, timing, referedto, address, note, uuid
       } = req.body;
-      console.log("PATIENT DATA:", req.body);
+    //   console.log("PATIENT DATA:", req.body);
   
       const patient = await Patient.findOne({
         where: { uuid: id },
@@ -459,9 +459,10 @@ export const chatRooms = async(req: any, res: any) => {
 //tbc
 export const chatData = async (req: any, res: any) => {
     try {
-        const {roomId} = req.params;
-        console.log("dsdfsdfsdfsdf",roomId)
-        const chatList = await Message.findAll({where:{room:roomId}});
+        const {id} = req.params;
+        console.log("REQUESTTTTT", req.params)
+        console.log("dsdfsdfsdfsdf",id)
+        const chatList = await Message.findAll({where:{room:id}});
         console.log("chatList",chatList)
 
         if (!chatList) {
@@ -469,7 +470,7 @@ export const chatData = async (req: any, res: any) => {
         }
         res.status(200).json({ chats: chatList, message: "Chats found" });
     } catch (err) {
-        console.error("Error fetching chat data:", err);
+        // console.error("Error fetching chat data:", err);
         res.status(500).json({ message: "An error occurred while fetching chat data" });
     }
 };
@@ -498,7 +499,7 @@ export const addStaff = async (req: any, res: Response) => {
 
 export const viewStaff = async (req: any, res: Response) => {
     try {
-        console.log("BODY:::::::::", req.body)
+        // console.log("BODY:::::::::", req.body)
         const {uuid} = req.user;
         const staffList = await Staff.findAll({where: {user: uuid}})
         if(staffList) {
@@ -553,7 +554,7 @@ export const deleteStaff = async (req: any, res: any) => {
 export const dashboardData = async(req:any, res:Response) => {
     try {
         const { uuid } = req.user;
-        console.log("ID:::::::::::::::::::::::::::::::::::::::::", uuid)
+        // console.log("ID:::::::::::::::::::::::::::::::::::::::::", uuid)
         const referralCount = await Patient.count({where: {referedto: uuid}});
         const referralTime = await Patient.findOne({where: {referedto: uuid}});
         const referralCompletedCount = await Appointment.count({ where: [{user: uuid}, { status: "completed" }]});

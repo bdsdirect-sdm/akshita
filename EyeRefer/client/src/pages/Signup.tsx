@@ -19,7 +19,7 @@ const Signup: React.FC = () => {
             navigate("/dashboard");
         }
     }, [navigate]);
-    console.log("USERRRRRRRR============>", dt);
+    // console.log("USERRRRRRRR============>", dt);
     const addUser = async (formData: any) => {
         try {
             const response = await api.post(`${Local.CREATE_USER}`, formData);

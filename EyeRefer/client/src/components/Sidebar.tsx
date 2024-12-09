@@ -17,7 +17,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-white p-8 border-r-2"> 
+        <nav className="bg-white p-10 border-t-[1px]"> 
             <div className=' flex-row justify-around text-base'>
             <ul className="flex flex-col space-y-2 text-left"> 
                 {token && (

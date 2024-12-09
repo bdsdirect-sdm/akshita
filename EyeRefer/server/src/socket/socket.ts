@@ -1,5 +1,5 @@
 import {Server} from 'socket.io'
-import { joinRoom, sendMessage } from './events';
+import { joinNotification, joinRoom, sendMessage, sendNotification } from './events';
 
 function setSocket(server:any) {
     var io = new Server(server ,{
@@ -12,9 +12,10 @@ function setSocket(server:any) {
         console.log("Connection established!", socket.id);
         joinRoom(socket);
         sendMessage(socket,io);
-
-        // socket.on("sendMessage", (messageData))
+        joinNotification(socket,io);
+        sendNotification(socket,io)
     })
+
 }
 
 export default setSocket;

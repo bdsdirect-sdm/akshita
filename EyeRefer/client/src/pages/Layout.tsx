@@ -13,7 +13,7 @@ const Layout = () => {
                 <div>
                   <Navbar />
                 </div>
-                <div  className="w-full overflow-x-auto">
+                <div  className="w-full overflow-x-auto bg-gray-200">
                   <Outlet />
                 </div>
                 

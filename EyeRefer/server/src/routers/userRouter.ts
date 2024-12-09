@@ -25,7 +25,7 @@ router.get("/view-doctors", userAuthMiddleware, getDocList)
 router.get("/view-patient/:id", userAuthMiddleware, viewPatient)
 router.put("/edit-patient/:id", userAuthMiddleware, editPatient)
 router.get("/get-chatbar", userAuthMiddleware, chatRooms)
-router.get("/get-chatdata", userAuthMiddleware, chatData)
+router.get("/get-chatdata/:id", userAuthMiddleware, chatData)
 router.get("/staff-list", userAuthMiddleware, viewStaff)
 router.post("/add-staff", userAuthMiddleware, addStaff); 
 router.put("/edit-staff/:id", userAuthMiddleware, editStaff) 

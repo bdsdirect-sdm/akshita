@@ -30,7 +30,6 @@ const ViewPatient = () => {
             },
             responseType: 'blob',  
         });
-        console.log("Hellooooooo")
         const blob = new Blob([response.data], { type: 'application/pdf' });
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
@@ -71,9 +70,12 @@ console.log(Patient)
   return (
     <>
   <div>
-    <div>
-      <Button onClick={downloadPatientPDF}>Download</Button>
-      <h2 className='text-2xl font-bold'>Basic Information</h2>
+    <div className='p-8'>
+      <div className='flex justify-between align-items-center'>
+        <h2 className='text-2xl font-bold'>Basic Information</h2>
+        <Button onClick={downloadPatientPDF}>Download</Button>
+      </div>
+      
       <div className='bg-gray-300 p-4 m-4 w-full rounded-md'>
         <div className='flex flex-wrap'>
           <p className='text-lg p-2 w-1/2'>Name: {Patient.firstname} {Patient.lastname}</p>

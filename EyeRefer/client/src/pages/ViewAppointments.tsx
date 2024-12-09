@@ -68,57 +68,56 @@ const ViewAppointments: React.FC = () => {
       </>
       )}
 
-  console.log("Appointment-List------------>", Appointments);
+  // console.log("Appointment-List------------>", Appointments);
   return (
-    <>
-    <div>
-      <div></div>
+    <div className='overflow-x-auto max-w-full m-8'>
       <div>
-      <table className="table my-4">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Patient name</th>
-      <th scope="col">Date</th>
-      <th scope="col">Type</th>
-      <th scope="col">Status</th>
-      <th scope="col">Complete appointment</th>
-      <th scope="col">Cancel appointment</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {Appointments.appointmentList.map((appointment: any, index: number) =>(
-      <>
-      <tr>
-        <td className='fw-bold' > {index+1} </td>
-        <td>{appointment.name}</td>
-        <td> {appointment.date} </td>
-        <td>{appointment.type}</td>
-        <td> {appointment.status}</td>
-        
-        <td>
-          <button className='text-green-700' onClick={() => {
-            updateStatus("Completed", appointment.patient.uuid, appointment.id)
-          }}> Complete </button>
-        </td>
-        <td>
-          <button className='text-red-700' onClick={() => updateStatus("Canceled", appointment.patient.uuid, appointment.id)}> Cancel </button>
-        </td>
-        <td className="border px-4 py-2">
-                <div className='flex flex-row'>
-                <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-appointment/${appointment.id}`); }}><MdOutlineEdit /></button>
-                <button className="btn btn-secondary" onClick={() => { navigate(`/view-appointment/${appointment.id}`); }}><MdOutlineRemoveRedEye /></button>
-                </div>
-              </td>
-      </tr>
-      </>
-    ))}
-  </tbody>
-</table>
+        <div >
+          <table className="table-auto w-full my-4 border border-gray-300">
+            <thead className="bg-gray-400">
+              <tr >
+                <th scope="col" className="border px-4 py-2">#</th>
+                <th scope="col" className="border px-4 py-2">Patient name</th>
+                <th scope="col" className="border px-4 py-2">Date</th>
+                <th scope="col" className="border px-4 py-2">Type</th>
+                <th scope="col" className="border px-4 py-2">Status</th>
+                <th scope="col" className="border px-4 py-2">Complete appointment</th>
+                <th scope="col" className="border px-4 py-2">Cancel appointment</th>
+                <th scope="col" className="border px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Appointments.appointmentList.map((appointment: any, index: number) =>(
+                <>
+                <tr key={appointment?.uuid} className="hover:bg-gray-100">
+                  <td className='fw-bold border px-4 py-2' > {index+1} </td>
+                  <td className="border px-4 py-2">{appointment.name}</td>
+                  <td className="border px-4 py-2"> {appointment.date} </td>
+                  <td className="border px-4 py-2">{appointment.type}</td>
+                  <td className="border px-4 py-2"> {appointment.status}</td>
+                  
+                  <td>
+                    <button className="text-green-700 border px-4 py-2" onClick={() => {
+                      updateStatus("Completed", appointment.patient.uuid, appointment.id)
+                    }}> Complete </button>
+                  </td>
+                  <td>
+                    <button className='text-red-700 border px-4 py-2' onClick={() => updateStatus("Canceled", appointment.patient.uuid, appointment.id)}> Cancel </button>
+                  </td>
+                  <td className="border px-4 py-2">
+                          <div className='flex flex-row'>
+                          <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-appointment/${appointment.id}`); }}><MdOutlineEdit /></button>
+                          <button className="btn btn-secondary" onClick={() => { navigate(`/view-appointment/${appointment.id}`); }}><MdOutlineRemoveRedEye /></button>
+                          </div>
+                        </td>
+                </tr>
+                </>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    </>
   )
 }
 

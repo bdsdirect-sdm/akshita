@@ -21,9 +21,9 @@ const Header: React.FC = () => {
 
     return (
         <>
-            <div className=" p-[12px] bg-white shadow">
-                <div className="container mx-auto flex justify-between items-center">
-                    <Link to="#" className="flex items-center text-gray-800">
+            <div className="p-[12px] bg-white shadow">
+                <div className="container mx-auto flex justify-between items-center py-2">
+                    <Link to="/dashboard" className="flex items-center text-gray-800">
                         <img src={logo} alt="EyeRefer" className="h-15" />
                         {/* <p className='font-bold text-xl'>EYE REFER</p> */}
                     </Link>

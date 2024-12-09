@@ -57,7 +57,7 @@ const Searchbar = ({ refetch, query, setQuery }) => {
     }
   };
   return (
-    <div className="flex mt-4 gap-x-2">
+    <div className="flex mt-2 gap-x-2 bg-gray-200 px-8">
       <input
         type="search"
         className="border-gray-400 p-2 w-1/4 rounded focus:ring-gray-950 "

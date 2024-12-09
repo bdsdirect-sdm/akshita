@@ -13,6 +13,7 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Searchbar from "../components/Searchbar"
 import Pagination from "../components/Pagination"
 import  {queryClient} from "../main"
+import Button from "./Button"
 
 const PatientListMD: React.FC = () => {
   const [query, setQuery] = useState("");
@@ -91,75 +92,73 @@ const PatientListMD: React.FC = () => {
   
   return (
     <>
-    <Searchbar refetch={refetch} query={query} setQuery={setQuery}/>
-  <div className='overflow-x-auto max-w-full m-8'>
-    <div className='bg-white'>
-      <table className="table-auto w-full my-4 border border-gray-300">
-      <thead className="bg-gray-400">
-          <tr>
-            <th scope="col" className="border px-4 py-2">#</th>
-            <th scope="col" className="border px-4 py-2">Patient Name</th>
-            <th scope="col" className="border px-4 py-2">DOB</th>
-            <th scope="col" className="border px-4 py-2">Referred On</th>
-            <th scope="col" className="border px-4 py-2">Referred By</th>
-            <th scope="col" className="border px-4 py-2">Consultation Date</th>
-            <th scope="col" className="border px-4 py-2">Surgery Date</th>
-            <th scope="col" className="border px-4 py-2">Status</th>
-            <th scope="col" className="border px-4 py-2">Return to Referrer</th>
-            <th scope="col" className="border px-4 py-2">Consult Note</th>
-            <th scope="col" className="border px-4 py-2">Direct Message</th>
-            <th scope="col" className="border px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody className='bg-white'>
-          {Patients?.patientList?.length > 0 ? Patients?.patientList?.map((patient: any, index: number) => (
-            <tr key={patient?.uuid} className="hover:bg-gray-100">
-              <td className='fw-bold border px-4 py-2'>{index + 1}</td>
-              <td className="border px-4 py-2">{patient?.firstname} {patient?.lastname}</td>
-              <td className="border px-4 py-2">{moment(new Date(patient?.dob)).format('MMM-D-YYYY')}</td>
-              <td className="border px-4 py-2">{moment(new Date(patient?.referedon)).format('MMM-D-YYYY')}</td>
-              <td className="border px-4 py-2">{patient?.referedby.firstname} {patient?.referedby.lastname}</td>
-              {patient?.appointmentType === "consultation" ? (
-                <>
-                  <td className="border px-4 py-2">{patient?.appointmentDate? moment(new Date(patient?.appointmentDate)).format('MMM-D-YYYY'): "-"}</td>
-                  <td className="border px-4 py-2"></td>
-                </>
-              ) : (
-                <>
-                  <td className="border px-4 py-2"></td>
-                  <td className="border px-4 py-2">{patient?.appointmentDate? moment(new Date(patient?.appointmentDate)).format('MMM-D-YYYY'): "-"}</td>
-                </>
-              )}
-              <td className="border px-4 py-2">{patient?.appointmentStatus ? patient?.appointmentStatus: "Pending"}</td>
-              <td className="border px-4 py-2">{patient?.referback ? "Yes" : "No"}</td>
-              <td className="border px-4 py-2">{patient?.notes}</td>
-              <td className="border px-4 py-2">
-              <a className="underline text-blue-600 hover:cursor-pointer" onClick={() => {
-                const roomId = patient?.referedby.uuid + patient?.referedto.uuid + patient?.uuid;
-                localStorage.setItem("room", roomId);
-                joinRoom(roomId);
-                navigate(`/chat/${roomId}`);
-              }}>
-                Link
-              </a>
-            </td>
-              <td className="border px-4 py-2">
-                <div className='flex flex-row'>
-                <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-patient/${patient?.uuid}`); }}><MdOutlineEdit /></button>
-                <button className="btn btn-danger mr-2" onClick={() => deletePatient(patient.uuid)}><AiOutlineDelete /></button>
-                <button className="btn btn-secondary" onClick={() => { navigate(`/view-patient/${patient?.uuid}`); }}><MdOutlineRemoveRedEye /></button>
-                </div>
-              </td>
+      <div className='flex justify-between align-items-center bg-gray-200 p-8'>
+        <h1 className="text-2xl font-bold">Referral Patients</h1>
+        <Button onClick={() => { navigate("/add-patient") }}>+ Add Referral Patient</Button>
+      </div>
+      <Searchbar refetch={refetch} query={query} setQuery={setQuery} />
+      <div className="max-w-full p-8">
+        <table className="table-auto w-full my-4 border-[2px] border-gray-200 overflow-x-auto">
+          <thead className="bg-white">
+            <tr className="bg-white border-y-[1px]">
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Patient Name</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">DOB</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Referred On</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Referred To</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Consultation Date</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Surgery Date</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Status</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Return to Referrer</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Consult Note</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Direct Message</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Actions</th>
             </tr>
-          )): <tr><td colSpan={12} className="text-center py-4">No data found.</td></tr>}
-        </tbody>
-      </table>
-    </div>
-  </div>
-  {/* <Pagination listing={Patients?.patientList} /> */}
-</>
-
-  )
+          </thead>
+          <tbody className="bg-white">
+            {Patients?.patientList?.length > 0 ? Patients?.patientList?.map((patient: any, index: number) => (
+              <tr key={patient.uuid} className="hover:bg-gray-100">
+                <td className="border-y-[1px] px-4 py-2 text-sm">{patient.firstname} {patient.lastname}</td>
+                <td className="border-y-[1px] px-4 py-2 text-sm">{moment(new Date(patient.dob)).format('MMM-D-YYYY')}</td>
+                <td className="border-y-[1px] px-4 py-2 text-sm">{moment(new Date(patient.referedon)).format('MMM-D-YYYY')}</td>
+                <td className="border-y-[1px] px-4 py-2 text-sm">{patient.referedto.firstname} {patient.referedto.lastname}</td>
+                {patient.appointmentType === "consultation" ? (
+                  <>
+                    <td className="border-y-[1px] px-4 py-2 text-sm">{patient?.appointmentDate ? moment(new Date(patient?.appointmentDate)).format('MMM-D-YYYY') : "-"}</td>
+                    <td className="border-y-[1px] px-4 py-2 text-sm"></td>
+                  </>
+                ) : (
+                  <>
+                    <td className="border-y-[1px] px-4 py-2 text-sm"></td>
+                    <td className="border-y-[1px] px-4 py-2 text-sm">{patient?.appointmentDate ? moment(new Date(patient?.appointmentDate)).format('MMM-D-YYYY') : "-"}</td>
+                  </>
+                )}
+                <td className="border-y-[1px] px-4 py-2 text-sm">{patient.referalstatus ? "Completed" : "Pending"}</td>
+                <td className="border-y-[1px] px-4 py-2 text-sm">{patient.referback ? "Yes" : "No"}</td>
+                <td className="border-y-[1px] px-4 py-2 text-sm"><a className="text-blue-500 underline">Note</a></td>
+                <td className="border-y-[1px] px-4 py-2 text-sm">
+                  <a className="underline text-blue-600 hover:cursor-pointer" onClick={() => {
+                    const roomId = patient?.referedby.uuid + patient?.referedto.uuid + patient?.uuid;
+                    localStorage.setItem("room", roomId);
+                    joinRoom(roomId);
+                    navigate(`/chat/${roomId}`);
+                  }}>
+                    Link
+                  </a>
+                </td>
+                <td className="border-y-[1px] px-4 py-2 text-sm">
+                  <div className="flex flex-row">
+                    <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-patient/${patient.uuid}`); }}><MdOutlineEdit /></button>
+                    <button className="btn btn-danger mr-2" onClick={() => deletePatient(patient.uuid)}><AiOutlineDelete /></button>
+                    <button className="btn btn-secondary" onClick={() => { navigate(`/view-patient/${patient.uuid}`); }}><MdOutlineRemoveRedEye /></button>
+                  </div>
+                </td>
+              </tr>
+            )) : <tr><td colSpan={11} className="text-center py-4 text-sm">No data found.</td></tr>}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
 }
 
 export default PatientListMD
