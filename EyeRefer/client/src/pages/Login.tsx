@@ -8,6 +8,7 @@ import api from '../api/axiosInstance';
 import * as Yup from 'yup';
 import Footer from '../components/Footer';
 import logo from "../Assets/title_logo.webp";
+import Button from "../components/Button"
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -67,43 +68,46 @@ const Login: React.FC = () => {
 
   return (<>
 
-    <div className=''>
-    <div className='flex h-screen'>
-      <div className='w-1/2 bg-teal-500 flex items-center justify-center'>
-        <img src={logo} alt="Logo"></img>
-        <p className='text-white text-xl font-extrabold'>EYE REFER</p>
+    <div className='flex flex-col'>
+      <div className='flex flex-1'>
+          <div className='w-1/2 bg-teal-500 flex flex-col flex-1 items-center justify-center  h-screen'>
+            <img src={logo} alt="Logo"></img>
+            <p className='text-white text-xl font-extrabold'>EYE REFER</p>
+          </div>
+          
+          <div className='w-1/2 flex flex-col items-center justify-center p-14'>
+            <h2 className="text-3xl font-bold mb-6 text-center">Login</h2>
+            <div className="bg-white p-3 rounded shadow-md w-full border">
+              
+              <Formik
+                initialValues={{
+                  email: '',
+                  password: '',
+                }}
+                validationSchema={validationSchema}
+                onSubmit={loginSubmit}>
+                {() => (
+                  <Form className='p-8'>
+                    <div className="form-group mb-4">
+                      <label className="block text font-medium mb-1">Email <span className="text-red-500">*</span></label>
+                      <Field name="email" type="email" placeholder="Enter your Email" className="form-control w-full text-sm p-4 border border-gray-300 rounded" />
+                      <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                    <div className="form-group mb-4">
+                      <label className="block text font-medium mb-1">Password <span className="text-red-500">*</span></label>
+                      <Field name="password" type="password" placeholder="Enter your Password" className="form-control w-full text-sm p-4 border border-gray-300 rounded" />
+                      <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
+                    </div>
+                    <Button type="submit" className='w-full m-2 py-2 rounded text-center '>Sign Up</Button>
+                  </Form>
+                )}
+              </Formik>
+              <div className='text-center text-sm pb-2'>Dont have an account?
+                <Link to={'/signup'} className="p-2 text-[#35c0e4]">Signup</Link>
+              </div>
+            </div>
+          </div>
       </div>
-      
-      <div className='w-1/2 flex items-center justify-center'>
-        <div className="bg-white p-3 rounded shadow-md w-96">
-          <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-          <Formik
-            initialValues={{
-              email: '',
-              password: '',
-            }}
-            validationSchema={validationSchema}
-            onSubmit={loginSubmit}>
-            {() => (
-              <Form className='p-8'>
-                <div className="form-group mb-4">
-                  <label className="block text-sm font-medium mb-1">Email</label>
-                  <Field name="email" type="email" placeholder="Enter your Email" className="form-control w-full p-2 border border-gray-300 rounded" />
-                  <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-                <div className="form-group mb-4">
-                  <label className="block text-sm font-medium mb-1">Password</label>
-                  <Field name="password" type="password" placeholder="Enter your Password" className="form-control w-full p-2 border border-gray-300 rounded" />
-                  <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-                <button type="submit" className='w-full bg-teal-500 text-white py-2 rounded hover:bg-teal-600'>Login</button>
-              </Form>
-            )}
-          </Formik>
-          <Link to={'/signup'} className="block text-center mt-4 text-sm text-teal-500 hover:underline">Don't have an Account?</Link>
-        </div>
-      </div>
-    </div>
     <Footer/>
     </div>
     
