@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { MdOutlineEdit } from "react-icons/md";
 // import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import moment from 'moment';
 
 const ViewAppointments: React.FC = () => {
   const navigate = useNavigate();
@@ -71,50 +72,60 @@ const ViewAppointments: React.FC = () => {
   // console.log("Appointment-List------------>", Appointments);
   return (
     <div className='overflow-x-auto max-w-full m-8'>
+      <h1 className="text-2xl font-bold">Appointment list</h1>
       <div>
         <div >
-          <table className="table-auto w-full my-4 border border-gray-300">
-            <thead className="bg-gray-400">
-              <tr >
-                <th scope="col" className="border px-4 py-2">#</th>
-                <th scope="col" className="border px-4 py-2">Patient name</th>
-                <th scope="col" className="border px-4 py-2">Date</th>
-                <th scope="col" className="border px-4 py-2">Type</th>
-                <th scope="col" className="border px-4 py-2">Status</th>
-                <th scope="col" className="border px-4 py-2">Complete appointment</th>
-                <th scope="col" className="border px-4 py-2">Cancel appointment</th>
-                <th scope="col" className="border px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Appointments.appointmentList.map((appointment: any, index: number) =>(
-                <>
+        <table className="table-auto w-full my-4 border-[2px] border-gray-200 overflow-x-auto">
+          <thead className="bg-white">
+            <tr className="bg-white border-y-[1px]">
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Patient Name</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Date</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Type</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Status</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Complete Appointment</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Cancel Appointment</th>
+              <th scope="col" className="border-y-[1px] px-4 py-2 text-sm">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white">
+            {Appointments?.appointmentList?.length > 0 ? 
+              Appointments.appointmentList.map((appointment: any, index: number) => (
                 <tr key={appointment?.uuid} className="hover:bg-gray-100">
-                  <td className='fw-bold border px-4 py-2' > {index+1} </td>
-                  <td className="border px-4 py-2">{appointment.name}</td>
-                  <td className="border px-4 py-2"> {appointment.date} </td>
-                  <td className="border px-4 py-2">{appointment.type}</td>
-                  <td className="border px-4 py-2"> {appointment.status}</td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm">{appointment.name}</td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm">{moment(appointment.date).format('MMM-D-YYYY')}</td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm">{appointment.type}</td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm">{appointment.status}</td>
                   
                   <td>
                     <button className="text-green-700 border px-4 py-2" onClick={() => {
-                      updateStatus("Completed", appointment.patient.uuid, appointment.id)
-                    }}> Complete </button>
+                      updateStatus("Completed", appointment.patient.uuid, appointment.id);
+                    }}>Complete</button>
                   </td>
                   <td>
-                    <button className='text-red-700 border px-4 py-2' onClick={() => updateStatus("Canceled", appointment.patient.uuid, appointment.id)}> Cancel </button>
+                    <button className="text-red-700 border px-4 py-2" onClick={() => {
+                      updateStatus("Canceled", appointment.patient.uuid, appointment.id);
+                    }}>Cancel</button>
                   </td>
-                  <td className="border px-4 py-2">
-                          <div className='flex flex-row'>
-                          <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-appointment/${appointment.id}`); }}><MdOutlineEdit /></button>
-                          <button className="btn btn-secondary" onClick={() => { navigate(`/view-appointment/${appointment.id}`); }}><MdOutlineRemoveRedEye /></button>
-                          </div>
-                        </td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm">
+                    <div className="flex flex-row">
+                      <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-appointment/${appointment.id}`); }}>
+                        <MdOutlineEdit />
+                      </button>
+                      <button className="btn btn-secondary" onClick={() => { navigate(`/view-appointment/${appointment.id}`); }}>
+                        <MdOutlineRemoveRedEye />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
-                </>
-              ))}
-            </tbody>
-          </table>
+              )) 
+            : 
+              <tr>
+                <td colSpan={8} className="text-center py-4 text-sm">No data found.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
         </div>
       </div>
     </div>

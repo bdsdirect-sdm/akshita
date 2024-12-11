@@ -5,6 +5,7 @@ import ChatBody from "../components/ChatBody";
 import socket from "../utils/socket";
 import { Local } from "../environment/env";
 import api from "../api/axiosInstance";
+import Button from "../components/Button"
 
 const Chat = () => {
   const roomId = localStorage.getItem("room");
@@ -91,11 +92,17 @@ const doctor = JSON.parse(localStorage.getItem("doctor") as string);
     };
   }, []);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  };
+
   return (
-    <div className="flex">
+    <div className="flex h-[100%]">
       <ChatBar />
-      <div className="flex flex-col w-full h-screen">
-        <div className="bg-[#e8edec] p-4 rounded-t-md">
+      <div className="flex flex-col w-full p-8">
+        <div className="p-2 rounded-t-md">
           <h2 className=" text-lg font-semibold">
             {patientName ? patientName : "Patient Name"}
           </h2>
@@ -115,15 +122,16 @@ const doctor = JSON.parse(localStorage.getItem("doctor") as string);
               placeholder="Enter message"
               value={message}
               onChange={(event) => setMessage(event.target.value)}
+              onKeyDown={handleKeyDown} 
               className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
-            <button
+            <Button
               onClick={sendMessage}
               type="button"
-              className="bg-[#e8edec] px-4 py-2 rounded-r-md hover:bg-[#c0fae7]"
+              className="px-4 py-2 rounded-r-md"
             >
               Send
-            </button>
+            </Button>
           </form>
         </div>
       </div>

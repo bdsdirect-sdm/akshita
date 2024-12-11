@@ -56,7 +56,7 @@ const ChatBar = () => {
       // console.log("Room-List------------>", Patients);
   return (
     <>
-      <div className="flex flex-col py-3  px-2 border-r-2 border-gray-300 w-1/4">
+      <div className="flex flex-col py-3  px-2 border-r-2 border-gray-300 w-1/4 bg-white">
         <p className="text-lg font-semibold">Messages</p>
         <input type='text' placeholder='Search'  className='p-2 border-2 border-gray-300 w-full rounded-sm' />
         {Patients?.patientsList?.map((patient: any, index: number) => (

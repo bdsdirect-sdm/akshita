@@ -63,15 +63,15 @@ const Signup: React.FC = () => {
 
     return (
         <div className='h-screen flex flex-col'>
-            <div className='flex flex-1'>
+            <div className='flex flex-1 overflow-auto'>
                 <div className='w-1/2 bg-teal-500 flex flex-col items-center justify-center'>
                     <img src={logo} alt="Logo" />
                     <p className='text-white text-xl font-extrabold'>EYE REFER</p>
                 </div>
 
-                <div className='w-1/2 flex flex-col items-center justify-start p-11 overflow-y-auto'>
+                <div className='w-1/2 flex flex-col items-center justify-start p-11 overflow-auto '>
                 <h2 className="text-3xl font-bold mb-6 text-center p-4">Sign Up</h2>
-                    <div className="bg-white p-3 rounded border shadow-md w-full mx-8">
+                    <div className="bg-white p-3  rounded border shadow-md w-full ">
                         <Formik
                             initialValues={{
                                 firstname: '',
@@ -126,7 +126,7 @@ const Signup: React.FC = () => {
                                   <Field type="password" name="confirmPass" placeholder="Confirm password" className="form-control w-full text-sm p-4 border border-gray-300 rounded" />
                                   <ErrorMessage name='confirmPass' component="div" className='text-red-500 text-sm mt-1' />
                                 </div>
-                                <Button className='w-full m-2 py-2 rounded text-center '>Sign Up</Button>
+                                <Button type="submit" className='w-full rounded text-center'>Sign Up</Button>
                               </Form>
                               
                             )}

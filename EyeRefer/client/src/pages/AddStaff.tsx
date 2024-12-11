@@ -63,7 +63,7 @@ const AddStaff: React.FC = () => {
         staffHandler(values);
       }}
     >
-      {({ values, errors }) => (
+      {() => (
         <Form className="space-y-10 p-6 max-w-xl mx-auto bg-white shadow-lg rounded-lg">
           <div className="form-group">
             <label className="block text-gray-700">Staff Name</label>

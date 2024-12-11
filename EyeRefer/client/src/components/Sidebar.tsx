@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { GoHome } from "react-icons/go";
 import { LiaUserInjuredSolid } from "react-icons/lia";
 import { MdOutlineDateRange } from "react-icons/md";
@@ -17,90 +17,119 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-white p-10 border-t-[1px]"> 
+        <nav className="bg-white p-10 border-t-[1px] h-full"> 
             <div className=' flex-row justify-around text-base'>
             <ul className="flex flex-col space-y-2 text-left"> 
                 {token && (
                     <>
-                        <li className='flex justify-start hover:bg-teal-100    cursor-pointer '>
-                            <Link to="/dashboard" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
-                                <GoHome className='text-2xl'/>
-                                <span className="nav-link rounded px-2 ">Dashboard</span>
-                            </Link>
+                        <li className='flex justify-start hover:bg-teal-50 cursor-pointer'>
+                        <NavLink 
+                            to="/dashboard" 
+                            className={({ isActive }) => 
+                                isActive ? 'text-[#43D79E] flex flex-row px-4 py-3 hover:border-l-2 hover:border-[#43D79E]' : 
+                                'flex flex-row px-4 py-3 hover:text-[#43D79E] hover:border-l-2 hover:border-[#43D79E]'
+                            }
+                            >
+                            <GoHome className='text-2xl' />
+                            <span className="nav-link rounded px-2">Dashboard</span>
+                        </NavLink>
+
                             
                         </li>
                         {doctype == 2 ? (
-                            <li className='flex justify-start hover:bg-teal-100  cursor-pointer '>
-                                <Link to="/patient-od" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
+                            <li className='flex justify-start hover:bg-teal-50  cursor-pointer '>
+                                <NavLink to="/patient-od" className={({ isActive }) => 
+                                isActive ? 'text-[#43D79E] flex flex-row px-4 py-3 hover:border-l-2 hover:border-[#43D79E]' : 
+                                'flex flex-row px-4 py-3 hover:text-[#43D79E] hover:border-l-2 hover:border-[#43D79E]'
+                            }
+                            >
                                     <LiaUserInjuredSolid className='text-xl'/>
                                     <span className="nav-link rounded px-2 ">Patients</span>
-                                </Link>
+                                </NavLink>
                                 
                             </li>
-                            // <li className='flex justify-start hover:bg-teal-100 px-4 py-3 rounded hover:text-teal-400 hover:border-l-teal-700 cursor-pointer'>
+                            // <li className='flex justify-start hover:bg-teal-50 px-4 py-3 rounded hover:text-teal-400 hover:border-l-teal-700 cursor-pointer'>
                             //     <LiaUserInjuredSolid className='text-2xl'/>
-                            //     <Link to="/patient-od" className="nav-link rounded  text-[#232A2E] border-l-4">Patients</Link>
+                            //     <NavLink to="/patient-od" className="nav-link rounded  text-[#232A2E] border-l-4">Patients</NavLink>
                             // </li>
                         ) : 
                         (
-                            <li className='flex justify-start hover:bg-teal-100    cursor-pointer '>
-                            <Link to="/patient-md" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
+                            <li className='flex justify-start hover:bg-teal-50    cursor-pointer '>
+                            <NavLink to="/patient-md" className={({ isActive }) => 
+                                isActive ? 'text-[#43D79E] flex flex-row px-4 py-3 hover:border-l-2 hover:border-[#43D79E]' : 
+                                'flex flex-row px-4 py-3 hover:text-[#43D79E] hover:border-l-2 hover:border-[#43D79E]'
+                            }>
                                 <LiaUserInjuredSolid className='text-2xl'/>
                                 <span className="nav-link rounded px-2 ">Patients</span>
-                            </Link>
+                            </NavLink>
                             
                         </li>
                         )
                         }
                         
                         {doctype == 1 && (
-                            <li className='flex justify-start hover:bg-teal-100  cursor-pointer '>
-                                <Link to="/view-appointments" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
+                            <li className='flex justify-start hover:bg-teal-50  cursor-pointer '>
+                                <NavLink to="/view-appointments" className={({ isActive }) => 
+                                isActive ? 'text-[#43D79E] flex flex-row px-4 py-3 hover:border-l-2 hover:border-[#43D79E]' : 
+                                'flex flex-row px-4 py-3 hover:text-[#43D79E] hover:border-l-2 hover:border-[#43D79E]'
+                            }>
                                     <MdOutlineDateRange className='text-xl'/>
                                     <span className="nav-link rounded px-2 ">Appointments</span>
-                                </Link>
+                                </NavLink>
                                 
                             </li>
                         )}
 
-                            <li className='flex justify-start hover:bg-teal-100  cursor-pointer '>
-                                <Link to="/doctor" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
+                            <li className='flex justify-start hover:bg-teal-50  cursor-pointer '>
+                                <NavLink to="/doctor" className={({ isActive }) => 
+                                isActive ? 'text-[#43D79E] flex flex-row px-4 py-3 hover:border-l-2 hover:border-[#43D79E]' : 
+                                'flex flex-row px-4 py-3 hover:text-[#43D79E] hover:border-l-2 hover:border-[#43D79E]'
+                            }>
                                     <PiStethoscope className='text-xl'/>
                                     <span className="nav-link rounded px-2 ">Doctors</span>
-                                </Link>
+                                </NavLink>
                                 
                             </li>
 
-                            <li className='flex justify-start hover:bg-teal-100  cursor-pointer '>
-                                <Link to="/chat" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
+                            <li className='flex justify-start hover:bg-teal-50  cursor-pointer '>
+                                <NavLink to="/chat" className={({ isActive }) => 
+                                isActive ? 'text-[#43D79E] flex flex-row px-4 py-3 hover:border-l-2 hover:border-[#43D79E]' : 
+                                'flex flex-row px-4 py-3 hover:text-[#43D79E] hover:border-l-2 hover:border-[#43D79E]'
+                            }>
                                     <CiChat1 className='text-xl'/>
                                     <span className="nav-link rounded px-2 ">Chat</span>
-                                </Link>
+                                </NavLink>
                                 
                             </li>
-                        {/* <li className='flex justify-start hover:bg-teal-100 p-4 rounded hover:text-teal-400 cursor-pointer'>
+                        {/* <li className='flex justify-start hover:bg-teal-50 p-4 rounded hover:text-teal-400 cursor-pointer'>
                             <img src={staff}/>
-                            <Link to="/staff" className="nav-link rounded px-2 hover:text-teal-400 text-[#232A2E] border-l-4">Staff</Link>
+                            <NavLink to="/staff" className="nav-link rounded px-2 hover:text-teal-400 text-[#232A2E] border-l-4">Staff</NavLink>
                         </li> */}
                         {doctype == 2 && (
                             <>
 
-                            <li className='flex justify-start hover:bg-teal-100  cursor-pointer '>
-                                <Link to="/add-patient" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
+                            <li className='flex justify-start hover:bg-teal-50  cursor-pointer '>
+                                <NavLink to="/add-patient" className={({ isActive }) => 
+                                isActive ? 'text-[#43D79E] flex flex-row px-4 py-3 hover:border-l-2 hover:border-[#43D79E]' : 
+                                'flex flex-row px-4 py-3 hover:text-[#43D79E] hover:border-l-2 hover:border-[#43D79E]'
+                            }>
                                     <LiaUserInjuredSolid className='text-xl'/>
                                     <span className="nav-link rounded px-2 ">Add Referral Patient</span>
-                                </Link>
+                                </NavLink>
                             </li>
                             </>
                             
                             
                         )}
 
-                            <li className='flex justify-start hover:bg-teal-100  cursor-pointer '>
-                                <Link to="/staff-list" className='flex flex-row px-4 py-3  hover:text-teal-400 hover:border-l-2 '>
+                            <li className='flex justify-start hover:bg-teal-50  cursor-pointer '>
+                                <NavLink to="/staff-list" className={({ isActive }) => 
+                                isActive ? 'text-[#43D79E] flex flex-row px-4 py-3 hover:border-l-2 hover:border-[#43D79E]' : 
+                                'flex flex-row px-4 py-3 hover:text-[#43D79E] hover:border-l-2 hover:border-[#43D79E]'
+                            }>
                                     <CiChat1 className='text-xl'/>
                                     <span className="nav-link rounded px-2 ">Staff</span>
-                                </Link>
+                                </NavLink>
                             </li>
                     </>
                 )}

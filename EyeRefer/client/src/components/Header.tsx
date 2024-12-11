@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import {Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../Assets/logo.svg';
-import dropDown from "../Assets/chevron-down.png"
-import ig1 from "../Assets/diversity_2.png"
+import dropDown from "../Assets/chevron-down.png";
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const name = localStorage.getItem("name");
-    const [isDropdownOpen, setDropdownOpen] = useState(false); 
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const toggleDropdown = () => {
         setDropdownOpen(!isDropdownOpen);
@@ -19,48 +20,71 @@ const Header: React.FC = () => {
         navigate("/login");
     };
 
+    // Close dropdown if click is outside the dropdown
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+    
+    const handleClickOutside = (event: MouseEvent) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            setDropdownOpen(false);
+        }
+    };
+
+    // Close dropdown when a link is clicked
+    const closeDropdown = () => {
+        setDropdownOpen(false);
+    };
+
     return (
         <>
-            <div className="p-[12px] bg-white shadow">
-                <div className="container mx-auto flex justify-between items-center py-2">
+            <div className="sticky-top-0 p-3 bg-white shadow">
+                <div className="mx-7 flex justify-between items-center py-2">
                     <Link to="/dashboard" className="flex items-center text-gray-800">
                         <img src={logo} alt="EyeRefer" className="h-15" />
-                        {/* <p className='font-bold text-xl'>EYE REFER</p> */}
                     </Link>
 
                     <div className="flex items-center space-x-4">
                         {token ? (
                             <>
-                                <div className="relative">
-                                    <button
-                                        // className="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded inline-flex items-center"
-                                        onClick={toggleDropdown} 
-                                       
-                                    >
-                                        {/* <img src={user} alt='profile photo'/> */}
+                                <div className="relative" ref={dropdownRef}>
+                                    <button onClick={toggleDropdown}>
                                         <div className='flex justify-evenly'>
                                             <div>
-                                            <span className='text-base'>Hi, {name}!</span>
-                                            <p className='text-gray-500 text-sm font-light'>Welcome back</p>
+                                                <span className='text-2xl font-bold'>Hi, {name}</span>
+                                                <p className='text-gray-500 font-bold font-xl'>Welcome back</p>
                                             </div>
-                                        <img src={dropDown} className='h-8 p-2'/>
+                                            <img src={dropDown} className='h-8 p-2'/>
                                         </div>
-                                        
-                                        
-                                        
                                     </button>
-                                    {isDropdownOpen && ( 
-                                        <ul className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                                    {isDropdownOpen && (
+                                        <ul className="absolute right-0 mt-4 w-64 bg-white rounded-md shadow-lg z-10">
                                             <li>
-                                                <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Profile</Link>
+                                                <Link
+                                                    to="/profile"
+                                                    className="block px-6 py-3 text-gray-800 hover:bg-gray-100"
+                                                    onClick={() => { closeDropdown(); }}
+                                                >
+                                                    Profile
+                                                </Link>
                                             </li>
                                             <li>
-                                                <Link to="/update-password" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Change Password</Link>
+                                                <Link
+                                                    to="/update-password"
+                                                    className="block px-6 py-3 text-gray-800 hover:bg-gray-100"
+                                                    onClick={() => { closeDropdown(); }}
+                                                >
+                                                    Change Password
+                                                </Link>
                                             </li>
                                             <li>
                                                 <a
-                                                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer"
-                                                    onClick={handleLogout}
+                                                    className="block px-6 py-3 text-gray-800 hover:bg-gray-100 cursor-pointer"
+                                                    onClick={() => { handleLogout(); closeDropdown(); }}
                                                 >
                                                     Logout
                                                 </a>

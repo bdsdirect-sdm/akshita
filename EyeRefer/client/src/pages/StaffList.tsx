@@ -86,14 +86,13 @@ const StaffList: React.FC = () => {
       </div>
       <div className="overflow-x-auto">
         <table className="table-auto w-full my-4 border border-gray-300">
-          <thead className="bg-gray-400">
-            <tr>
-              <th scope="col" className="border px-4 py-2">#</th>
-              <th scope="col" className="border px-4 py-2">Staff Name</th>
-              <th scope="col" className="border px-4 py-2">Phone</th>
-              <th scope="col" className="border px-4 py-2">Email</th>
-              <th scope="col" className="border px-4 py-2">Gender</th>
-              <th scope="col" className="border px-4 py-2">Actions</th>
+          <thead className="bg-white">
+            <tr className='bg-white border-y-[1px]'>
+              <th scope="col" className="border-y-[1px] px-4 py-4 font-medium text-sm">Staff Name</th>
+              <th scope="col" className="border-y-[1px] px-4 py-4 font-medium text-sm">Phone</th>
+              <th scope="col" className="border-y-[1px] px-4 py-4 font-medium text-sm">Email</th>
+              <th scope="col" className="border-y-[1px] px-4 py-4 font-medium text-sm">Gender</th>
+              <th scope="col" className="border-y-[1px] px-4 py-4 font-medium text-sm">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white">
@@ -101,12 +100,11 @@ const StaffList: React.FC = () => {
               staffData?.StaffList?.map((staff: any, index: number) => (
                 
                 <tr key={staff.uuid} className="hover:bg-gray-100">
-                  <td className="fw-bold border px-4 py-2">{index + 1}</td>
-                  <td className="border px-4 py-2">{staff.name}</td>
-                  <td className="border px-4 py-2">{staff.phone}</td>
-                  <td className="border px-4 py-2">{staff.email}</td>
-                  <td className="border px-4 py-2">{staff.gender}</td>
-                  <td className="border px-4 py-2">
+                  <td className="border-y-[1px] px-4 py-4 text-sm">{staff.name}</td>
+                  <td className="border-y-[1px] px-4 py-4 text-sm">{staff.phone}</td>
+                  <td className="border-y-[1px] px-4 py-4 text-sm">{staff.email}</td>
+                  <td className="border-y-[1px] px-4 py-4 text-sm">{staff.gender}</td>
+                  <td className="border-y-[1px] px-4 py-4 text-sm">
                   <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-staff/${staff.uuid}`); }}><MdOutlineEdit /></button>
                   <button className="btn btn-danger mr-2" onClick={() => {deleteStaff(staff.uuid)}}><AiOutlineDelete /></button>
                   </td>

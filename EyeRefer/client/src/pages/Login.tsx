@@ -23,7 +23,7 @@ const Login: React.FC = () => {
   const authUser = async (loginData: any) => {
     try {
       const response: any = await api.post(`${Local.LOGIN_USER}`, loginData);
-      console.log("Hello", response);
+      // console.log("Hello", response);
       if (response.status === 200) {
         if (response.data.user.is_verified) {
           const doctype = response.data.user.doctype;
@@ -33,8 +33,12 @@ const Login: React.FC = () => {
           localStorage.setItem("doctor",JSON.stringify(response.data.user));
           
           toast.success("Login Successfully");
-          navigate("/dashboard");
-          
+          if(doctype === "2") {
+            navigate("/dashboard");
+          }
+          else {
+            navigate("/add-address");
+          }
         } else {
           localStorage.setItem("email", response?.data?.user?.email);
           localStorage.setItem("OTP", response.data.OTP);
@@ -98,7 +102,7 @@ const Login: React.FC = () => {
                       <Field name="password" type="password" placeholder="Enter your Password" className="form-control w-full text-sm p-4 border border-gray-300 rounded" />
                       <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
                     </div>
-                    <Button type="submit" className='w-full m-2 py-2 rounded text-center '>Sign Up</Button>
+                    <Button type="submit" className='w-full m-2 py-2 rounded text-center '>Login</Button>
                   </Form>
                 )}
               </Formik>

@@ -69,7 +69,7 @@ const Searchbar = ({ refetch, query, setQuery }) => {
       <Button onClick={handleSearch} className={"items-center gap-x-2"}>
         <IoIosSearch /> <span>Search</span>
       </Button>
-      <Button onClick={handleClearSearch} className={"items-center gap-x-2"}>Clear</Button>
+      <button className="items-center gap-x-2" onClick={handleClearSearch}>X</button>
       
     </div>
   );
