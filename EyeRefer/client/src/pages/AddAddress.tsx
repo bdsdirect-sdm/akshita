@@ -5,7 +5,8 @@ import { Local } from '../environment/env';
 import { toast } from 'react-toastify';
 import api from '../api/axiosInstance';
 import * as Yup from 'yup';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import Button from "../components/Button"
 
 const validationSchema = Yup.object().shape({
   street: Yup.string().required('Street is required'),
@@ -16,11 +17,10 @@ const validationSchema = Yup.object().shape({
   pincode: Yup.number().required('Pincode is required'),
 });
 
-
-
 const AddAddress: React.FC = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  const [showAddressForm ,setShowAddressForm] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -54,95 +54,111 @@ const AddAddress: React.FC = () => {
     console.log('Address Saved------->', addressMutation.data);
   };
 
+  const toggleAddressForm = () => {
+    setShowAddressForm(!showAddressForm);
+  }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Add Address</h1>
-        <Formik
-          initialValues={{
-            street: '',
-            district: '',
-            state: '',
-            city: '',
-            phone: '',
-            pincode: '',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={addressHandler}
-        >
-          {() => (
-            <Form>
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Street</label>
-                <Field
-                  type="text"
-                  name="street"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-                <ErrorMessage name="street" component="div" className="text-red-500 mt-1" />
-              </div>
+      <div className="bg-white shadow-md rounded-lg p-8 w-1/2 max-h-screen">
+        <div className='p-8 overflow-auto'>
+          <h1 className="text-2xl font-bold text-left mb-6">Edit Address</h1>
+          <div>
+            <button onClick={toggleAddressForm} className='w-full p-8 border-2 shadow rounded text-left'>New Address</button>
+          </div>
+          {showAddressForm ? 
+            <Formik
+              initialValues={{
+                street: '',
+                district: '',
+                state: '',
+                city: '',
+                phone: '',
+                pincode: '',
+              }}
+              validationSchema={validationSchema}
+              onSubmit={addressHandler}
+            >
+              {() => (
+                <Form>
+                  <div className="mb-4">
+                    <label className="block text-gray-700 mb-2">Street</label>
+                    <Field
+                      type="text"
+                      name="street"
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                    />
+                    <ErrorMessage name="street" component="div" className="text-red-500 mt-1" />
+                  </div>
 
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">District</label>
-                <Field
-                  type="text"
-                  name="district"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-                <ErrorMessage name="district" component="div" className="text-red-500 mt-1" />
-              </div>
+                  <div className="mb-4">
+                    <label className="block text-gray-700 mb-2">District</label>
+                    <Field
+                      type="text"
+                      name="district"
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                    />
+                    <ErrorMessage name="district" component="div" className="text-red-500 mt-1" />
+                  </div>
 
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">State</label>
-                <Field
-                  type="text"
-                  name="state"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-                <ErrorMessage name="state" component="div" className="text-red-500 mt-1" />
-              </div>
+                  <div className="mb-4">
+                    <label className="block text-gray-700 mb-2">State</label>
+                    <Field
+                      type="text"
+                      name="state"
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                    />
+                    <ErrorMessage name="state" component="div" className="text-red-500 mt-1" />
+                  </div>
 
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">City</label>
-                <Field
-                  type="text"
-                  name="city"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-                <ErrorMessage name="city" component="div" className="text-red-500 mt-1" />
-              </div>
+                  <div className="mb-4">
+                    <label className="block text-gray-700 mb-2">City</label>
+                    <Field
+                      type="text"
+                      name="city"
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                    />
+                    <ErrorMessage name="city" component="div" className="text-red-500 mt-1" />
+                  </div>
 
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Phone</label>
-                <Field
-                  type="text"
-                  name="phone"
-                  maxLength={10}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-                <ErrorMessage name="phone" component="div" className="text-red-500 mt-1" />
-              </div>
+                  <div className="mb-4">
+                    <label className="block text-gray-700 mb-2">Phone</label>
+                    <Field
+                      type="text"
+                      name="phone"
+                      maxLength={10}
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                    />
+                    <ErrorMessage name="phone" component="div" className="text-red-500 mt-1" />
+                  </div>
 
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Pincode</label>
-                <Field
-                  type="text"
-                  name="pincode"
-                  maxLength={6}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-                <ErrorMessage name="pincode" component="div" className="text-red-500 mt-1" />
-              </div>
+                  <div className="mb-4">
+                    <label className="block text-gray-700 mb-2">Pincode</label>
+                    <Field
+                      type="text"
+                      name="pincode"
+                      maxLength={6}
+                      className="w-full p-2 border border-gray-300 rounded-md"
+                    />
+                    <ErrorMessage name="pincode" component="div" className="text-red-500 mt-1" />
+                  </div>
 
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-300"
-              >
-                Submit
-              </button>
-            </Form>
-          )}
-        </Formik>
+                  <button
+                    type="submit"
+                    className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-300"
+                  >
+                    Submit
+                  </button>
+                </Form>
+              )}
+            </Formik>
+          : <button className='text-purple-700 m-8' onClick={toggleAddressForm}>+ ADD ADDRESS</button>}
+          <div className='flex flex-row space-x-2 justify-end'>
+            <button className="bg-white rounded border-1 py-2 px-4 border-[#35c0e4] text-[#35c0e4]">Cancel</button>
+            <Button>Save</Button>
+          </div>
+        </div>
+        
       </div>
     </div>
   );

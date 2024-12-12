@@ -49,7 +49,6 @@ const doctor = JSON.parse(localStorage.getItem("doctor") as string);
 
   const sendMessage = async () => {
     if (message.trim() === "") return;
-
     const messageData = {
       room: roomId,
       author: name,
