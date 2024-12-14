@@ -3,7 +3,7 @@ import { Local } from '../environment/env';
 import api from '../api/axiosInstance';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ReferralComponents from '../components/ReferralComponents';
+import ReferralComponents from './ReferralComponents';
 import PatientListMD from './PatientListMD';
 // import Button from "./Button"
 

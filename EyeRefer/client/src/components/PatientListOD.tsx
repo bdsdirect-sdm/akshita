@@ -9,8 +9,8 @@ import moment from 'moment';
 import { MdOutlineEdit } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
-import Searchbar from "../components/Searchbar"
-import Pagination from "../components/Pagination"
+import Searchbar from "./Searchbar"
+import Pagination from "./Pagination"
 import  {queryClient} from "../main"
 import Button from "./Button"
 

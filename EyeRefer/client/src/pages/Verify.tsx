@@ -12,17 +12,17 @@ import Footer from '../components/Footer'; // Ensure you include Footer for cons
 const Verify: React.FC = () => {
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!localStorage.getItem('OTP')) {
-            navigate('/login');
-        } else {
-            toast.info("OTP sent Successfully");
-        }
+    // useEffect(() => {
+    //     if (!localStorage.getItem('OTP')) {
+    //         navigate('/login');
+    //     } else {
+    //         toast.info("OTP sent Successfully");
+    //     }
 
-        return () => {
-            localStorage.removeItem('OTP');
-        };
-    }, [navigate]);
+    //     return () => {
+    //         localStorage.removeItem('OTP');
+    //     };
+    // }, [navigate]);
 
     const OTP: any = localStorage.getItem("OTP");
     const email: any = localStorage.getItem("email");

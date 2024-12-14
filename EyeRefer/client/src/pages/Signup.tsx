@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import Footer from '../components/Footer'; 
 import logo from "../Assets/title_logo.webp";
 import Button from "../components/Button"
+import profile from "../Assets/blank-profile-picture-973460_640.webp"
 
 const Signup: React.FC = () => {
     const navigate = useNavigate();
@@ -79,7 +80,8 @@ const Signup: React.FC = () => {
                                 doctype: '',
                                 email: '',
                                 password: '',
-                                confirmPass: ''
+                                confirmPass: '',
+                                profile_photo: profile
                             }}
                             validationSchema={validationSchema}
                             onSubmit={signupHandler}>

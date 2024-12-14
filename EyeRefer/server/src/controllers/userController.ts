@@ -95,6 +95,7 @@ export  const loginUser = async (req:any, res:Response) =>{
 export const getUser = async (req:any, res:Response) => {
     try{
         const {uuid} = req.user;
+        console.log("HELLLOOOOO")
         const user = await User.findOne({where:{uuid:uuid}, include:Address});
         if(user){
             const referCount = await Patient.count({where:{ referedto:uuid }});
@@ -618,3 +619,15 @@ export const downloadPatientPDF = async (req: any, res: any) => {
         res.status(500).json({ message: 'Error generating PDF' });
     }
 };
+
+export const getDoc = async (req: any, res: any) => {
+    try {
+        const {uuid} = req.user;
+        const doctor = await User.findByPk(uuid);
+        console.log("ENFNFEPQNGWEQB", doctor)
+        res.status(200).json({"doctor": doctor, "message": "Doc Found"});
+
+    } catch(err){
+        res.status(500).json({"message":`Error--->${err}`})
+    }
+}

@@ -37,7 +37,7 @@ const Login: React.FC = () => {
             navigate("/dashboard");
           }
           else {
-            navigate("/add-address");
+            navigate("/profile");
           }
         } else {
           localStorage.setItem("email", response?.data?.user?.email);

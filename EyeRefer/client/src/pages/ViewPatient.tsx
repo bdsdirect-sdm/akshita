@@ -44,9 +44,7 @@ const ViewPatient = () => {
 };
 
   const fetchPatient = async() => {
-    
     try{
-        
       const response = await api.get(`${Local.VIEW_PATIENT}/${id}`, {
         headers:{
           Authorization: `Bearer ${token}`

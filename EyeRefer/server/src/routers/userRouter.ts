@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerUser, loginUser, verifyUser, getUser, getDocList, getPatientList, addPatient, addAddress, getReferredPatients, addAppointments, viewAppointments, updateAppointmentStatus, viewPatient, editPatient, chatRooms, chatData, viewAppointment, editAppointment, addStaff, viewStaff, editStaff, getStaff, deletePatient, deleteStaff, dashboardData, downloadPatientPDF } from "../controllers/userController";
+import { registerUser, loginUser, verifyUser, getUser, getDocList, getPatientList, addPatient, addAddress, getReferredPatients, addAppointments, viewAppointments, updateAppointmentStatus, viewPatient, editPatient, chatRooms, chatData, viewAppointment, editAppointment, addStaff, viewStaff, editStaff, getStaff, deletePatient, deleteStaff, dashboardData, downloadPatientPDF, getDoc } from "../controllers/userController";
 import userAuthMiddleware from "../middlewares/userAuth";
 import signupValidation from "../middlewares/formValidation.ts/signupValidation";
 import loginValidation from "../middlewares/formValidation.ts/loginValidation";
@@ -34,5 +34,6 @@ router.delete("/delete-patient/:id", userAuthMiddleware, deletePatient)
 router.delete("/delete-staff/:id", userAuthMiddleware, deleteStaff)
 router.get("/dashboard-data", userAuthMiddleware, dashboardData)
 router.get("/view-patient/:id/downloadpdf", userAuthMiddleware, downloadPatientPDF)
+router.get("/get-doctor", userAuthMiddleware, getDoc)
 
 export default router;
