@@ -14,6 +14,7 @@ import Searchbar from "./Searchbar"
 import Pagination from "./Pagination"
 import  {queryClient} from "../main"
 import Button from "./Button"
+import {TableLoader} from "../components/TableLoader"
 
 const PatientListMD: React.FC = () => {
   const [query, setQuery] = useState("");
@@ -65,15 +66,15 @@ const PatientListMD: React.FC = () => {
     queryFn: fetchPatient
   })
 
-  if(isLoading){
-    return(
-      <>
-        <div>Loading...</div>
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </> 
-    )}
+  // if(isLoading){
+  //   return(
+  //     <>
+  //       <div>Loading...</div>
+  //       <div className="spinner-border text-primary" role="status">
+  //         <span className="visually-hidden">Loading...</span>
+  //       </div>
+  //     </> 
+  //   )}
 
   if(isError){
     return(
@@ -115,7 +116,7 @@ const PatientListMD: React.FC = () => {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {Patients?.patientList?.length > 0 ? Patients?.patientList?.map((patient: any, index: number) => (
+            {isLoading ? <TableLoader/> :  Patients?.patientList?.length > 0 ? Patients?.patientList?.map((patient: any, index: number) => (
               <tr key={patient.uuid} className="hover:bg-gray-100">
                 <td className="border-y-[1px] px-4 py-2 text-sm">{patient.firstname} {patient.lastname}</td>
                 <td className="border-y-[1px] px-4 py-2 text-sm">{moment(new Date(patient.dob)).format('MMM-D-YYYY')}</td>

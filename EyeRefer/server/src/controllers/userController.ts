@@ -19,8 +19,10 @@ const otpGenerator = () => {
 }
 
 export const  registerUser = async (req:any, res:Response) => {
+    console.log("RIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIP", req.file)
     try{
         const {firstname, lastname, doctype, email, password} = req.body;
+            
         const isExist = await User.findOne({where:{email:email}});
         if(isExist){
             res.status(401).json({"message":"User already Exist"});
@@ -28,7 +30,10 @@ export const  registerUser = async (req:any, res:Response) => {
         else{
 
             const hashedPassword = await bcrypt.hash(password, 10);
-            const user = await User.create({firstname,  lastname, doctype, email, password: hashedPassword});
+            const user = await User.create({firstname,  lastname, doctype, email, 
+                password: hashedPassword,
+                profile_photo: `https://api.dicebear.com/5.x/initials/svg?seed=${firstname} ${lastname}`});
+            
             if(user){
                 const OTP = otpGenerator();
                 sendOTP(user.email, OTP);

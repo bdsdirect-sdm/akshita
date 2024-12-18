@@ -24,6 +24,7 @@ const Signup: React.FC = () => {
 
     const addUser = async (formData: any) => {
         try {
+            console.log("HELEOEOEOEOEOEOEOO")
             const response = await api.post(`${Local.CREATE_USER}`, formData);
             console.log("Response--->", response.data);
             localStorage.setItem("email", formData.email);

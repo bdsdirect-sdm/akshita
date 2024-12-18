@@ -7,6 +7,7 @@ const Header: React.FC = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const name = localStorage.getItem("name");
+    const profile_photo = localStorage.getItem("profile_photo")
     const [isDropdownOpen, setDropdownOpen] = useState(false);
 
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -40,6 +41,10 @@ const Header: React.FC = () => {
         setDropdownOpen(false);
     };
 
+    const pf = `https://api.dicebear.com/5.x/initials/svg?seed=${name}`;
+  
+    console.log("PROFILEEEKE", pf)
+
     return (
         <>
             <div className="sticky-top-0 p-3 bg-white shadow">
@@ -54,6 +59,7 @@ const Header: React.FC = () => {
                                 <div className="relative" ref={dropdownRef}>
                                     <button onClick={toggleDropdown}>
                                         <div className='flex justify-evenly'>
+                                            <img src={profile_photo ? profile_photo : pf} alt='' className='w-12 h-12 rounded-full' />
                                             <div>
                                                 <span className='text-2xl font-bold'>Hi, {name}</span>
                                                 <p className='text-gray-500 font-bold font-xl'>Welcome back</p>

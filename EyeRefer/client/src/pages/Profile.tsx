@@ -9,6 +9,15 @@ const Profile: React.FC = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
+  const handlePfpChange = async() => {
+    try {
+
+      const response = await api.post(`${Local.CHANGE_PFP}`, );
+    } catch (err) {
+      console.log("ERROR", err)
+    }
+  }
+
   const fetchDoctorProfile = async() => {
     try {
       const response = await api.get(`${Local.GET_DOCTOR}`, {
@@ -17,6 +26,7 @@ const Profile: React.FC = () => {
         } 
       })
       console.log("RESPONSE DOC", response.data.doctor)
+      
       return response.data.doctor;
     } catch (err) {
       console.log("ERROR", err)
@@ -27,21 +37,23 @@ const Profile: React.FC = () => {
     queryKey: ['doctor'],
     queryFn: fetchDoctorProfile
   })
-
-  console.log("doccyhdhh dh", Doctor)
+  const pf = `https://api.dicebear.com/5.x/initials/svg?seed=${Doctor?.firstname} ${Doctor?.lastname}`;
   
   return (
     <>
       <p className='text-2xl font-bold p-12'>Profile</p>
-      <div className='flex flex-row bg-white mx-12 rounded items-center justify-start min-h-screen'>
-        <div className='flex flex-col justify-between w-full p-4'>
-          <div className='flex flex-row bg-gray-300 m-4 justify-between'>
-            <div>
-              <img alt='user' className='bg-white'/>
-              <label>{Doctor?.firstname}</label>
+      <div className='flex flex-row bg-white mx-12 rounded justify-start min-h-screen'>
+        <div className='flex flex-col w-full p-4'>
+          <div className='flex flex-row m-4 justify-between items-center'>
+            <div className='flex flex-row items-center gap-4'>
+              {/* <input type="file"> */}
+                <img src={Doctor?.profile_photo ? Doctor?.profile_photo: pf} alt='user' className='bg-white w-36 h-36 rounded-full' onClick={handlePfpChange}/>
+              {/* </input> */}
+              
+              <label className='text-2xl font-bold'>{Doctor?.firstname} {Doctor?.lastname}</label>
             </div>
             
-            <Button>EDIT PROFILE</Button>
+            <Button className="h-min">EDIT PROFILE</Button>
           </div>
 
           <div className='bg-gray-100 shadow-md rounded p-6 justify-start text-center m-4 '>

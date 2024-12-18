@@ -7,7 +7,7 @@ import upload from "../middlewares/multer";
 
 const  router = Router();
 
-router.post("/register",signupValidation, registerUser);
+router.post("/register", upload.single('profile_photo'), registerUser);
 router.post("/login",loginValidation, loginUser);
 router.put("/verify", verifyUser);
 router.get('/user', userAuthMiddleware, getUser);
