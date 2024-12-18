@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import api from '../api/axiosInstance';
 import * as Yup from 'yup';
+import Button from "../components/Button"
+import CancelButton from "../components/CancelButton"
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
@@ -82,80 +84,80 @@ const EditStaff: React.FC = () => {
   }
 
   return (
-    <div>
-      <h2>Edit Staff</h2>
-      <Formik
-        initialValues={{
-          name: staffData?.staffData?.name || '',
-          phone: staffData?.staffData?.phone || '',
-          email: staffData?.staffData?.email || '',
-          gender: staffData?.staffData?.gender || '',
-        }}
-        validationSchema={validationSchema}
-        onSubmit={staffEditHandler}
-      >
-        {() => (
-          <Form>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div className="form-group">
-                <label className="block mb-1">Name:</label>
-                <Field
-                  type="text"
-                  name="name"
-                  className="w-full border border-gray-300 rounded-md p-2"
-                />
-                <ErrorMessage name="name" component="div" className="text-red-500 mt-1" />
+    <div className='p-8'>
+      <h2 className="text-xl font-semibold mb-4">Edit Staff</h2>
+      <div className='bg-white p-4 rounded-md'>
+        <Formik
+          initialValues={{
+            name: staffData?.staffData?.name || '',
+            phone: staffData?.staffData?.phone || '',
+            email: staffData?.staffData?.email || '',
+            gender: staffData?.staffData?.gender || '',
+          }}
+          validationSchema={validationSchema}
+          onSubmit={staffEditHandler}
+        >
+          {() => (
+            <Form>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="form-group">
+                  <label className="block mb-1">Name:</label>
+                  <Field
+                    type="text"
+                    name="name"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                  />
+                  <ErrorMessage name="name" component="div" className="text-red-500 mt-1" />
+                </div>
+
+                <div className="form-group">
+                  <label className="block mb-1">Phone:</label>
+                  <Field
+                    type="text"
+                    name="phone"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                  />
+                  <ErrorMessage name="phone" component="div" className="text-red-500 mt-1" />
+                </div>
               </div>
 
-              <div className="form-group">
-                <label className="block mb-1">Phone:</label>
-                <Field
-                  type="text"
-                  name="phone"
-                  className="w-full border border-gray-300 rounded-md p-2"
-                />
-                <ErrorMessage name="phone" component="div" className="text-red-500 mt-1" />
-              </div>
-            </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="form-group">
+                  <label className="block mb-1">Email:</label>
+                  <Field
+                    type="email"
+                    name="email"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                  />
+                  <ErrorMessage name="email" component="div" className="text-red-500 mt-1" />
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div className="form-group">
-                <label className="block mb-1">Email:</label>
-                <Field
-                  type="email"
-                  name="email"
-                  className="w-full border border-gray-300 rounded-md p-2"
-                />
-                <ErrorMessage name="email" component="div" className="text-red-500 mt-1" />
+                <div className="form-group">
+                  <label className="block mb-1">Gender:</label>
+                  <Field as="select" name="gender" className="w-full border border-gray-300 rounded-md p-2">
+                    <option value="" disabled>Select</option>
+                    {['Male', 'Female', 'Others'].map((gender) => (
+                      <option key={gender} value={gender}>{gender}</option>
+                    ))}
+                  </Field>
+                  <ErrorMessage name="gender" component="div" className="text-red-500 mt-1" />
+                </div>
               </div>
 
-              <div className="form-group">
-                <label className="block mb-1">Gender:</label>
-                <Field as="select" name="gender" className="w-full border border-gray-300 rounded-md p-2">
-                  <option value="" disabled>Select</option>
-                  {['Male', 'Female', 'Others'].map((gender) => (
-                    <option key={gender} value={gender}>{gender}</option>
-                  ))}
-                </Field>
-                <ErrorMessage name="gender" component="div" className="text-red-500 mt-1" />
+              <div className="flex gap-6">
+                <CancelButton
+                    onClick={() => navigate("/staff-list")}
+                  >
+                    Cancel
+                </CancelButton>
+                <Button type="submit">
+                  Submit
+                </Button>
               </div>
-            </div>
-
-            <div className="flex justify-between">
-              <button type="submit" className="btn btn-outline-primary bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">
-                Save Changes
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-secondary bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300"
-                onClick={() => navigate("/staff-list")}
-              >
-                Cancel
-              </button>
-            </div>
-          </Form>
-        )}
-      </Formik>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 };

@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import api from '../api/axiosInstance';
 import * as Yup from 'yup';
+import Button from "../components/Button"
+import CancelButton from "../components/CancelButton"
 
 const validationSchema = Yup.object().shape({
   firstname: Yup.string().required('First Name is required'),
@@ -134,7 +136,7 @@ const EditPatient: React.FC = () => {
           referback: Patient?.patientData?.referback,
           timing: Patient?.patientData?.timing,
           referedto: Patient?.patientData?.referedto,
-          address: Patient?.patientData?.address,
+          address: Patient?.patientData?.address.state,
           // medicaldocs: File || null,
           notes: Patient?.patientData?.notes
         }}
@@ -142,7 +144,7 @@ const EditPatient: React.FC = () => {
         onSubmit={referPatientHandler}
       >
         {({ values }) => (
-          <Form>
+          <Form className='p-8'>
           <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
         
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -153,6 +155,7 @@ const EditPatient: React.FC = () => {
                 name="dob"
                 placeholder="Enter DOB"
                 className="w-full border border-gray-300 rounded-md p-2"
+                
               />
               <ErrorMessage name="dob" component="div" className="text-red-500 mt-1" />
             </div>
@@ -166,8 +169,7 @@ const EditPatient: React.FC = () => {
                 className="w-full border border-gray-300 rounded-md p-2"
               />
               <ErrorMessage name="email" component="div" className="text-red-500 mt-1" />
-            </div>
-        
+            </div>       
             <div className="form-group">
               <label className="block mb-1">Phone:</label>
               <Field
@@ -313,18 +315,16 @@ const EditPatient: React.FC = () => {
             <ErrorMessage name="notes" component="div" className="text-red-500 mt-1" />
           </div>
         
-          <div className="flex justify-between">
-            <button type="submit" className="btn btn-outline-primary bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">
-              Save
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-secondary bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300"
-              onClick={() => { navigate("/dashboard"); }}
-            >
-              Cancel
-            </button>
-          </div>
+          <div className="flex gap-6">
+                <CancelButton
+                    onClick={() => navigate("/staff-list")}
+                  >
+                    Cancel
+                </CancelButton>
+                <Button type="submit">
+                  Submit
+                </Button>
+              </div>
         </Form>
         
         )}
