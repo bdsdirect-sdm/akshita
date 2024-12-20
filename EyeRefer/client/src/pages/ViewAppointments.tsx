@@ -96,12 +96,12 @@ const ViewAppointments: React.FC = () => {
                   <td className="border-y-[1px] px-4 py-2 text-sm">{appointment.type}</td>
                   <td className="border-y-[1px] px-4 py-2 text-sm">{appointment.status}</td>
                   
-                  <td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm">
                     <button className="text-green-700 border px-4 py-2" onClick={() => {
                       updateStatus("Completed", appointment.patient.uuid, appointment.id);
                     }}>Complete</button>
                   </td>
-                  <td>
+                  <td className="border-y-[1px] px-4 py-2 text-sm">
                     <button className="text-red-700 border px-4 py-2" onClick={() => {
                       updateStatus("Canceled", appointment.patient.uuid, appointment.id);
                     }}>Cancel</button>

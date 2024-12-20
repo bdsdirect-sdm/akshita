@@ -98,42 +98,48 @@ const doctor = JSON.parse(localStorage.getItem("doctor") as string);
   };
 
   return (
-    <div className="flex h-[100%]">
+    <div className="flex ">
       <ChatBar />
-      <div className="flex flex-col w-full p-8">
-        <div className="p-2 rounded-t-md">
-          <h2 className=" text-lg font-semibold">
-            {patientName ? patientName : "Patient Name"}
-          </h2>
-        </div>
+      {roomId ? (
+        <div className="flex flex-col w-full p-8">
+          <div className="p-2 rounded-t-md">
+            <h2 className=" text-lg font-semibold">
+              {patientName ? patientName : "Patient Name"}
+            </h2>
+          </div>
+          <div className="">
+            <div className="flex-1 overflow-y-auto mt-4 p-4 bg-gray-50 grow rounded-md border border-gray-300">
+              <div className="space-y-4">
+                {/* Rendering chat messages in ChatBody */}
+                <ChatBody messageList={messageList} doctorId={doctor?.uuid} />
+              </div>
+            </div>
 
-        <div className="flex-1 overflow-y-auto mt-4 p-4 bg-gray-50 grow rounded-md border border-gray-300">
-          <div className="space-y-4">
-            {/* Rendering chat messages in ChatBody */}
-            <ChatBody messageList={messageList} doctorId={doctor?.uuid} />
+            <div className="flex items-center mt-4 border-t border-gray-300 pt-4">
+              <form className="flex w-full" onSubmit={(e) => e.preventDefault()}>
+                <input
+                  type="text"
+                  placeholder="Enter message"
+                  value={message}
+                  onChange={(event) => setMessage(event.target.value)}
+                  onKeyDown={handleKeyDown} 
+                  className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                />
+                <Button
+                  onClick={sendMessage}
+                  type="button"
+                  className="px-4 py-2 rounded-r-md"
+                >
+                  Send
+                </Button>
+              </form>
+            </div>
           </div>
         </div>
-
-        <div className="flex items-center mt-4 border-t border-gray-300 pt-4">
-          <form className="flex w-full" onSubmit={(e) => e.preventDefault()}>
-            <input
-              type="text"
-              placeholder="Enter message"
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-              onKeyDown={handleKeyDown} 
-              className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-            />
-            <Button
-              onClick={sendMessage}
-              type="button"
-              className="px-4 py-2 rounded-r-md"
-            >
-              Send
-            </Button>
-          </form>
-        </div>
-      </div>
+      ) 
+        : <div className="text-center font-medium">
+          Click on a patient to start chatting!
+        </div> }
     </div>
   );
 };

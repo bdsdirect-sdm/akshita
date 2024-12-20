@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import api from '../api/axiosInstance';
 import * as Yup from 'yup';
+import SaveCancel from "../components/SaveCancel"
 
 const validationSchema = Yup.object().shape({
   firstname: Yup.string().required('First Name is required'),
@@ -114,7 +115,7 @@ const AddPatient: React.FC = () => {
   }
 
   return (
-    <div className='p-8 m-8'>
+    <div className='p-8'>
       <Formik
         initialValues={{
           dob: '',
@@ -279,18 +280,7 @@ const AddPatient: React.FC = () => {
             <ErrorMessage name="notes" component="div" className="text-red-500 mt-1" />
           </div>
         
-          <div className="flex justify-between">
-            <button type="submit" className="btn btn-outline-primary bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">
-              Save
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-secondary bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300"
-              onClick={() => { navigate("/dashboard"); }}
-            >
-              Cancel
-            </button>
-          </div>
+          <SaveCancel/>
         </Form>
         
         )}

@@ -95,7 +95,7 @@ const PatientListMD: React.FC = () => {
     <>
       <div className='flex justify-between align-items-center bg-gray-200 p-8'>
         <h1 className="text-2xl font-bold">Referral Patients</h1>
-        <Button onClick={() => { navigate("/add-patient") }}>+ Add Referral Patient</Button>
+        <Button onClick={() => { navigate("/add-appointment") }}>+ Add Appointment</Button>
       </div>
       <Searchbar refetch={refetch} query={query} setQuery={setQuery} />
       <div className="max-w-full p-8">

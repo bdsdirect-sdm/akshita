@@ -140,8 +140,8 @@ const PatientListOD: React.FC = () => {
                 </td>
                 <td className="border-y-[1px] text-sm px-4 py-2">
                   <div className="flex flex-row">
-                    {/* <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-patient/${patient.uuid}`); }}><MdOutlineEdit /></button>
-                    <button className="btn btn-danger mr-2" onClick={() => deletePatient(patient.uuid)}><AiOutlineDelete /></button> */}
+                    <button className="btn btn-primary mr-2" onClick={() => { navigate(`/edit-patient/${patient.uuid}`); }}><MdOutlineEdit /></button>
+                    <button className="btn btn-danger mr-2" onClick={() => deletePatient(patient.uuid)}><AiOutlineDelete /></button>
                     <button className="btn btn-secondary" onClick={() => { navigate(`/view-patient/${patient.uuid}`); }}><MdOutlineRemoveRedEye /></button>
                   </div>
                 </td>

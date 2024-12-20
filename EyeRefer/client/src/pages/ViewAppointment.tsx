@@ -4,6 +4,7 @@ import api from '../api/axiosInstance';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import BackButton from "../components/BackButton"
 // import { socket } from '../utils/socket';
 
 const ViewAppointment = () => {
@@ -45,7 +46,8 @@ console.log("APPOINTMENT::", Appointment)
     <>
   <div>
     <div>
-      <h2 className='text-2xl font-bold'>Basic Information</h2>
+      
+      <h2 className='text-2xl font-bold flex flex-row gap-2'><BackButton/>Basic Information</h2>
       <div className='bg-gray-300 p-4 m-4 w-full rounded-md'>
         <div className='flex flex-wrap'>
           <p className='text-lg p-2 w-1/2'>Patient Name: {Appointment?.appointmentData.Patient.firstname} {Appointment?.appointmentData.Patient.lastname}</p>

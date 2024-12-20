@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import api from '../api/axiosInstance';
 import * as Yup from 'yup';
 import React, { useEffect } from 'react';
-import Button from "../components/Button"
+import SaveCancel from "../components/SaveCancel"
 
 const AddAppointment: React.FC = () => {
   const navigate = useNavigate();
@@ -143,9 +143,7 @@ const AddAppointment: React.FC = () => {
             <ErrorMessage name="notes" component="div" className="text-red-500 text-sm mt-1" />
           </div>
 
-          <div className="flex justify-center">
-            <Button>Submit</Button>
-          </div>
+          <SaveCancel/>
         </Form>
       )}
     </Formik>

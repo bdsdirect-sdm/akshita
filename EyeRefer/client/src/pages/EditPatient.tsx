@@ -6,8 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import api from '../api/axiosInstance';
 import * as Yup from 'yup';
-import Button from "../components/Button"
-import CancelButton from "../components/CancelButton"
+import SaveCancel from "../components/SaveCancel"
 
 const validationSchema = Yup.object().shape({
   firstname: Yup.string().required('First Name is required'),
@@ -122,7 +121,7 @@ const EditPatient: React.FC = () => {
   console.log( "PATINT::::::::::::::;;", Patient?.patientData?.firstname)
 
   return (
-    <div>
+    <div className=''>
       <Formik
         initialValues={{
           dob: Patient?.patientData?.dob,
@@ -315,16 +314,7 @@ const EditPatient: React.FC = () => {
             <ErrorMessage name="notes" component="div" className="text-red-500 mt-1" />
           </div>
         
-          <div className="flex gap-6">
-                <CancelButton
-                    onClick={() => navigate("/staff-list")}
-                  >
-                    Cancel
-                </CancelButton>
-                <Button type="submit">
-                  Submit
-                </Button>
-              </div>
+          <SaveCancel/>
         </Form>
         
         )}

@@ -130,10 +130,10 @@ export const getDocList = async(req:any, res:Response) => {
         const user = await User.findOne({where:{uuid:uuid}})
         let docList;
         if(user?.doctype==1){
-            docList = await User.findAll({ where: { uuid: {[Op.ne]: uuid} }, include:Address });
+            docList = await User.findAll({ where: { uuid: {[Op.ne]: uuid} }, include:Address, order:[['createdAt', 'desc']] });
         }
         else{
-            docList = await User.findAll({ where: { doctype:1, uuid: {[Op.ne]: uuid} }, include:Address });
+            docList = await User.findAll({ where: { doctype:1, uuid: {[Op.ne]: uuid} }, include:Address, order:[['createdAt', 'desc']] });
         }
         if(docList){
             res.status(200).json({"docList":docList, "message": "Docs List Found"});
@@ -164,7 +164,7 @@ export const getPatientList = async(req:any, res:Response) => {
               };
             }
 
-            const patientList: any = await Patient.findAll({ where: whereCondition });
+            const patientList: any = await Patient.findAll({ where: whereCondition, order:[['createdAt', 'desc']] });
             if(patientList){
                 const plist: any[] = [];
                 
@@ -292,7 +292,7 @@ export const getReferredPatients = async (req: any, res: any) => {
     try {
         const {uuid} = req.user;
         const user = await User.findOne({where:{uuid:uuid}});  //finds current doc
-        const patients = await Patient.findAll({where: {referedto: uuid}});  //gets all patients referred to current doc
+        const patients = await Patient.findAll({where: {referedto: uuid}, order:[['createdAt', 'desc']]});  //gets all patients referred to current doc
         // console.log("USERRRRRRRRR", patients)
         res.status(200).json({"patientList":patients, "message":"Patient List Found"});
     } catch (err) {
@@ -321,7 +321,7 @@ export const addAppointments = async (req: any, res: any) => {
 export const viewAppointments = async(req: any, res: any) => {
     try {
         const uuid = req.user.uuid;  //current doc id
-        const appointmentList = await Appointment.findAll({where: {user: uuid}});
+        const appointmentList = await Appointment.findAll({where: {user: uuid}, order:[['createdAt', 'desc']]});
         const apList = [];
         for(const appointment of appointmentList) {
             const patient = await Patient.findOne({where: {uuid: appointment.patient}})
@@ -456,7 +456,7 @@ export const chatRooms = async(req: any, res: any) => {
     try {
         const { uuid } = req.user;
         //check patient appointment is pending or not
-        const patientsList = await Patient.findAll({where:{[Op.or]:[{referedby:uuid},{referedto:uuid}]}});
+        const patientsList = await Patient.findAll({where:{[Op.or]:[{referedby:uuid},{referedto:uuid}]}, order:[['createdAt', 'desc']]});
         console.log(patientsList);
         res.status(200).json({success:true,message: "patients found", patientsList});
     } catch (err) {}
@@ -507,7 +507,7 @@ export const viewStaff = async (req: any, res: Response) => {
     try {
         // console.log("BODY:::::::::", req.body)
         const {uuid} = req.user;
-        const staffList = await Staff.findAll({where: {user: uuid}})
+        const staffList = await Staff.findAll({where: {user: uuid}, order:[['createdAt', 'desc']]})
         if(staffList) {
             res.status(200).json({"StaffList": staffList})
         }

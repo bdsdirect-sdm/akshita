@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import * as Yup from 'yup';
 import React, { useEffect } from 'react';
 import api from '../api/axiosInstance';
-import Button from "../components/Button";
+import SaveCancel from "../components/SaveCancel"
 
 const AddStaff: React.FC = () => {
   const navigate = useNavigate();
@@ -108,12 +108,7 @@ const AddStaff: React.FC = () => {
             <ErrorMessage name="gender" component="div" className="text-red-500 text-sm mt-1" />
           </div>
 
-          <div className="flex justify-center">
-            <Button type="submit">
-              {/* {staffMutation.isLoading ? 'Saving...' : 'Submit'} */}
-              Search
-            </Button>
-          </div>
+          <SaveCancel/>
         </Form>
       )}
     </Formik>

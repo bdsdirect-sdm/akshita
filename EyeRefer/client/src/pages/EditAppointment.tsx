@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import api from '../api/axiosInstance';
 import * as Yup from 'yup';
+import SaveCancel from "../components/SaveCancel"
 
 // Validation schema using Yup
 const validationSchema = Yup.object().shape({
@@ -154,21 +155,7 @@ const EditAppointment: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-between">
-            <button
-              type="submit"
-              className="btn btn-outline-primary bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
-            >
-              Save Changes
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-secondary bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300"
-              onClick={() => navigate('/view-appointments')}
-            >
-              Cancel Changes
-            </button>
-          </div>
+          <SaveCancel/>
         </Form>
       </Formik>
     </div>

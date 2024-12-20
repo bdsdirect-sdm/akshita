@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Button from "../components/Button"
+import BackButton from "../components/BackButton"
 // import { socket } from '../utils/socket';
 
 const ViewPatient = () => {
@@ -70,7 +71,8 @@ console.log(Patient)
   <div>
     <div className='p-8'>
       <div className='flex justify-between align-items-center'>
-        <h2 className='text-2xl font-bold'>Basic Information</h2>
+        <h2 className='text-2xl font-bold flex flex-row gap-2'>
+          <BackButton/>Basic Information</h2>
         <Button onClick={downloadPatientPDF}>Download</Button>
       </div>
       
