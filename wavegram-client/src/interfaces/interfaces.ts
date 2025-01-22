@@ -76,3 +76,23 @@ export interface PersonalDetailsInterface {
     newPassword: string;
     confirmPassword: string;
   }
+
+  export interface UserDetails {
+    id: number;
+    profilePhoto: string | null;
+    firstName: string;
+    lastName: string;
+    dob: Date;
+    email: string;
+    phone: string;
+    gender: 'Male' | 'Female' | 'Other';
+    address: string;
+    state: string;
+    city: string;
+    zip: string;
+    password: string;
+    isDeleted: boolean;
+    isActive: boolean;
+    status: boolean;
+  }
+  

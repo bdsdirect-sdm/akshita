@@ -107,14 +107,3 @@ User.init({
 });
 
 export default User;
-
-
-User.hasOne(Preferences, {
-    foreignKey: 'userId',
-    as: 'preferences',  
-});
-
-Preferences.belongsTo(User, {
-    foreignKey: 'userId',
-    as: 'user',
-});

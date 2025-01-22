@@ -12,11 +12,6 @@ const userSlice = createSlice({
     name:"user",
     initialState: intialState,
     reducers:{
-        // setDoctorT:(state,value) =>{
-        //     state.user_type = value.payload;
-        //     sessionStorage.setItem("user_type", JSON.stringify(value.payload))
-
-        // },
         setToken:(state,value) =>{
             state.token = value.payload;
             sessionStorage.setItem("token", JSON.stringify(value.payload))

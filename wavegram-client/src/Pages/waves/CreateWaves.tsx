@@ -1,6 +1,5 @@
 import { Formik, Form } from "formik";
-// import { useNavigate } from "react-router-dom";
-// import { useLogin } from "../../actions/user";
+import {usePostWave} from "../../actions/waves"
 import InputField from "../../components/common/InputField";
 import IconBtn from "../../components/common/IconBtn";
 import { WaveInterface } from "../../interfaces/interfaces";
@@ -10,6 +9,8 @@ import { WaveValidationSchema } from "../../validations/WaveValidation";
 const CreateWaves = () => {
   const name = localStorage.getItem("name");
   const pf = `https://api.dicebear.com/5.x/initials/svg?seed=${name}`;
+  const wavesMutation = usePostWave();
+
   return (
     <div>
       <div className="bg-white">
@@ -38,8 +39,7 @@ const CreateWaves = () => {
             }}
             validationSchema={WaveValidationSchema}
             onSubmit={async (values: WaveInterface) => {
-              //   loginMutation.mutate(values);
-              console.log(values);
+              wavesMutation.mutate(values);
             }}
           >
             {() => (

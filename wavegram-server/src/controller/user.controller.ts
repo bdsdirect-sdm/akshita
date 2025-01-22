@@ -49,7 +49,7 @@ export const loginUser = async (req: Request, res: Response) =>{
                 res.status(200).json({"token":token, "user":user, "message":"Login Successfull"});
             }
             else{
-                res.status(403).json({"message":"Invalid Password"});
+                res.status(403).json({"message": "Invalid Password"});
             }
         }
         else{
@@ -71,15 +71,15 @@ export const createWave = async (req: any, res: any) => {
         console.log("REQUESTTTTT", req.files);
 
         
-        // if(req.files) {
-        //     const files = req.files;
-        //     if (req.files['photos']) {
-        //         photos = files?.photos[0]?.path;   
-        //     }
-        //     if (req.files['videos']) {
-        //         videos = files?.videos[0]?.path;   
-        //     }
-        // }
+        if(req.files) {
+            const files = req.files;
+            if (req.files['photos']) {
+                photos = files?.photos[0]?.path;   
+            }
+            if (req.files['videos']) {
+                videos = files?.videos[0]?.path;   
+            }
+        }
         
         const wave = await Waves.create({
             userId: id,
@@ -114,55 +114,56 @@ export const addComment = async (req: any, res: any) => {
 
 export const changePassword = async (req: Request, res: any) => {
     try {
-        const { userId } = req.params;  // Extract userId from params
-        const { oldPassword, newPassword } = req.body;  // Destructure from the body
-
-        // Find the user by id
+        const { userId } = req.params; 
+        const { oldPassword, newPassword } = req.body; 
         const user = await User.findOne({ where: { id: userId } });
 
         if (user) {
-            // Compare old password with the stored password
             const isMatch = await bcrypt.compare(oldPassword, user.password);
 
             if (!isMatch) {
                 return res.status(401).json({ message: 'Incorrect old password' });
             }
 
-            // Hash the new password and save it
             const hashedPassword = await bcrypt.hash(newPassword, 10);
             user.password = hashedPassword;
-            await user.save();  // Save the user object after updating the password
-
+            await user.save();  
             return res.status(200).json({ message: 'Password updated successfully' });
         } else {
             return res.status(404).json({ message: 'User not found' });
         }
     }  catch(err){
-        res.status(500).json({"message": err})
+        res.status(500).json({"message":`Error--->${err}`})
     }
 }
-export const updatePersonalDetails = async (req: Request, res: Response) => {
+
+export const updatePersonalDetails = async (req: Request, res: any) => {
     try {
-        const id = req.user;
+        const { userId } = req.params; 
         const { dob, gender, phone, email } = req.body;
-        const details = await User.findOne({where:{id: id}});
+        const details = await User.findOne({where:{id: userId}});
         if(details) {
             details.dob = dob;
             details.gender = gender;
             details.phone = phone;
             details.email = email;
+
+            await details?.save();
+            return res.status(200).json({ message: 'Details updated successfully' });
         }
-        await details?.save();
+        else {
+            res.status(400).json({"message":`User details not found`})
+        }
     }  catch(err){
         res.status(500).json({"message":`Error--->${err}`})
     }
 }
 
-export const updateBasicDetails = async (req: Request, res: Response) => {
+export const updateBasicDetails = async (req: Request, res: any) => {
     try {
-        const id = req.user;
+        const { userId } = req.params; 
         const { firstName, lastName, phone, email, address, city, state, zip } = req.body;
-        const details = await User.findOne({where:{id: id}});
+        const details = await User.findOne({where:{id: userId}});
         if(details) {
             details.firstName = firstName;
             details.lastName = lastName;
@@ -172,27 +173,59 @@ export const updateBasicDetails = async (req: Request, res: Response) => {
             details.city = city;
             details.state = state;
             details.zip = zip;
+            await details?.save();
+            return res.status(200).json({ message: 'Details updated successfully' });
+        } else {
+            return res.status(404).json({ message: 'User not found' });
         }
-        await details?.save();
     }  catch(err){
         res.status(500).json({"message":`Error--->${err}`})
     }
 }
 
-export const changePicture = async (req: Request, res: Response) => {
+export const changePicture = async (req: Request, res: any) => {
     try {
-        const id = req.user;
-    }  catch(err){
+        const { userId } = req.params; 
+        const user = await User.findByPk(userId);
+        
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const pfp = req.file?.path;
+        if (!pfp) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+        user.profilePhoto = pfp;
+        await user.save();
+
+        return res.status(200).json({ message: 'Profile Picture updated successfully' });
+    } catch (err) {
         res.status(500).json({"message":`Error--->${err}`})
     }
 }
 
-export const updatePreferences = async (req: Request, res: Response) => {
+export const updatePreferences = async (req: Request, res: any) => {
     try {
-        const id = req.user;
-        const {language, breakfast, lunch, dinner, wakeTime, bedTime, weight, height, sms, post } = req.body;
-        const preferences = await Preferences.findOne({where:{ id: id}});
-        if(preferences) {
+        const { userId } = req.params;
+        const { language, breakfast, lunch, dinner, wakeTime, bedTime, weight, height, sms, post } = req.body;
+        const preferences = await Preferences.findOne({where: { userId: userId }, include: {model: User, as: 'user'}});
+        if(!preferences) {
+            const p = await Preferences.create({
+                breakfast,
+                language,
+                lunch,
+                dinner,
+                wakeTime,
+                bedTime,
+                weight,
+                height,
+                sms,
+                post, 
+                userId
+            });
+            return res.status(200).json({ message: 'Preferences created successfully' });
+        }
+        else if(preferences) {
             preferences.language = language;
             preferences.breakfast = breakfast;
             preferences.lunch = lunch;
@@ -203,8 +236,13 @@ export const updatePreferences = async (req: Request, res: Response) => {
             preferences.height = height;
             preferences.sms = sms;
             preferences.post = post;
-        } 
-        await preferences?.save();
+            
+            await preferences?.save();
+            return res.status(200).json({ message: 'Preferences updated successfully' });
+        } else {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
     }  catch(err){
         res.status(500).json({"message":`Error--->${err}`})
     }
@@ -232,11 +270,16 @@ export const updatePreferences = async (req: Request, res: Response) => {
 //     }
 // }
 
-export const getBasicDetails = async (req: Request, res: Response) => {
+export const getBasicDetails = async (req: Request, res: any) => {
     try {
-        const id = req.body;
-        const details = await User.findOne({where: {id: id}});
-        res.status(200).json({"Basic Details": details, "message": "Basic Details received"});
+        const { userId } = req.params;
+        const details = await User.findOne({where: {id: userId}});
+        if(details) {
+            res.status(200).json({"Basic Details": details, "message": "Basic Details received"});
+        } else {
+            return res.status(404).json({ message: 'Details not found' });
+        }
+        
     }  catch(err){
         res.status(500).json({"message":`Error--->${err}`})
     }
@@ -244,9 +287,14 @@ export const getBasicDetails = async (req: Request, res: Response) => {
 
 export const getPersonalDetails = async (req: Request, res: Response) => {
     try {
-        const id = req.body;
-        const details = await User.findOne({where: {id: id}});
-        res.status(200).json({"Personal Details": details, "message": "Personal Details received"});
+        const { userId } = req.params;
+        const details = await User.findOne({where: {id: userId}});
+        if(details) {
+            res.status(200).json({"Personal Details": details, "message": "Personal Details received"});
+        } else {
+            res.status(404).json({ message: 'Details not found' });
+        }
+        
     }  catch(err){
         res.status(500).json({"message":`Error--->${err}`})
     }
@@ -254,9 +302,14 @@ export const getPersonalDetails = async (req: Request, res: Response) => {
 
 export const getPreferences = async (req: Request, res: Response) => {
     try {
-        const id = req.body;
-        const preferences = await Preferences.findOne({where: {id: id}});
-        res.status(200).json({"Preferences": preferences, "message": "Preferences received"});
+        const { userId } = req.params;
+        const preferences = await Preferences.findOne({where: {userId: userId}});
+        if(preferences) {
+            res.status(200).json({"Preferences": preferences, "message": "Preferences received"});
+        } else {
+            res.status(404).json({ message: 'Details not found' });
+        }
+        
     }  catch(err){
         res.status(500).json({"message":`Error--->${err}`})
     }

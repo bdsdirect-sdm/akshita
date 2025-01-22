@@ -1,5 +1,5 @@
 // import { useDispatch } from "react-redux";
-import { loginInterface, signupInterface } from "../interfaces/interfaces";
+import { BasicDetailsInterface, loginInterface, signupInterface, UserDetails } from "../interfaces/interfaces";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "../apis/apies";
 import axios from "axios";
@@ -8,35 +8,6 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import {setUser, setToken, setLoading} from "../Slices/userSlice"
 
-// export const userLogin = (data: any, callback: any) => {
-//     return (dispatch: any) => {
-//         dispatch(handleLoading(true));
-//         ApiClient.post(`${apiUrl}${PORT}${version}/admin/login`, data).then(
-//             (response: any) => {
-//                 if (response.status === 200 || response.status === 201) {
-//                     dispatch(loginSuccess(response));
-//                     setAccessToken(response?.token);
-//                     if (response?.token) {
-//                         setAuthorizationToken(axios, response?.token);
-//                         sessionStorage.setItem('token', response?.token)
-//                     }
-//                     dispatch(handleLoading(false));
-//                     return callback(response);
-//                 } else if (response.status === 404) {
-//                     openNotificationWithIcon('error', response.message);
-//                     dispatch(handleLoading(false));
-//                     // return callback(response);
-//                 } else {
-//                     openNotificationWithIcon('error', response.message);
-//                     dispatch(handleLoading(false));
-//                 }
-//             }
-//         );
-//     };
-// };
- 
-
-//custom hooks for signUp
 export const useSignUp = () =>{
     const navigate = useNavigate()
     // const dispatch = useDispatch();
@@ -87,35 +58,88 @@ export const useLogin = () =>{
             // console.log("RESHIH", response)
 
         },
-        onError:(err) =>{
-            toast.error(err.message);
-            console.log("ERRRRRRRRRR", err)
+        onError:(err: any) =>{
+            console.log(err)
+            const res = err.response;
+
+            toast.error(res.data.message);
             dispatch(setLoading(false));
 
         }
     })
 }
 
+export const useSetBasicDetails = () =>{
+    const dispatch = useDispatch();
+    return  useMutation({
+        mutationKey: ['basicDetails'],
+        mutationFn: async (data: BasicDetailsInterface) => {
+            dispatch(setLoading(true));
+            const  response = await axios.put(api.updateBasicDetails, data);
+            return response.data;
+        },
+        onSuccess:(response) =>{
+            console.log(response)
+            dispatch(setLoading(false))
+            toast.success(response.message)
+        },
+        onError:(err: any) =>{
+            console.log(err)
+            const res = err.response;
 
-// export const useDashboard = () =>{
-//     const navigate = useNavigate()
-//     const dispatch  = useDispatch();
+            toast.error(res.data.message);
+            dispatch(setLoading(false));
 
-//     return useMutation({
-//         mutationKey: ['otpVerify'],
-//         mutationFn: async (data: otpInterface) => {
-//             dispatch(setLoading(true))
-//             const response = await axios.post(api.dashboardUrl, data);
+        }
+    })
+}
+
+// export const useGetBasicDetails = ({userId}) =>{
+//     const dispatch = useDispatch();
+//     return  useMutation({
+//         mutationKey: ['basicDetails'],
+//         mutationFn: async (data: BasicDetailsInterface) => {
+//             dispatch(setLoading(true));
+//             const  response = await axios.get(api.updateBasicDetails, data);
 //             return response.data;
 //         },
 //         onSuccess:(response) =>{
+//             console.log(response)
 //             dispatch(setLoading(false))
 //             toast.success(response.message)
-//             navigate("/login")
 //         },
-//         onError:(err) =>{
-//             toast.error(err.message);
+//         onError:(err: any) =>{
+//             console.log(err)
+//             const res = err.response;
+
+//             toast.error(res.data.message);
 //             dispatch(setLoading(false));
+
 //         }
 //     })
 // }
+
+export const useProfile = () =>{
+    const dispatch = useDispatch();
+    return  useMutation({
+        mutationKey: ['basicDetails'],
+        mutationFn: async (data: UserDetails) => {
+            dispatch(setLoading(true));
+            const  response = await axios.get(api.getBasicDetails);
+            return response.data;
+        },
+        onSuccess:(response) =>{
+            console.log(response)
+            dispatch(setLoading(false))
+            toast.success(response.message)
+        },
+        onError:(err: any) =>{
+            console.log(err)
+            const res = err.response;
+
+            toast.error(res.data.message);
+            dispatch(setLoading(false));
+
+        }
+    })
+}

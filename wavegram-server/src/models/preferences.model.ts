@@ -1,6 +1,6 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../config/dbconnect";
-import User from './users.model'  // Import User model
+import { Model, DataTypes } from 'sequelize';
+import sequelize from '../config/dbconnect';
+import User from "./users.model"
 
 class Preferences extends Model {
     public id!: number;
@@ -17,70 +17,80 @@ class Preferences extends Model {
     public post!: boolean;  // true or false (Post notifications enabled)
 }
 
-Preferences.init({
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        allowNull: false,
-        autoIncrement: true
-    },
-    userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: User,  // Reference to the User model
-            key: 'id',
+// Initialize the Preferences model
+Preferences.init(
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            allowNull: false,
+            autoIncrement: true,
         },
-        onDelete: 'CASCADE',  // Deletes preferences if user is deleted
+        userId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            onDelete: 'CASCADE',  
+        },
+        language: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        breakfast: {
+            type: DataTypes.STRING,
+            allowNull: true, 
+        },
+        lunch: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        dinner: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        wakeTime: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        bedTime: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        weight: {
+            type: DataTypes.STRING,
+            allowNull: true,  // "kg" or "lbs"
+        },
+        height: {
+            type: DataTypes.STRING,
+            allowNull: true,  // "inches" or "cms"
+        },
+        sms: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            allowNull: false,
+        },
+        post: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            allowNull: false,
+        },
     },
-    language: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    breakfast: {
-        type: DataTypes.STRING,
-        allowNull: true,  // Store time in "HH:MM" format
-    },
-    lunch: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    dinner: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    wakeTime: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    bedTime: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    weight: {
-        type: DataTypes.STRING,
-        allowNull: true,  // "kg" or "lbs"
-    },
-    height: {
-        type: DataTypes.STRING,
-        allowNull: true,  // "inches" or "cms"
-    },
-    sms: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false,
-    },
-    post: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false,
-    },
-}, {
-    sequelize,
-    modelName: 'Preferences',
-    tableName: 'preferences',
-    timestamps: true,    // Stores createdAt and updatedAt
-    paranoid: true,     // Soft delete support
+    {
+        sequelize,
+        modelName: 'Preferences',
+        tableName: 'preferences',
+        timestamps: true, 
+        paranoid: true,
+    }
+);
+
+User.hasOne(Preferences, {
+    foreignKey: 'userId',
+    as: 'user', 
+});
+
+Preferences.belongsTo(User, {
+    foreignKey: 'userId',
+    as: 'user',  
 });
 
 export default Preferences;

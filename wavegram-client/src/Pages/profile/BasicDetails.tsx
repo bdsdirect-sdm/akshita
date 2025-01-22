@@ -4,10 +4,13 @@ import { BasicDetailsValidationSchema } from "../../validations/profileValidatio
 import IconBtn from "../../components/common/IconBtn";
 import { BasicDetailsInterface } from "../../interfaces/interfaces";
 import InputField from "../../components/common/InputField";
+import { useSetBasicDetails } from "../../actions/user";
 // import { useNavigate } from "react-router-dom";
 
 const BasicDetails = () => {
   // const navigate = useNavigate();
+  const basicDetailsMutation = useSetBasicDetails();
+  
   return (
     <>
       <div className=" text-center w-[100%] p-4 overflow-scroll">
@@ -27,12 +30,12 @@ const BasicDetails = () => {
             onSubmit={async (values: BasicDetailsInterface) => {
               console.log("dsdsdsdsdds");
               console.log("valuesvalues", values);
-              //   await signUpMutataion.mutate(values);
+                await basicDetailsMutation.mutate(values);
             }}
           >
             {() => (
               <Form>
-                <div className="flex xl:flex-row flex-col gap-3">
+                <div className="flex flex-row gap-3">
                   <InputField
                     fieldName="firstName"
                     placeholder="Enter first name"
