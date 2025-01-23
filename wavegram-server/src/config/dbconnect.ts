@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { Local } from "./env";
+import { Local } from "../env";
 import Comments from "../models/comments.model";
 
 const DB_NAME:any = Local.DB_NAME

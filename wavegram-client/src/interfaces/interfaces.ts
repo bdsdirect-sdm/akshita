@@ -82,7 +82,6 @@ export interface PersonalDetailsInterface {
     profilePhoto: string | null;
     firstName: string;
     lastName: string;
-    dob: Date;
     email: string;
     phone: string;
     gender: 'Male' | 'Female' | 'Other';

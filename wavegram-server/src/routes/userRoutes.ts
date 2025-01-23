@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { addComment, changePassword, changePicture, createWave, getBasicDetails, getPersonalDetails, getPreferences, loginUser, signup, updateBasicDetails, updatePersonalDetails, updatePreferences } from "../controller/user.controller";
 import { uploader } from "../middleware/multer.middlerware";
+import userAuthMiddleware from "../middleware/jwtAuth";
 
 const userRoutes = Router()
 
@@ -10,14 +11,14 @@ userRoutes
     .post("/create-wave", uploader.fields([{name: 'photos'}, {name: 'videos'}]), createWave)
     .post("/add-comment", addComment)
 
-    .put("/change-password/:userId", changePassword)
-    .put("/update-personal-details/:userId", updatePersonalDetails)
-    .put("/update-basic-details/:userId", updateBasicDetails)
-    .put("/change-picture/:userId", uploader.single('profilePhoto'), changePicture)
-    .put("/update-preferences/:userId", updatePreferences)
+    .put("/change-password", userAuthMiddleware, changePassword) //done
+    .put("/update-personal-details", userAuthMiddleware, updatePersonalDetails) //done
+    .put("/update-basic-details", userAuthMiddleware, updateBasicDetails) //(done)
+    .put("/change-picture", userAuthMiddleware, uploader.single('profilePhoto'), changePicture)
+    .put("/update-preferences", userAuthMiddleware, updatePreferences)
 
-    .get("/basic-details/:userId", getBasicDetails)
-    .get("/personal-details/:userId", getPersonalDetails)
-    .get("/preferences/:userId", getPreferences)
+    .get("/basic-details", userAuthMiddleware, getBasicDetails) //done
+    .get("/personal-details", userAuthMiddleware, getPersonalDetails) //done
+    .get("/preferences", userAuthMiddleware, getPreferences)
     
 export default userRoutes

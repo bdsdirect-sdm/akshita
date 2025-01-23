@@ -4,25 +4,45 @@ import { PersonalDetailsValidationSchema } from "../../validations/profileValida
 import IconBtn from "../../components/common/IconBtn";
 import { PersonalDetailsInterface } from "../../interfaces/interfaces";
 import InputField from "../../components/common/InputField";
-// import { useNavigate } from "react-router-dom";
+import { GetPersonalDetails, SetPersonalDetails } from "../../actions/user";
+
+const formatDate = (date: string | Date | undefined) => {
+  if (!date) return '';
+  const dateObj = new Date(date);
+  return dateObj.toISOString().split('T')[0]; // Converts date to 'YYYY-MM-DD' format
+}
 
 const PersonalDetails = () => {
+  const personalDetailsMutation = SetPersonalDetails();
+  const { data, isError, isLoading, error } = GetPersonalDetails();
+  console.log("TAT", data,  data?.PersonalDetails?.dob)
+
+  const initialValues: PersonalDetailsInterface = {
+    dob: formatDate(data?.PersonalDetails?.dob),
+    gender: data?.PersonalDetails?.gender || "",
+    phone: data?.PersonalDetails?.phone || "",
+    email: data?.PersonalDetails?.email || "",
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error: {error?.message}</div>;
+  }
+
   return (
     <>
       <div className=" text-center w-[100%] p-4 overflow-y-scroll">
         <div className="rounded-md bg-white flex flex-col gap-3 ">
           <Formik
-            initialValues={{
-              dob: "",
-              gender: "",
-              phone: "",
-              email: "",
-            }}
+            enableReinitialize={true}
+            initialValues={initialValues}
             validationSchema={PersonalDetailsValidationSchema}
             onSubmit={async (values: PersonalDetailsInterface) => {
-              console.log("dsdsdsdsdds");
-              console.log("valuesvalues", values);
-              //   await signUpMutataion.mutate(values);
+              console.log("Form values submitted: ", values);
+                await personalDetailsMutation.mutate(values);
             }}
           >
             {() => (
@@ -33,19 +53,16 @@ const PersonalDetails = () => {
                     placeholder="DOB"
                     isRequired={true}
                     labelName="DOB"
-                    type="text"
+                    type="date" // This will allow users to pick a date using the native HTML date picker
                   />
 
-                  {/* last Name */}
                   <InputField
                     fieldName="gender"
                     placeholder="Gender"
                     isRequired={true}
-                    labelName="Last name"
+                    labelName="Gender"
                     type="text"
                   />
-
-                  {/* <InputFeild fieldName="" placeholder="" isRequired={} labelName="" type=""/> */}
                 </div>
 
                 <div className="flex xl:flex-row flex-col gap-3">
@@ -56,8 +73,6 @@ const PersonalDetails = () => {
                     labelName="Email"
                     type="text"
                   />
-
-                  {/* last Name */}
                   <InputField
                     fieldName="phone"
                     placeholder="Enter Phone Number"
@@ -65,16 +80,14 @@ const PersonalDetails = () => {
                     labelName="Phone Number"
                     type="text"
                   />
-
-                  {/* <InputFeild fieldName="" placeholder="" isRequired={} labelName="" type=""/> */}
                 </div>
-                <div className=" flex justify-end my-2 ">
+                <div className="flex justify-end my-2 ">
                   <IconBtn
                     text="Update"
                     type="submit"
                     customClasses="text-white"
                     onClick={() => {
-                      console.log("Clicked");
+                      console.log("Update clicked");
                     }}
                   />
                 </div>

@@ -1,15 +1,19 @@
 import { Formik, Form } from "formik";
-import {usePostWave} from "../../actions/waves"
 import InputField from "../../components/common/InputField";
 import IconBtn from "../../components/common/IconBtn";
 import { WaveInterface } from "../../interfaces/interfaces";
 import SearchBar from "../../components/SearchBar";
 import { WaveValidationSchema } from "../../validations/WaveValidation";
+import { PostWave } from "../../actions/waves";
 
 const CreateWaves = () => {
   const name = localStorage.getItem("name");
   const pf = `https://api.dicebear.com/5.x/initials/svg?seed=${name}`;
-  const wavesMutation = usePostWave();
+  const wavesMutation = PostWave();
+
+  function setFieldValue(arg0: string, arg1: any) {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <div>
@@ -45,19 +49,25 @@ const CreateWaves = () => {
             {() => (
               <>
                 <Form>
-                  <InputField
-                    fieldName="photos"
+                  <input
+                    name="photos"
                     placeholder="Upload Photos"
-                    isRequired={false}
-                    labelName=""
                     type="file"
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        setFieldValue("photos", e.target.files[0]); 
+                      }
+                    }}
                   />
-                  <InputField
-                    fieldName="videos"
+                  <input
+                    name="videos"
                     placeholder="Upload Videos"
-                    isRequired={false}
-                    labelName=""
                     type="file"
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        setFieldValue("Videos", e.target.files[0]); 
+                      }
+                    }}
                   />
 
                   <InputField

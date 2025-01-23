@@ -5,8 +5,26 @@ import IconBtn from "../../components/common/IconBtn";
 import { PreferencesInterface } from "../../interfaces/interfaces";
 import InputField from "../../components/common/InputField";
 import BackButton from "../../components/common/BackButton";
+import { GetPreferences, SetPreferences } from "../../actions/user";
 
 const Preferences: React.FC = () => {
+  const {data} = GetPreferences();
+  const preferencesMutation = SetPreferences();
+
+  const initialValues: PreferencesInterface = {
+    language: data?.Preferences?.language || "spanish",
+    breakfast: data?.Preferences?.breakfast || "",
+    lunch: data?.Preferences?.lunch || "",
+    dinner: data?.Preferences?.dinner || "",
+    wakeTime: data?.Preferences?.wakeTime || "",
+    bedTime: data?.Preferences?.bedTime || "",
+    weight: data?.Preferences?.weight || "", // kg or lbs
+    height: data?.Preferences?.height || "", // inches or cms
+    sms: data?.Preferences?.sms || false, // true/false slider
+    post: data?.Preferences?.post || false, // true/false slider
+  };
+
+  console.log("REQ", data?.Preferences?.language )
   return (
     <>
       <h2 className="flex align-middle">
@@ -17,23 +35,13 @@ const Preferences: React.FC = () => {
         <div className=" w-[100%] px-2">
           <div className="rounded-md bg-white flex flex-col gap-3 ">
             <Formik
-              initialValues={{
-                language: "", //dropdown select
-                breakfast: "", //time
-                lunch: "", //time
-                dinner: "", //time
-                wakeTime: "", //time
-                bedTime: "", //time
-                weight: "", //radio buttons kg or lbs
-                height: "", //radio buttons inches or cms
-                sms: false, //true false slider
-                post: false, //true false slider
-              }}
+            enableReinitialize={true}
+              initialValues={initialValues}
               validationSchema={PreferencesValidationSchema}
               onSubmit={async (values: PreferencesInterface) => {
-                console.log("dsdsdsdsdds");
-                console.log("valuesvalues", values);
-                //   await signUpMutataion.mutate(values);
+                // console.log("dsdsdsdsdds");
+                // console.log("valuesvalues", values);
+                  await preferencesMutation.mutate(values);
               }}
             >
               {() => (
@@ -144,25 +152,33 @@ const Preferences: React.FC = () => {
                       <label htmlFor="sms" className="mb-1">
                         SMS Notifications
                       </label>
-                      <input
-                        type="checkbox"
-                        id="sms"
-                        name="sms"
-                        className="switch"
-                      />
+                      <label className="relative inline-flex cursor-pointer items-center">
+                        <input
+                          type="checkbox"
+                          id="sms"
+                          name="sms"
+                          className="peer sr-only"
+                        />
+                        
+                        <div className="peer h-6 w-11 rounded-full border bg-slate-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"></div>
+                      </label>
                     </div>
 
                     {/* Post Notification Switch */}
                     <div className="w-full">
-                      <label htmlFor="post" className="mb-1">
+                      <label htmlFor="post" className="mb-2">
                         Post Notifications
                       </label>
-                      <input
-                        type="checkbox"
-                        id="post"
-                        name="post"
-                        className="switch"
-                      />
+                      <label className="relative inline-flex cursor-pointer items-center">
+                        <input
+                          type="checkbox"
+                          id="post"
+                          name="post"
+                          className="peer sr-only"
+                        />
+                        
+                        <div className="peer h-6 w-11 rounded-full border bg-slate-200 after:absolute after:left-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-green-300"></div>
+                      </label>
                     </div>
                   </div>
 

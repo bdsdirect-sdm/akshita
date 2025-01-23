@@ -1,12 +1,14 @@
-import React from 'react'
 import BackButton from '../../components/common/BackButton'
 import { Form, Formik } from 'formik';
 import InputField from '../../components/common/InputField';
 import IconBtn from '../../components/common/IconBtn';
 import { PasswordChangeValidationSchema } from '../../validations/passwordChangeValidation';
 import { PasswordChangeInterface } from '../../interfaces/interfaces';
+import { SetPassword } from '../../actions/user';
 
 const ChangePassword = () => {
+  const passwordMutation = SetPassword();
+  
   return (
     <>
         <h2 className="flex align-middle">
@@ -25,7 +27,8 @@ const ChangePassword = () => {
             onSubmit={async (values: PasswordChangeInterface) => {
               console.log("dsdsdsdsdds");
               console.log("valuesvalues", values);
-              //   await signUpMutataion.mutate(values);
+                await passwordMutation.mutate(values);
+                 
             }}
           >
             {() => (

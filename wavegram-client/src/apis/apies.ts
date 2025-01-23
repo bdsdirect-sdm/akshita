@@ -9,7 +9,7 @@ export const api = {
     updateBasicDetails: BASE_URL+"/update-basic-details",
     changePicture: BASE_URL+"/change-picture",
     updatePreferences: BASE_URL+"/update-preferences",
-    createWave: BASE_URL+"/create-wave", //(done)
+    createWave: BASE_URL+"/create-wave", 
     getBasicDetails: BASE_URL+"/basic-details",
     getPersonalDetails: BASE_URL+"/personal-details",
     getPreferences: BASE_URL+"/preferences",

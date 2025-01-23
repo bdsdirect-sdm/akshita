@@ -1,7 +1,7 @@
 import User from "../models/users.model";
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt';
-import { Local } from "../config/env";
+import { Local } from "../env";
 const securityKey: any = Local.SECRET_KEY;
 import { Request, Response } from "express";
 import Preferences from "../models/preferences.model";
@@ -112,11 +112,11 @@ export const addComment = async (req: any, res: any) => {
 /* PUT */
 
 
-export const changePassword = async (req: Request, res: any) => {
+export const changePassword = async (req: any, res: any) => {
     try {
-        const { userId } = req.params; 
+        const { id } = req.user;
         const { oldPassword, newPassword } = req.body; 
-        const user = await User.findOne({ where: { id: userId } });
+        const user = await User.findOne({ where: { id: id } });
 
         if (user) {
             const isMatch = await bcrypt.compare(oldPassword, user.password);
@@ -137,11 +137,12 @@ export const changePassword = async (req: Request, res: any) => {
     }
 }
 
-export const updatePersonalDetails = async (req: Request, res: any) => {
+export const updatePersonalDetails = async (req: any, res: any) => {
     try {
-        const { userId } = req.params; 
+        const { id } = req.user; 
+        console.log("IHHHH", id)
         const { dob, gender, phone, email } = req.body;
-        const details = await User.findOne({where:{id: userId}});
+        const details = await User.findOne({where:{id: id}});
         if(details) {
             details.dob = dob;
             details.gender = gender;
@@ -152,18 +153,18 @@ export const updatePersonalDetails = async (req: Request, res: any) => {
             return res.status(200).json({ message: 'Details updated successfully' });
         }
         else {
-            res.status(400).json({"message":`User details not found`})
+            res.status(400).json({message:`User details not found`})
         }
     }  catch(err){
         res.status(500).json({"message":`Error--->${err}`})
     }
 }
 
-export const updateBasicDetails = async (req: Request, res: any) => {
+export const updateBasicDetails = async (req: any, res: any) => {
     try {
-        const { userId } = req.params; 
+        const { id } = req.user; 
         const { firstName, lastName, phone, email, address, city, state, zip } = req.body;
-        const details = await User.findOne({where:{id: userId}});
+        const details = await User.findOne({where:{id: id}});
         if(details) {
             details.firstName = firstName;
             details.lastName = lastName;
@@ -270,27 +271,27 @@ export const updatePreferences = async (req: Request, res: any) => {
 //     }
 // }
 
-export const getBasicDetails = async (req: Request, res: any) => {
+export const getBasicDetails = async (req: any, res: any) => {
     try {
-        const { userId } = req.params;
-        const details = await User.findOne({where: {id: userId}});
+        const { id } = req.user;  
+        const details = await User.findOne({where: {id: id}});
         if(details) {
-            res.status(200).json({"Basic Details": details, "message": "Basic Details received"});
+            return res.status(200).json({"BasicDetails": details, "message": "Basic Details received"});
         } else {
             return res.status(404).json({ message: 'Details not found' });
         }
         
     }  catch(err){
-        res.status(500).json({"message":`Error--->${err}`})
+        return res.status(500).json({"message":`Error--->${err}`})
     }
 }
 
-export const getPersonalDetails = async (req: Request, res: Response) => {
+export const getPersonalDetails = async (req: any, res: any) => {
     try {
-        const { userId } = req.params;
-        const details = await User.findOne({where: {id: userId}});
+        const { id } = req.user;
+        const details = await User.findOne({where: {id: id}});
         if(details) {
-            res.status(200).json({"Personal Details": details, "message": "Personal Details received"});
+            res.status(200).json({"PersonalDetails": details, "message": "Personal Details received"});
         } else {
             res.status(404).json({ message: 'Details not found' });
         }
@@ -300,10 +301,10 @@ export const getPersonalDetails = async (req: Request, res: Response) => {
     }
 }
 
-export const getPreferences = async (req: Request, res: Response) => {
+export const getPreferences = async (req: any, res: any) => {
     try {
-        const { userId } = req.params;
-        const preferences = await Preferences.findOne({where: {userId: userId}});
+        const { id } = req.user; 
+        const preferences = await Preferences.findOne({where: { userId: id }, include: {model: User, as: 'user'}});
         if(preferences) {
             res.status(200).json({"Preferences": preferences, "message": "Preferences received"});
         } else {

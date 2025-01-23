@@ -3,7 +3,7 @@ import { dbconnect } from "./config/dbconnect";
 import { createServer } from "http";
 import { setSocket } from "./socket/socket";
 const server = createServer(app);
-import { Local } from "./config/env";
+import { Local } from "./env";
 
 setSocket(server)
 

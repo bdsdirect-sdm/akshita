@@ -30,8 +30,6 @@ function App() {
                   />
               );
           })}
-          {/* Add a not found route */}
-          {/* <Route path="*" element={<NotFoundPage />} /> */}
       </Routes>
     </div>
   )
