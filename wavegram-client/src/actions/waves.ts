@@ -12,7 +12,7 @@ export const PostWave = () =>{
     const token = useSelector(state => state.user.token);
     return  useMutation({
         mutationKey: ['wave'],
-        mutationFn: async (data: WaveInterface) => {
+        mutationFn: async (data:any) => {
             dispatch(setLoading(true));
             
             const  response = await axios.post(api.createWave, data, {

@@ -43,7 +43,22 @@ const CreateWaves = () => {
             }}
             validationSchema={WaveValidationSchema}
             onSubmit={async (values: WaveInterface) => {
-              wavesMutation.mutate(values);
+              let formData = new FormData()
+
+              formData.append("post",values.post)
+
+              if(values.videos){
+                formData.append("videos",values.videos)
+              }
+
+              if(values.photos){
+                formData.append("photos",values.photos)
+              }
+
+              console.log(formData)
+
+              wavesMutation.mutate(formData);
+
             }}
           >
             {() => (
@@ -53,11 +68,14 @@ const CreateWaves = () => {
                     name="photos"
                     placeholder="Upload Photos"
                     type="file"
-                    onChange={(e) => {
-                      if (e.target.files) {
-                        setFieldValue("photos", e.target.files[0]); 
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        console.log("dfjsdifjsdifjsdfiodfu")
+                        setFieldValue("photos", file);
                       }
-                    }}
+                    }
+                  }
                   />
                   <input
                     name="videos"
@@ -65,7 +83,7 @@ const CreateWaves = () => {
                     type="file"
                     onChange={(e) => {
                       if (e.target.files) {
-                        setFieldValue("Videos", e.target.files[0]); 
+                        setFieldValue("videos", e.target.files[0]); 
                       }
                     }}
                   />
