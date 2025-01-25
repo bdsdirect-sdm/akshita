@@ -13,4 +13,7 @@ export const api = {
     getBasicDetails: BASE_URL+"/basic-details",
     getPersonalDetails: BASE_URL+"/personal-details",
     getPreferences: BASE_URL+"/preferences",
+    getWaves: BASE_URL+"/waves",
+    getWave: BASE_URL+"/wave",
+    inviteFriend: BASE_URL+"/invite",
 }

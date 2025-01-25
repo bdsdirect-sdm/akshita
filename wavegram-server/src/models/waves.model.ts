@@ -8,6 +8,7 @@ class Waves extends Model {
     public photos!: string | null;
     public videos!: string | null;
     public post!: string;
+    public fullName!: string;
 }
 
 Waves.init({
@@ -26,6 +27,14 @@ Waves.init({
         allowNull: true
     },
     post: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    fullName: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    profilePhoto: {
         type: DataTypes.STRING,
         allowNull: true
     }

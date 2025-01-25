@@ -5,14 +5,39 @@ import { WaveInterface } from "../../interfaces/interfaces";
 import SearchBar from "../../components/SearchBar";
 import { WaveValidationSchema } from "../../validations/WaveValidation";
 import { PostWave } from "../../actions/waves";
+import { useState } from "react";
 
 const CreateWaves = () => {
   const name = localStorage.getItem("name");
   const pf = `https://api.dicebear.com/5.x/initials/svg?seed=${name}`;
   const wavesMutation = PostWave();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [videoPreview, setVideoPreview] = useState<string | null>(null);
 
-  function setFieldValue(arg0: string, arg1: any) {
-    throw new Error("Function not implemented.");
+  function handleFileChange(e: any, setFieldValue: any, fieldName: string) {
+    const file = e.currentTarget.files ? e.currentTarget.files[0] : null;
+    if (file) {
+      const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+      const validVideoTypes = ["video/mp4", "video/mkv"];
+
+      if (validImageTypes.includes(file.type)) {
+        setFieldValue("photos", file);
+        setImagePreview(URL.createObjectURL(file));
+        setError(null);
+      } else if (validVideoTypes.includes(file.type)) {
+        setFieldValue("videos", file);
+        setVideoPreview(URL.createObjectURL(file));
+        setError(null);
+      } else {
+        setError("Please upload a valid image (JPEG, PNG, GIF) or video (MP4, MKV) file.");
+      }
+    } else {
+      setFieldValue("photos", null); // Reset if no file is selected
+      setImagePreview(null);
+      setVideoPreview(null);
+    }
   }
 
   return (
@@ -23,7 +48,7 @@ const CreateWaves = () => {
             <img className="rounded-full w-36 h-36" src={pf} alt="pfp" />
           </div>
 
-          <div className="flex flex-row items-center justify-start  flex-1">
+          <div className="flex flex-row items-center justify-start flex-1">
             <h3 className="text-white">Upload a New Photo</h3>
           </div>
 
@@ -43,68 +68,80 @@ const CreateWaves = () => {
             }}
             validationSchema={WaveValidationSchema}
             onSubmit={async (values: WaveInterface) => {
-              let formData = new FormData()
+              setLoading(true);
+              setError(null);
 
-              formData.append("post",values.post)
+              let formData = new FormData();
+              formData.append("post", values.post);
 
-              if(values.videos){
-                formData.append("videos",values.videos)
+              if (values.videos) formData.append("videos", values.videos);
+              if (values.photos) formData.append("photos", values.photos);
+
+              try {
+                await wavesMutation.mutateAsync(formData);
+                // Optionally handle success (e.g., redirect or show success message)
+              } catch (error) {
+                setError("Failed to create the wave. Please try again.");
+              } finally {
+                setLoading(false);
               }
-
-              if(values.photos){
-                formData.append("photos",values.photos)
-              }
-
-              console.log(formData)
-
-              wavesMutation.mutate(formData);
-
             }}
           >
-            {() => (
-              <>
-                <Form>
+            {({ setFieldValue }) => (
+              <Form>
+                <div className="flex flex-col">
                   <input
                     name="photos"
-                    placeholder="Upload Photos"
                     type="file"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        console.log("dfjsdifjsdifjsdfiodfu")
-                        setFieldValue("photos", file);
-                      }
-                    }
-                  }
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, setFieldValue, "photos")}
                   />
+                  {imagePreview && (
+                    <div className="mt-2">
+                      <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex flex-col mt-4">
                   <input
                     name="videos"
-                    placeholder="Upload Videos"
                     type="file"
-                    onChange={(e) => {
-                      if (e.target.files) {
-                        setFieldValue("videos", e.target.files[0]); 
-                      }
-                    }}
+                    accept="video/*"
+                    onChange={(e) => handleFileChange(e, setFieldValue, "videos")}
                   />
+                  {videoPreview && (
+                    <div className="mt-2">
+                      <video controls className="w-32 h-32 rounded">
+                        <source src={videoPreview} />
+                      </video>
+                    </div>
+                  )}
+                </div>
 
-                  <InputField
-                    fieldName="post"
-                    placeholder="Write Something..."
-                    isRequired={false}
-                    labelName=""
-                    type="text"
-                  />
+                <InputField
+                  fieldName="post"
+                  placeholder="Write Something..."
+                  isRequired={false}
+                  labelName=""
+                  type="text"
+                />
 
-                  <div className="flex justify-start">
-                    <IconBtn
-                      text="Create Wave"
-                      type="submit"
-                      customClasses="text-white"
-                    />
+                {error && (
+                  <div className="text-red-500 text-sm mt-2">
+                    <p>{error}</p>
                   </div>
-                </Form>
-              </>
+                )}
+
+                <div className="flex justify-start mt-4">
+                  <IconBtn
+                    text={loading ? "Creating..." : "Create Wave"}
+                    type="submit"
+                    customClasses="text-white"
+                    disabled={loading}
+                  />
+                </div>
+              </Form>
             )}
           </Formik>
         </div>

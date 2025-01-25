@@ -66,9 +66,12 @@ export interface PersonalDetailsInterface {
   }
 
   export interface WaveInterface {
+    id: number;
     photos: string;
     videos: string;
     post: string;
+    fullName: string;
+    profilePhoto: string;
   }
 
   export interface PasswordChangeInterface {
