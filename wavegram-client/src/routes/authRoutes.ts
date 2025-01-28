@@ -26,6 +26,16 @@ const AuthRoutes = [
         component: Login,
     },
     {
+        path: '/signup/*',
+        layout: Form,
+        component: SignUp ,
+    },
+    {
+        path: '/login/*',
+        layout: Form,
+        component: Login,
+    },
+    {
         path: '/dashboard',
         layout: Home,
         component: Dashboard,

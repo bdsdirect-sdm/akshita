@@ -5,21 +5,21 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import {setLoading} from "../Slices/waveSlice"
-import { WaveInterface } from "../interfaces/interfaces";
+import { FriendInterface } from "../interfaces/interfaces";
 
-export const PostWave = () =>{
+export const useInviteFriend = () =>{
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const token = useSelector(state => state.user.token);
     return  useMutation({
-        mutationKey: ['wave'],
-        mutationFn: async (data: WaveInterface) => {
+        mutationKey: ['friend'],
+        mutationFn: async (data: FriendInterface) => {
             dispatch(setLoading(true));
             
-            const  response = await axios.post(api.createWave, data, {
+            const  response = await axios.post(`${api.inviteFriend}?token=
+                ${}`, data, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data'
+                    Authorization: `Bearer ${token}`
                 }
             });
             return response.data;
@@ -28,7 +28,7 @@ export const PostWave = () =>{
             console.log(response)
             dispatch(setLoading(false))
             toast.success(response.message)
-            navigate("/dashboard")
+            // navigate("/dashboard")
         },
         onError:(err: any) =>{
             console.log(err)

@@ -1,5 +1,5 @@
 import User from "../models/users.model";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken"
 import bcrypt from 'bcrypt';
 import { Local } from "../env";
 const securityKey: any = Local.SECRET_KEY;
@@ -9,34 +9,46 @@ import Waves from "../models/waves.model";
 import Comment from "../models/comments.model";
 import Friend from "../models/friends.model";
 import Comments from "../models/comments.model";
-import { transporter } from "../middleware/mailer";
+import { sendLoginEmail, sendSignupEmail } from "../utils/mailer"
 
 /* POST */
 
 export const signup = async (req: Request, res: Response) => {
-    console.log("RIIIP", req.file)
     try{
         const {firstName, lastName, phone, email, password} = req.body;
-        console.log("HELELELELEL", req.body)
             
         const isExist = await User.findOne({where: {email: email}});
         if(isExist){
             res.status(401).json({"message": "User already exists"});
         }
         else{
-
             const hashedPassword = await bcrypt.hash(password, 10);
             const user = await User.create({firstName, lastName, phone, email, 
                 password: hashedPassword,
-                profile_photo: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`});
+                profile_photo: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`
+            });
         }
+
+        // const {token} = req.query;
+        console.log("TOKENNNN", req.params)
+        // if(token) {
+        //     const decoded = jwt.verify(token, securityKey as string) as JwtPayload;
+        //     const { senderId } = decoded;
+        //     console.log("DECODEDDDD", decoded);
+        //     const newFriend = await Friend.findOne({where: {sender: senderId}});
+        //     if( newFriend ) {
+        //         newFriend.status = "accepted"
+        //         await newFriend.save();
+        //     }
+            
+        // }
     }
         catch(err){
         res.status(500).json({"message": err});
     }
 }
 
-export const loginUser = async (req: Request, res: Response) =>{
+export const loginUser = async (req: any, res: Response) =>{
     try{
         const {email, password} = req.body;
         console.log(req.body);
@@ -44,10 +56,30 @@ export const loginUser = async (req: Request, res: Response) =>{
         if(user){
             const isMatch = await bcrypt.compare(password, user.password);
             if(isMatch){
-                
-                const token = jwt.sign({id: user.id}, securityKey);
-                console.log("HELOOO",token)
-                res.status(200).json({"token":token, "user":user, "message":"Login Successfull"});
+                //if token in params, it means friend already exists.
+                //else we check if current user is someone's friend, and add their user id
+                const {token} = req.params;
+                if(token) {
+                    const decoded = jwt.verify(token, securityKey as string) as JwtPayload;
+                    const { senderId } = decoded;
+                    console.log("DECODEDDDD", decoded);
+                    const newFriend = await Friend.findOne({where: {sender: senderId}});
+                    if( newFriend ) {
+                        newFriend.receiver = user.id;
+                        newFriend.status = "accepted"
+                        await newFriend.save();
+                    }
+                    
+                } 
+                else {
+                    const newFriend = await Friend.findOne({where: {receiverEmail: email}})
+                    if(newFriend?.status === "accepted") {
+                        newFriend.receiver = user.id;
+                    }
+                }
+                const tk = jwt.sign({id: user.id}, securityKey);
+                console.log("HELOOO",tk)
+                res.status(200).json({"token": tk, "user":user, "message":"Login Successful"});
             }
             else{
                 res.status(403).json({"message": "Invalid Password"});
@@ -56,6 +88,8 @@ export const loginUser = async (req: Request, res: Response) =>{
         else{
             res.status(403).json({"message":"User doesn't Exist"});
         }
+        
+
     }
     catch(err){
         res.status(500).json({"message":err});
@@ -102,80 +136,42 @@ export const createWave = async (req: any, res: any) => {
     }
 }
 
+/* check if receiver already exists
+If he does, redirect to login page
+if he doesnt, redirect to signup page
+*/
 export const inviteFriend = async (req: any, res: any) => {
     try {
       const senderId = req.user.id;
-      const { body } = req;  
-      const checkEmailExists = async (email: string) => {
-        return await User.findOne({ where: { email } });
-      };
+      const friends = req.body.friends; 
+      console.log("FRIENDSS", friends.friends)
+      const sender = await User.findOne({where: {id: senderId}});
+      const senderName = sender?.firstName + " " + sender?.lastName;
+
+      for (const friend of friends) {
+        const { fullName, email, message } = friend;
+        const token = jwt.sign({ senderId }, securityKey, { expiresIn: '1h' });
   
-      const generateToken = (data: object): string => {
-        const token = jwt.sign(data, securityKey, { expiresIn: '1h' });
-        return token;
-      };
+        const user = await User.findOne({ where: { email } });
   
-      const sendEmail = async (to: string, subject: string, html: string) => {
-        const mailOptions = {
-          from: "dipchip1702@gmail.com",  
-          to,
-          subject,
-          html,
-        };
-        try {
-          const info = await transporter.sendMail(mailOptions);
-          console.log(`Email sent to ${to}: ${info.response}`);
-        } catch (error) {
-          console.error(`Error sending email to ${to}:`, error);
-        }
-      };  
-  
-      const promises = body.map(async (item: { fullName: string; emails: string; message: string }) => {
-        const { emails: email, fullName, message } = item;
-        const user = await checkEmailExists(email);
-        let token: string;
-          let invitationLink: string;
         if (user) {
-          await Friend.create({
-            senderfriendId: senderId,
-            email,
-            receiverfriendId: user.id,
-          });
-          token = generateToken({
-            senderfriendId: senderId,
-            email,
-            receiverfriendId: user.id,
-          });
-          invitationLink = `http://localhost:5173/login?token=${token}`;
+          const isFriend = await Friend.findOne({ where: { email } });
+          if (isFriend) {
+            console.log(`${email} is already added as a friend.`);
+          } else {
+            sendLoginEmail(token, email, fullName, message, senderName);
+            console.log(`${email} is added as a friend.`);
+            const newFriend = await Friend.create({sender: senderId, receiverEmail: email, status: "pending" });
+            console.log(`${email} is added as a friend.`);
+          }
         } else {
-          // If email does not exist, generate token only with email
-          token = generateToken({ senderfriendId: senderId, email });
-          invitationLink = `http://localhost:5173/signup?token=${token}`;
+          sendSignupEmail(token, email, fullName, message, senderName);
+          const newFriend = await Friend.create({sender: senderId, receiverEmail: email, status: "pending" });
+          console.log(`${email} is added as a friend.`);
         }
-  
-        // Send the invitation email with a custom message
-        await sendEmail(
-          email,
-          "You're Invited by Your Friend!",
-          `
-            <html>
-              <body style="font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4;">
-                <div style="max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-                  <h1 style="color: #333;">You're Invited, ${fullName}!</h1>
-                  <p style="color: #555;">Your friend has shared the following message:</p>
-                  <blockquote style="background-color: #f9f9f9; padding: 10px; border-left: 5px solid #007BFF; margin: 10px 0; color: #555;">${message}</blockquote>
-                  <p style="color: #555;">Here is the invitation link shared by your friend:</p>
-                  <a href="${invitationLink}" style="display: inline-block; padding: 10px 20px; color: white; background-color: #007BFF; text-decoration: none; border-radius: 5px; margin-top: 10px;">Accept Invitation</a>
-                  <p style="color: #555; margin-top: 20px;">Click the link above to join us and get started!</p>
-                  <p style="color: #333;">Best regards,<br>Team</p>
-                </div>
-              </body>
-            </html>
-          `
-        );
-      });
-      await Promise.all(promises);                      
+      }
       res.status(200).json({ message: "Invitation emails sent successfully." });
+  
     } catch (error) {
       console.error("Error in inviteFriend:", error);
       res.status(500).json({ error: "Failed to send invitation emails." });
@@ -433,3 +429,4 @@ export const getWave = async (req: any, res: any) => {
         res.status(500).json({"message":`Error--->${err}`})
     }
 }
+

@@ -4,9 +4,10 @@ import User from './users.model';
 
 class Friend extends Model {
   public id!: number;
-  public waveId!: number; 
-  public userId!: number; 
-  public status!: boolean;
+  public sender!: number; 
+  public receiver!: number; 
+  public receiverEmail!: string;
+  public status!: "pending" | "accepted";
 }
 
 Friend.init(
@@ -17,17 +18,22 @@ Friend.init(
       allowNull: false,
       autoIncrement: true,
     },
-    friend1: {
+    sender: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    friend2: {
+    receiver: {
       type: DataTypes.INTEGER,
+      allowNull: true,
+      
+    },
+    receiverEmail: {
+      type: DataTypes.STRING,
       allowNull: false,
       
     },
     status: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.ENUM("pending", "accepted"),
       allowNull: false,
     },
   },
